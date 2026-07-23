@@ -1,0 +1,5059 @@
+{
+  "schemaVersion": 1,
+  "source": {
+    "name": "Parcels_view_119508443368863523.zip",
+    "date": "2026-05-12",
+    "epsg": 2274,
+    "recordCount": 286458,
+    "checksumSha256": "8e1e1f64b1565355e78fddd03f869edf4f8ddd6bd1de25cac9e1172e2579697e",
+    "attribution": "Metro GIS, Nashville and Davidson County"
+  },
+  "projection": {
+    "epsg": 3857,
+    "localOrigin": [-9660700, 4326400],
+    "bounds": [-9690878.63, 4296186.32, -9630423.38, 4356588.41],
+    "baseCellSizeMeters": 2048,
+    "minimumCellSizeMeters": 256,
+    "gridOrigin": [-9700000, 4290000]
+  },
+  "overviewUrl": "/data/parcels/2026-05-12/overview.json",
+  "shards": [
+    {
+      "id": "10-10",
+      "bounds": [-9679520, 4310480, -9677472, 4312528],
+      "featureCount": 1600,
+      "byteLength": 746008,
+      "url": "/data/parcels/2026-05-12/cells/10-10.fgb"
+    },
+    {
+      "id": "10-11",
+      "bounds": [-9679520, 4312528, -9677472, 4314576],
+      "featureCount": 498,
+      "byteLength": 212416,
+      "url": "/data/parcels/2026-05-12/cells/10-11.fgb"
+    },
+    {
+      "id": "10-12",
+      "bounds": [-9679520, 4314576, -9677472, 4316624],
+      "featureCount": 205,
+      "byteLength": 96992,
+      "url": "/data/parcels/2026-05-12/cells/10-12.fgb"
+    },
+    {
+      "id": "10-13",
+      "bounds": [-9679520, 4316624, -9677472, 4318672],
+      "featureCount": 70,
+      "byteLength": 34872,
+      "url": "/data/parcels/2026-05-12/cells/10-13.fgb"
+    },
+    {
+      "id": "10-14",
+      "bounds": [-9679520, 4318672, -9677472, 4320720],
+      "featureCount": 57,
+      "byteLength": 47056,
+      "url": "/data/parcels/2026-05-12/cells/10-14.fgb"
+    },
+    {
+      "id": "10-15",
+      "bounds": [-9679520, 4320720, -9677472, 4322768],
+      "featureCount": 59,
+      "byteLength": 54984,
+      "url": "/data/parcels/2026-05-12/cells/10-15.fgb"
+    },
+    {
+      "id": "10-16",
+      "bounds": [-9679520, 4322768, -9677472, 4324816],
+      "featureCount": 26,
+      "byteLength": 40224,
+      "url": "/data/parcels/2026-05-12/cells/10-16.fgb"
+    },
+    {
+      "id": "10-17",
+      "bounds": [-9679520, 4324816, -9677472, 4326864],
+      "featureCount": 24,
+      "byteLength": 36616,
+      "url": "/data/parcels/2026-05-12/cells/10-17.fgb"
+    },
+    {
+      "id": "10-18",
+      "bounds": [-9679520, 4326864, -9677472, 4328912],
+      "featureCount": 17,
+      "byteLength": 50688,
+      "url": "/data/parcels/2026-05-12/cells/10-18.fgb"
+    },
+    {
+      "id": "10-19",
+      "bounds": [-9679520, 4328912, -9677472, 4330960],
+      "featureCount": 54,
+      "byteLength": 62960,
+      "url": "/data/parcels/2026-05-12/cells/10-19.fgb"
+    },
+    {
+      "id": "10-20",
+      "bounds": [-9679520, 4330960, -9677472, 4333008],
+      "featureCount": 22,
+      "byteLength": 21096,
+      "url": "/data/parcels/2026-05-12/cells/10-20.fgb"
+    },
+    {
+      "id": "10-21",
+      "bounds": [-9679520, 4333008, -9677472, 4335056],
+      "featureCount": 56,
+      "byteLength": 25088,
+      "url": "/data/parcels/2026-05-12/cells/10-21.fgb"
+    },
+    {
+      "id": "10-22",
+      "bounds": [-9679520, 4335056, -9677472, 4337104],
+      "featureCount": 7,
+      "byteLength": 11928,
+      "url": "/data/parcels/2026-05-12/cells/10-22.fgb"
+    },
+    {
+      "id": "10-23",
+      "bounds": [-9679520, 4337104, -9677472, 4339152],
+      "featureCount": 46,
+      "byteLength": 43704,
+      "url": "/data/parcels/2026-05-12/cells/10-23.fgb"
+    },
+    {
+      "id": "10-24",
+      "bounds": [-9679520, 4339152, -9677472, 4341200],
+      "featureCount": 61,
+      "byteLength": 38088,
+      "url": "/data/parcels/2026-05-12/cells/10-24.fgb"
+    },
+    {
+      "id": "10-25",
+      "bounds": [-9679520, 4341200, -9677472, 4343248],
+      "featureCount": 10,
+      "byteLength": 9592,
+      "url": "/data/parcels/2026-05-12/cells/10-25.fgb"
+    },
+    {
+      "id": "10-7",
+      "bounds": [-9679520, 4304336, -9677472, 4306384],
+      "featureCount": 50,
+      "byteLength": 23168,
+      "url": "/data/parcels/2026-05-12/cells/10-7.fgb"
+    },
+    {
+      "id": "10-8",
+      "bounds": [-9679520, 4306384, -9677472, 4308432],
+      "featureCount": 551,
+      "byteLength": 253984,
+      "url": "/data/parcels/2026-05-12/cells/10-8.fgb"
+    },
+    {
+      "id": "10-9",
+      "bounds": [-9679520, 4308432, -9677472, 4310480],
+      "featureCount": 2373,
+      "byteLength": 1256040,
+      "url": "/data/parcels/2026-05-12/cells/10-9.fgb"
+    },
+    {
+      "id": "11-10",
+      "bounds": [-9677472, 4310480, -9675424, 4312528],
+      "featureCount": 1254,
+      "byteLength": 605816,
+      "url": "/data/parcels/2026-05-12/cells/11-10.fgb"
+    },
+    {
+      "id": "11-11",
+      "bounds": [-9677472, 4312528, -9675424, 4314576],
+      "featureCount": 601,
+      "byteLength": 293624,
+      "url": "/data/parcels/2026-05-12/cells/11-11.fgb"
+    },
+    {
+      "id": "11-12",
+      "bounds": [-9677472, 4314576, -9675424, 4316624],
+      "featureCount": 839,
+      "byteLength": 348736,
+      "url": "/data/parcels/2026-05-12/cells/11-12.fgb"
+    },
+    {
+      "id": "11-13",
+      "bounds": [-9677472, 4316624, -9675424, 4318672],
+      "featureCount": 655,
+      "byteLength": 297512,
+      "url": "/data/parcels/2026-05-12/cells/11-13.fgb"
+    },
+    {
+      "id": "11-14",
+      "bounds": [-9677472, 4318672, -9675424, 4320720],
+      "featureCount": 59,
+      "byteLength": 56232,
+      "url": "/data/parcels/2026-05-12/cells/11-14.fgb"
+    },
+    {
+      "id": "11-15",
+      "bounds": [-9677472, 4320720, -9675424, 4322768],
+      "featureCount": 16,
+      "byteLength": 23968,
+      "url": "/data/parcels/2026-05-12/cells/11-15.fgb"
+    },
+    {
+      "id": "11-16",
+      "bounds": [-9677472, 4322768, -9675424, 4324816],
+      "featureCount": 45,
+      "byteLength": 42328,
+      "url": "/data/parcels/2026-05-12/cells/11-16.fgb"
+    },
+    {
+      "id": "11-17",
+      "bounds": [-9677472, 4324816, -9675424, 4326864],
+      "featureCount": 66,
+      "byteLength": 43872,
+      "url": "/data/parcels/2026-05-12/cells/11-17.fgb"
+    },
+    {
+      "id": "11-18",
+      "bounds": [-9677472, 4326864, -9675424, 4328912],
+      "featureCount": 35,
+      "byteLength": 31504,
+      "url": "/data/parcels/2026-05-12/cells/11-18.fgb"
+    },
+    {
+      "id": "11-19",
+      "bounds": [-9677472, 4328912, -9675424, 4330960],
+      "featureCount": 126,
+      "byteLength": 76744,
+      "url": "/data/parcels/2026-05-12/cells/11-19.fgb"
+    },
+    {
+      "id": "11-20",
+      "bounds": [-9677472, 4330960, -9675424, 4333008],
+      "featureCount": 24,
+      "byteLength": 19304,
+      "url": "/data/parcels/2026-05-12/cells/11-20.fgb"
+    },
+    {
+      "id": "11-21",
+      "bounds": [-9677472, 4333008, -9675424, 4335056],
+      "featureCount": 59,
+      "byteLength": 30432,
+      "url": "/data/parcels/2026-05-12/cells/11-21.fgb"
+    },
+    {
+      "id": "11-22",
+      "bounds": [-9677472, 4335056, -9675424, 4337104],
+      "featureCount": 8,
+      "byteLength": 10352,
+      "url": "/data/parcels/2026-05-12/cells/11-22.fgb"
+    },
+    {
+      "id": "11-23",
+      "bounds": [-9677472, 4337104, -9675424, 4339152],
+      "featureCount": 37,
+      "byteLength": 43136,
+      "url": "/data/parcels/2026-05-12/cells/11-23.fgb"
+    },
+    {
+      "id": "11-24",
+      "bounds": [-9677472, 4339152, -9675424, 4341200],
+      "featureCount": 107,
+      "byteLength": 62136,
+      "url": "/data/parcels/2026-05-12/cells/11-24.fgb"
+    },
+    {
+      "id": "11-25",
+      "bounds": [-9677472, 4341200, -9675424, 4343248],
+      "featureCount": 49,
+      "byteLength": 52128,
+      "url": "/data/parcels/2026-05-12/cells/11-25.fgb"
+    },
+    {
+      "id": "11-26",
+      "bounds": [-9677472, 4343248, -9675424, 4345296],
+      "featureCount": 46,
+      "byteLength": 35208,
+      "url": "/data/parcels/2026-05-12/cells/11-26.fgb"
+    },
+    {
+      "id": "11-27",
+      "bounds": [-9677472, 4345296, -9675424, 4347344],
+      "featureCount": 45,
+      "byteLength": 22304,
+      "url": "/data/parcels/2026-05-12/cells/11-27.fgb"
+    },
+    {
+      "id": "11-28",
+      "bounds": [-9677472, 4347344, -9675424, 4349392],
+      "featureCount": 3,
+      "byteLength": 1672,
+      "url": "/data/parcels/2026-05-12/cells/11-28.fgb"
+    },
+    {
+      "id": "11-30",
+      "bounds": [-9677472, 4351440, -9675424, 4353488],
+      "featureCount": 1,
+      "byteLength": 2912,
+      "url": "/data/parcels/2026-05-12/cells/11-30.fgb"
+    },
+    {
+      "id": "11-8",
+      "bounds": [-9677472, 4306384, -9675424, 4308432],
+      "featureCount": 33,
+      "byteLength": 34720,
+      "url": "/data/parcels/2026-05-12/cells/11-8.fgb"
+    },
+    {
+      "id": "11-9",
+      "bounds": [-9677472, 4308432, -9675424, 4310480],
+      "featureCount": 987,
+      "byteLength": 474440,
+      "url": "/data/parcels/2026-05-12/cells/11-9.fgb"
+    },
+    {
+      "id": "12-10",
+      "bounds": [-9675424, 4310480, -9673376, 4312528],
+      "featureCount": 487,
+      "byteLength": 240728,
+      "url": "/data/parcels/2026-05-12/cells/12-10.fgb"
+    },
+    {
+      "id": "12-11",
+      "bounds": [-9675424, 4312528, -9673376, 4314576],
+      "featureCount": 242,
+      "byteLength": 121880,
+      "url": "/data/parcels/2026-05-12/cells/12-11.fgb"
+    },
+    {
+      "id": "12-12",
+      "bounds": [-9675424, 4314576, -9673376, 4316624],
+      "featureCount": 409,
+      "byteLength": 177160,
+      "url": "/data/parcels/2026-05-12/cells/12-12.fgb"
+    },
+    {
+      "id": "12-13",
+      "bounds": [-9675424, 4316624, -9673376, 4318672],
+      "featureCount": 536,
+      "byteLength": 259976,
+      "url": "/data/parcels/2026-05-12/cells/12-13.fgb"
+    },
+    {
+      "id": "12-14",
+      "bounds": [-9675424, 4318672, -9673376, 4320720],
+      "featureCount": 35,
+      "byteLength": 50112,
+      "url": "/data/parcels/2026-05-12/cells/12-14.fgb"
+    },
+    {
+      "id": "12-15",
+      "bounds": [-9675424, 4320720, -9673376, 4322768],
+      "featureCount": 21,
+      "byteLength": 35936,
+      "url": "/data/parcels/2026-05-12/cells/12-15.fgb"
+    },
+    {
+      "id": "12-16",
+      "bounds": [-9675424, 4322768, -9673376, 4324816],
+      "featureCount": 11,
+      "byteLength": 52176,
+      "url": "/data/parcels/2026-05-12/cells/12-16.fgb"
+    },
+    {
+      "id": "12-17",
+      "bounds": [-9675424, 4324816, -9673376, 4326864],
+      "featureCount": 12,
+      "byteLength": 40336,
+      "url": "/data/parcels/2026-05-12/cells/12-17.fgb"
+    },
+    {
+      "id": "12-18",
+      "bounds": [-9675424, 4326864, -9673376, 4328912],
+      "featureCount": 10,
+      "byteLength": 29760,
+      "url": "/data/parcels/2026-05-12/cells/12-18.fgb"
+    },
+    {
+      "id": "12-19",
+      "bounds": [-9675424, 4328912, -9673376, 4330960],
+      "featureCount": 57,
+      "byteLength": 53136,
+      "url": "/data/parcels/2026-05-12/cells/12-19.fgb"
+    },
+    {
+      "id": "12-20",
+      "bounds": [-9675424, 4330960, -9673376, 4333008],
+      "featureCount": 71,
+      "byteLength": 39040,
+      "url": "/data/parcels/2026-05-12/cells/12-20.fgb"
+    },
+    {
+      "id": "12-21",
+      "bounds": [-9675424, 4333008, -9673376, 4335056],
+      "featureCount": 87,
+      "byteLength": 45040,
+      "url": "/data/parcels/2026-05-12/cells/12-21.fgb"
+    },
+    {
+      "id": "12-22",
+      "bounds": [-9675424, 4335056, -9673376, 4337104],
+      "featureCount": 39,
+      "byteLength": 34472,
+      "url": "/data/parcels/2026-05-12/cells/12-22.fgb"
+    },
+    {
+      "id": "12-23",
+      "bounds": [-9675424, 4337104, -9673376, 4339152],
+      "featureCount": 29,
+      "byteLength": 29896,
+      "url": "/data/parcels/2026-05-12/cells/12-23.fgb"
+    },
+    {
+      "id": "12-24",
+      "bounds": [-9675424, 4339152, -9673376, 4341200],
+      "featureCount": 105,
+      "byteLength": 55280,
+      "url": "/data/parcels/2026-05-12/cells/12-24.fgb"
+    },
+    {
+      "id": "12-25",
+      "bounds": [-9675424, 4341200, -9673376, 4343248],
+      "featureCount": 84,
+      "byteLength": 60144,
+      "url": "/data/parcels/2026-05-12/cells/12-25.fgb"
+    },
+    {
+      "id": "12-26",
+      "bounds": [-9675424, 4343248, -9673376, 4345296],
+      "featureCount": 90,
+      "byteLength": 48160,
+      "url": "/data/parcels/2026-05-12/cells/12-26.fgb"
+    },
+    {
+      "id": "12-27",
+      "bounds": [-9675424, 4345296, -9673376, 4347344],
+      "featureCount": 87,
+      "byteLength": 40488,
+      "url": "/data/parcels/2026-05-12/cells/12-27.fgb"
+    },
+    {
+      "id": "12-28",
+      "bounds": [-9675424, 4347344, -9673376, 4349392],
+      "featureCount": 90,
+      "byteLength": 41616,
+      "url": "/data/parcels/2026-05-12/cells/12-28.fgb"
+    },
+    {
+      "id": "12-29",
+      "bounds": [-9675424, 4349392, -9673376, 4351440],
+      "featureCount": 62,
+      "byteLength": 32456,
+      "url": "/data/parcels/2026-05-12/cells/12-29.fgb"
+    },
+    {
+      "id": "12-30",
+      "bounds": [-9675424, 4351440, -9673376, 4353488],
+      "featureCount": 70,
+      "byteLength": 45896,
+      "url": "/data/parcels/2026-05-12/cells/12-30.fgb"
+    },
+    {
+      "id": "12-31",
+      "bounds": [-9675424, 4353488, -9673376, 4355536],
+      "featureCount": 27,
+      "byteLength": 20936,
+      "url": "/data/parcels/2026-05-12/cells/12-31.fgb"
+    },
+    {
+      "id": "12-8",
+      "bounds": [-9675424, 4306384, -9673376, 4308432],
+      "featureCount": 4,
+      "byteLength": 18008,
+      "url": "/data/parcels/2026-05-12/cells/12-8.fgb"
+    },
+    {
+      "id": "12-9",
+      "bounds": [-9675424, 4308432, -9673376, 4310480],
+      "featureCount": 126,
+      "byteLength": 79096,
+      "url": "/data/parcels/2026-05-12/cells/12-9.fgb"
+    },
+    {
+      "id": "13-10",
+      "bounds": [-9673376, 4310480, -9671328, 4312528],
+      "featureCount": 911,
+      "byteLength": 442016,
+      "url": "/data/parcels/2026-05-12/cells/13-10.fgb"
+    },
+    {
+      "id": "13-11",
+      "bounds": [-9673376, 4312528, -9671328, 4314576],
+      "featureCount": 710,
+      "byteLength": 340064,
+      "url": "/data/parcels/2026-05-12/cells/13-11.fgb"
+    },
+    {
+      "id": "13-12",
+      "bounds": [-9673376, 4314576, -9671328, 4316624],
+      "featureCount": 536,
+      "byteLength": 214984,
+      "url": "/data/parcels/2026-05-12/cells/13-12.fgb"
+    },
+    {
+      "id": "13-13",
+      "bounds": [-9673376, 4316624, -9671328, 4318672],
+      "featureCount": 621,
+      "byteLength": 242024,
+      "url": "/data/parcels/2026-05-12/cells/13-13.fgb"
+    },
+    {
+      "id": "13-14",
+      "bounds": [-9673376, 4318672, -9671328, 4320720],
+      "featureCount": 818,
+      "byteLength": 351800,
+      "url": "/data/parcels/2026-05-12/cells/13-14.fgb"
+    },
+    {
+      "id": "13-15",
+      "bounds": [-9673376, 4320720, -9671328, 4322768],
+      "featureCount": 1099,
+      "byteLength": 471432,
+      "url": "/data/parcels/2026-05-12/cells/13-15.fgb"
+    },
+    {
+      "id": "13-16",
+      "bounds": [-9673376, 4322768, -9671328, 4324816],
+      "featureCount": 30,
+      "byteLength": 61984,
+      "url": "/data/parcels/2026-05-12/cells/13-16.fgb"
+    },
+    {
+      "id": "13-17",
+      "bounds": [-9673376, 4324816, -9671328, 4326864],
+      "featureCount": 63,
+      "byteLength": 72368,
+      "url": "/data/parcels/2026-05-12/cells/13-17.fgb"
+    },
+    {
+      "id": "13-18",
+      "bounds": [-9673376, 4326864, -9671328, 4328912],
+      "featureCount": 12,
+      "byteLength": 31760,
+      "url": "/data/parcels/2026-05-12/cells/13-18.fgb"
+    },
+    {
+      "id": "13-19",
+      "bounds": [-9673376, 4328912, -9671328, 4330960],
+      "featureCount": 52,
+      "byteLength": 53504,
+      "url": "/data/parcels/2026-05-12/cells/13-19.fgb"
+    },
+    {
+      "id": "13-20",
+      "bounds": [-9673376, 4330960, -9671328, 4333008],
+      "featureCount": 45,
+      "byteLength": 26248,
+      "url": "/data/parcels/2026-05-12/cells/13-20.fgb"
+    },
+    {
+      "id": "13-21",
+      "bounds": [-9673376, 4333008, -9671328, 4335056],
+      "featureCount": 80,
+      "byteLength": 48448,
+      "url": "/data/parcels/2026-05-12/cells/13-21.fgb"
+    },
+    {
+      "id": "13-22",
+      "bounds": [-9673376, 4335056, -9671328, 4337104],
+      "featureCount": 59,
+      "byteLength": 47232,
+      "url": "/data/parcels/2026-05-12/cells/13-22.fgb"
+    },
+    {
+      "id": "13-23",
+      "bounds": [-9673376, 4337104, -9671328, 4339152],
+      "featureCount": 90,
+      "byteLength": 57840,
+      "url": "/data/parcels/2026-05-12/cells/13-23.fgb"
+    },
+    {
+      "id": "13-24",
+      "bounds": [-9673376, 4339152, -9671328, 4341200],
+      "featureCount": 201,
+      "byteLength": 94224,
+      "url": "/data/parcels/2026-05-12/cells/13-24.fgb"
+    },
+    {
+      "id": "13-25",
+      "bounds": [-9673376, 4341200, -9671328, 4343248],
+      "featureCount": 158,
+      "byteLength": 74872,
+      "url": "/data/parcels/2026-05-12/cells/13-25.fgb"
+    },
+    {
+      "id": "13-26",
+      "bounds": [-9673376, 4343248, -9671328, 4345296],
+      "featureCount": 211,
+      "byteLength": 92912,
+      "url": "/data/parcels/2026-05-12/cells/13-26.fgb"
+    },
+    {
+      "id": "13-27",
+      "bounds": [-9673376, 4345296, -9671328, 4347344],
+      "featureCount": 77,
+      "byteLength": 35992,
+      "url": "/data/parcels/2026-05-12/cells/13-27.fgb"
+    },
+    {
+      "id": "13-28",
+      "bounds": [-9673376, 4347344, -9671328, 4349392],
+      "featureCount": 103,
+      "byteLength": 53104,
+      "url": "/data/parcels/2026-05-12/cells/13-28.fgb"
+    },
+    {
+      "id": "13-29",
+      "bounds": [-9673376, 4349392, -9671328, 4351440],
+      "featureCount": 101,
+      "byteLength": 51104,
+      "url": "/data/parcels/2026-05-12/cells/13-29.fgb"
+    },
+    {
+      "id": "13-30",
+      "bounds": [-9673376, 4351440, -9671328, 4353488],
+      "featureCount": 136,
+      "byteLength": 63872,
+      "url": "/data/parcels/2026-05-12/cells/13-30.fgb"
+    },
+    {
+      "id": "13-31",
+      "bounds": [-9673376, 4353488, -9671328, 4355536],
+      "featureCount": 16,
+      "byteLength": 11440,
+      "url": "/data/parcels/2026-05-12/cells/13-31.fgb"
+    },
+    {
+      "id": "13-8",
+      "bounds": [-9673376, 4306384, -9671328, 4308432],
+      "featureCount": 104,
+      "byteLength": 47584,
+      "url": "/data/parcels/2026-05-12/cells/13-8.fgb"
+    },
+    {
+      "id": "13-9",
+      "bounds": [-9673376, 4308432, -9671328, 4310480],
+      "featureCount": 7,
+      "byteLength": 15072,
+      "url": "/data/parcels/2026-05-12/cells/13-9.fgb"
+    },
+    {
+      "id": "14-10",
+      "bounds": [-9671328, 4310480, -9669280, 4312528],
+      "featureCount": 139,
+      "byteLength": 66664,
+      "url": "/data/parcels/2026-05-12/cells/14-10.fgb"
+    },
+    {
+      "id": "14-11",
+      "bounds": [-9671328, 4312528, -9669280, 4314576],
+      "featureCount": 833,
+      "byteLength": 337368,
+      "url": "/data/parcels/2026-05-12/cells/14-11.fgb"
+    },
+    {
+      "id": "14-12",
+      "bounds": [-9671328, 4314576, -9669280, 4316624],
+      "featureCount": 875,
+      "byteLength": 375520,
+      "url": "/data/parcels/2026-05-12/cells/14-12.fgb"
+    },
+    {
+      "id": "14-13",
+      "bounds": [-9671328, 4316624, -9669280, 4318672],
+      "featureCount": 399,
+      "byteLength": 198200,
+      "url": "/data/parcels/2026-05-12/cells/14-13.fgb"
+    },
+    {
+      "id": "14-14",
+      "bounds": [-9671328, 4318672, -9669280, 4320720],
+      "featureCount": 911,
+      "byteLength": 380496,
+      "url": "/data/parcels/2026-05-12/cells/14-14.fgb"
+    },
+    {
+      "id": "14-15",
+      "bounds": [-9671328, 4320720, -9669280, 4322768],
+      "featureCount": 2890,
+      "byteLength": 1223528,
+      "url": "/data/parcels/2026-05-12/cells/14-15.fgb"
+    },
+    {
+      "id": "14-16",
+      "bounds": [-9671328, 4322768, -9669280, 4324816],
+      "featureCount": 1141,
+      "byteLength": 537040,
+      "url": "/data/parcels/2026-05-12/cells/14-16.fgb"
+    },
+    {
+      "id": "14-17",
+      "bounds": [-9671328, 4324816, -9669280, 4326864],
+      "featureCount": 35,
+      "byteLength": 50848,
+      "url": "/data/parcels/2026-05-12/cells/14-17.fgb"
+    },
+    {
+      "id": "14-18",
+      "bounds": [-9671328, 4326864, -9669280, 4328912],
+      "featureCount": 31,
+      "byteLength": 49656,
+      "url": "/data/parcels/2026-05-12/cells/14-18.fgb"
+    },
+    {
+      "id": "14-19",
+      "bounds": [-9671328, 4328912, -9669280, 4330960],
+      "featureCount": 514,
+      "byteLength": 248320,
+      "url": "/data/parcels/2026-05-12/cells/14-19.fgb"
+    },
+    {
+      "id": "14-20",
+      "bounds": [-9671328, 4330960, -9669280, 4333008],
+      "featureCount": 361,
+      "byteLength": 164288,
+      "url": "/data/parcels/2026-05-12/cells/14-20.fgb"
+    },
+    {
+      "id": "14-21",
+      "bounds": [-9671328, 4333008, -9669280, 4335056],
+      "featureCount": 77,
+      "byteLength": 54392,
+      "url": "/data/parcels/2026-05-12/cells/14-21.fgb"
+    },
+    {
+      "id": "14-22",
+      "bounds": [-9671328, 4335056, -9669280, 4337104],
+      "featureCount": 45,
+      "byteLength": 30112,
+      "url": "/data/parcels/2026-05-12/cells/14-22.fgb"
+    },
+    {
+      "id": "14-23",
+      "bounds": [-9671328, 4337104, -9669280, 4339152],
+      "featureCount": 134,
+      "byteLength": 69000,
+      "url": "/data/parcels/2026-05-12/cells/14-23.fgb"
+    },
+    {
+      "id": "14-24",
+      "bounds": [-9671328, 4339152, -9669280, 4341200],
+      "featureCount": 114,
+      "byteLength": 59952,
+      "url": "/data/parcels/2026-05-12/cells/14-24.fgb"
+    },
+    {
+      "id": "14-25",
+      "bounds": [-9671328, 4341200, -9669280, 4343248],
+      "featureCount": 100,
+      "byteLength": 52144,
+      "url": "/data/parcels/2026-05-12/cells/14-25.fgb"
+    },
+    {
+      "id": "14-26",
+      "bounds": [-9671328, 4343248, -9669280, 4345296],
+      "featureCount": 265,
+      "byteLength": 121992,
+      "url": "/data/parcels/2026-05-12/cells/14-26.fgb"
+    },
+    {
+      "id": "14-27",
+      "bounds": [-9671328, 4345296, -9669280, 4347344],
+      "featureCount": 190,
+      "byteLength": 88432,
+      "url": "/data/parcels/2026-05-12/cells/14-27.fgb"
+    },
+    {
+      "id": "14-28",
+      "bounds": [-9671328, 4347344, -9669280, 4349392],
+      "featureCount": 77,
+      "byteLength": 57072,
+      "url": "/data/parcels/2026-05-12/cells/14-28.fgb"
+    },
+    {
+      "id": "14-29",
+      "bounds": [-9671328, 4349392, -9669280, 4351440],
+      "featureCount": 82,
+      "byteLength": 50616,
+      "url": "/data/parcels/2026-05-12/cells/14-29.fgb"
+    },
+    {
+      "id": "14-30",
+      "bounds": [-9671328, 4351440, -9669280, 4353488],
+      "featureCount": 34,
+      "byteLength": 23344,
+      "url": "/data/parcels/2026-05-12/cells/14-30.fgb"
+    },
+    {
+      "id": "14-8",
+      "bounds": [-9671328, 4306384, -9669280, 4308432],
+      "featureCount": 160,
+      "byteLength": 95696,
+      "url": "/data/parcels/2026-05-12/cells/14-8.fgb"
+    },
+    {
+      "id": "14-9",
+      "bounds": [-9671328, 4308432, -9669280, 4310480],
+      "featureCount": 80,
+      "byteLength": 46960,
+      "url": "/data/parcels/2026-05-12/cells/14-9.fgb"
+    },
+    {
+      "id": "15-10",
+      "bounds": [-9669280, 4310480, -9667232, 4312528],
+      "featureCount": 302,
+      "byteLength": 137224,
+      "url": "/data/parcels/2026-05-12/cells/15-10.fgb"
+    },
+    {
+      "id": "15-11",
+      "bounds": [-9669280, 4312528, -9667232, 4314576],
+      "featureCount": 617,
+      "byteLength": 247560,
+      "url": "/data/parcels/2026-05-12/cells/15-11.fgb"
+    },
+    {
+      "id": "15-12",
+      "bounds": [-9669280, 4314576, -9667232, 4316624],
+      "featureCount": 632,
+      "byteLength": 297936,
+      "url": "/data/parcels/2026-05-12/cells/15-12.fgb"
+    },
+    {
+      "id": "15-13",
+      "bounds": [-9669280, 4316624, -9667232, 4318672],
+      "featureCount": 1301,
+      "byteLength": 644712,
+      "url": "/data/parcels/2026-05-12/cells/15-13.fgb"
+    },
+    {
+      "id": "15-14",
+      "bounds": [-9669280, 4318672, -9667232, 4320720],
+      "featureCount": 1292,
+      "byteLength": 538696,
+      "url": "/data/parcels/2026-05-12/cells/15-14.fgb"
+    },
+    {
+      "id": "15-15",
+      "bounds": [-9669280, 4320720, -9667232, 4322768],
+      "featureCount": 2482,
+      "byteLength": 970520,
+      "url": "/data/parcels/2026-05-12/cells/15-15.fgb"
+    },
+    {
+      "id": "15-16",
+      "bounds": [-9669280, 4322768, -9667232, 4324816],
+      "featureCount": 1471,
+      "byteLength": 647304,
+      "url": "/data/parcels/2026-05-12/cells/15-16.fgb"
+    },
+    {
+      "id": "15-17",
+      "bounds": [-9669280, 4324816, -9667232, 4326864],
+      "featureCount": 318,
+      "byteLength": 139352,
+      "url": "/data/parcels/2026-05-12/cells/15-17.fgb"
+    },
+    {
+      "id": "15-18",
+      "bounds": [-9669280, 4326864, -9667232, 4328912],
+      "featureCount": 299,
+      "byteLength": 142432,
+      "url": "/data/parcels/2026-05-12/cells/15-18.fgb"
+    },
+    {
+      "id": "15-19",
+      "bounds": [-9669280, 4328912, -9667232, 4330960],
+      "featureCount": 942,
+      "byteLength": 374584,
+      "url": "/data/parcels/2026-05-12/cells/15-19.fgb"
+    },
+    {
+      "id": "15-20",
+      "bounds": [-9669280, 4330960, -9667232, 4333008],
+      "featureCount": 405,
+      "byteLength": 173560,
+      "url": "/data/parcels/2026-05-12/cells/15-20.fgb"
+    },
+    {
+      "id": "15-21",
+      "bounds": [-9669280, 4333008, -9667232, 4335056],
+      "featureCount": 95,
+      "byteLength": 54520,
+      "url": "/data/parcels/2026-05-12/cells/15-21.fgb"
+    },
+    {
+      "id": "15-22",
+      "bounds": [-9669280, 4335056, -9667232, 4337104],
+      "featureCount": 125,
+      "byteLength": 75624,
+      "url": "/data/parcels/2026-05-12/cells/15-22.fgb"
+    },
+    {
+      "id": "15-23",
+      "bounds": [-9669280, 4337104, -9667232, 4339152],
+      "featureCount": 119,
+      "byteLength": 74896,
+      "url": "/data/parcels/2026-05-12/cells/15-23.fgb"
+    },
+    {
+      "id": "15-24",
+      "bounds": [-9669280, 4339152, -9667232, 4341200],
+      "featureCount": 97,
+      "byteLength": 57152,
+      "url": "/data/parcels/2026-05-12/cells/15-24.fgb"
+    },
+    {
+      "id": "15-25",
+      "bounds": [-9669280, 4341200, -9667232, 4343248],
+      "featureCount": 84,
+      "byteLength": 56280,
+      "url": "/data/parcels/2026-05-12/cells/15-25.fgb"
+    },
+    {
+      "id": "15-26",
+      "bounds": [-9669280, 4343248, -9667232, 4345296],
+      "featureCount": 88,
+      "byteLength": 44152,
+      "url": "/data/parcels/2026-05-12/cells/15-26.fgb"
+    },
+    {
+      "id": "15-27",
+      "bounds": [-9669280, 4345296, -9667232, 4347344],
+      "featureCount": 165,
+      "byteLength": 88504,
+      "url": "/data/parcels/2026-05-12/cells/15-27.fgb"
+    },
+    {
+      "id": "15-28",
+      "bounds": [-9669280, 4347344, -9667232, 4349392],
+      "featureCount": 79,
+      "byteLength": 60936,
+      "url": "/data/parcels/2026-05-12/cells/15-28.fgb"
+    },
+    {
+      "id": "15-29",
+      "bounds": [-9669280, 4349392, -9667232, 4351440],
+      "featureCount": 90,
+      "byteLength": 55144,
+      "url": "/data/parcels/2026-05-12/cells/15-29.fgb"
+    },
+    {
+      "id": "15-30",
+      "bounds": [-9669280, 4351440, -9667232, 4353488],
+      "featureCount": 37,
+      "byteLength": 22184,
+      "url": "/data/parcels/2026-05-12/cells/15-30.fgb"
+    },
+    {
+      "id": "15-7",
+      "bounds": [-9669280, 4304336, -9667232, 4306384],
+      "featureCount": 1,
+      "byteLength": 1120,
+      "url": "/data/parcels/2026-05-12/cells/15-7.fgb"
+    },
+    {
+      "id": "15-8",
+      "bounds": [-9669280, 4306384, -9667232, 4308432],
+      "featureCount": 244,
+      "byteLength": 115288,
+      "url": "/data/parcels/2026-05-12/cells/15-8.fgb"
+    },
+    {
+      "id": "15-9",
+      "bounds": [-9669280, 4308432, -9667232, 4310480],
+      "featureCount": 311,
+      "byteLength": 132688,
+      "url": "/data/parcels/2026-05-12/cells/15-9.fgb"
+    },
+    {
+      "id": "16-10",
+      "bounds": [-9667232, 4310480, -9665184, 4312528],
+      "featureCount": 266,
+      "byteLength": 122312,
+      "url": "/data/parcels/2026-05-12/cells/16-10.fgb"
+    },
+    {
+      "id": "16-11",
+      "bounds": [-9667232, 4312528, -9665184, 4314576],
+      "featureCount": 1251,
+      "byteLength": 551480,
+      "url": "/data/parcels/2026-05-12/cells/16-11.fgb"
+    },
+    {
+      "id": "16-12",
+      "bounds": [-9667232, 4314576, -9665184, 4316624],
+      "featureCount": 1560,
+      "byteLength": 770520,
+      "url": "/data/parcels/2026-05-12/cells/16-12.fgb"
+    },
+    {
+      "id": "16-13",
+      "bounds": [-9667232, 4316624, -9665184, 4318672],
+      "featureCount": 1741,
+      "byteLength": 792408,
+      "url": "/data/parcels/2026-05-12/cells/16-13.fgb"
+    },
+    {
+      "id": "16-14",
+      "bounds": [-9667232, 4318672, -9665184, 4320720],
+      "featureCount": 2641,
+      "byteLength": 1025920,
+      "url": "/data/parcels/2026-05-12/cells/16-14.fgb"
+    },
+    {
+      "id": "16-15",
+      "bounds": [-9667232, 4320720, -9665184, 4322768],
+      "featureCount": 2425,
+      "byteLength": 953008,
+      "url": "/data/parcels/2026-05-12/cells/16-15.fgb"
+    },
+    {
+      "id": "16-16",
+      "bounds": [-9667232, 4322768, -9665184, 4324816],
+      "featureCount": 629,
+      "byteLength": 257728,
+      "url": "/data/parcels/2026-05-12/cells/16-16.fgb"
+    },
+    {
+      "id": "16-17",
+      "bounds": [-9667232, 4324816, -9665184, 4326864],
+      "featureCount": 747,
+      "byteLength": 298696,
+      "url": "/data/parcels/2026-05-12/cells/16-17.fgb"
+    },
+    {
+      "id": "16-18",
+      "bounds": [-9667232, 4326864, -9665184, 4328912],
+      "featureCount": 1363,
+      "byteLength": 602352,
+      "url": "/data/parcels/2026-05-12/cells/16-18.fgb"
+    },
+    {
+      "id": "16-19",
+      "bounds": [-9667232, 4328912, -9665184, 4330960],
+      "featureCount": 765,
+      "byteLength": 293368,
+      "url": "/data/parcels/2026-05-12/cells/16-19.fgb"
+    },
+    {
+      "id": "16-20",
+      "bounds": [-9667232, 4330960, -9665184, 4333008],
+      "featureCount": 666,
+      "byteLength": 269448,
+      "url": "/data/parcels/2026-05-12/cells/16-20.fgb"
+    },
+    {
+      "id": "16-21",
+      "bounds": [-9667232, 4333008, -9665184, 4335056],
+      "featureCount": 325,
+      "byteLength": 148408,
+      "url": "/data/parcels/2026-05-12/cells/16-21.fgb"
+    },
+    {
+      "id": "16-22",
+      "bounds": [-9667232, 4335056, -9665184, 4337104],
+      "featureCount": 202,
+      "byteLength": 98176,
+      "url": "/data/parcels/2026-05-12/cells/16-22.fgb"
+    },
+    {
+      "id": "16-23",
+      "bounds": [-9667232, 4337104, -9665184, 4339152],
+      "featureCount": 125,
+      "byteLength": 62128,
+      "url": "/data/parcels/2026-05-12/cells/16-23.fgb"
+    },
+    {
+      "id": "16-24",
+      "bounds": [-9667232, 4339152, -9665184, 4341200],
+      "featureCount": 79,
+      "byteLength": 48368,
+      "url": "/data/parcels/2026-05-12/cells/16-24.fgb"
+    },
+    {
+      "id": "16-25",
+      "bounds": [-9667232, 4341200, -9665184, 4343248],
+      "featureCount": 31,
+      "byteLength": 23680,
+      "url": "/data/parcels/2026-05-12/cells/16-25.fgb"
+    },
+    {
+      "id": "16-26",
+      "bounds": [-9667232, 4343248, -9665184, 4345296],
+      "featureCount": 39,
+      "byteLength": 23040,
+      "url": "/data/parcels/2026-05-12/cells/16-26.fgb"
+    },
+    {
+      "id": "16-27",
+      "bounds": [-9667232, 4345296, -9665184, 4347344],
+      "featureCount": 114,
+      "byteLength": 57832,
+      "url": "/data/parcels/2026-05-12/cells/16-27.fgb"
+    },
+    {
+      "id": "16-28",
+      "bounds": [-9667232, 4347344, -9665184, 4349392],
+      "featureCount": 183,
+      "byteLength": 110048,
+      "url": "/data/parcels/2026-05-12/cells/16-28.fgb"
+    },
+    {
+      "id": "16-29",
+      "bounds": [-9667232, 4349392, -9665184, 4351440],
+      "featureCount": 26,
+      "byteLength": 24632,
+      "url": "/data/parcels/2026-05-12/cells/16-29.fgb"
+    },
+    {
+      "id": "16-7",
+      "bounds": [-9667232, 4304336, -9665184, 4306384],
+      "featureCount": 37,
+      "byteLength": 18216,
+      "url": "/data/parcels/2026-05-12/cells/16-7.fgb"
+    },
+    {
+      "id": "16-8",
+      "bounds": [-9667232, 4306384, -9665184, 4308432],
+      "featureCount": 239,
+      "byteLength": 119408,
+      "url": "/data/parcels/2026-05-12/cells/16-8.fgb"
+    },
+    {
+      "id": "16-9",
+      "bounds": [-9667232, 4308432, -9665184, 4310480],
+      "featureCount": 317,
+      "byteLength": 146768,
+      "url": "/data/parcels/2026-05-12/cells/16-9.fgb"
+    },
+    {
+      "id": "17-10",
+      "bounds": [-9665184, 4310480, -9663136, 4312528],
+      "featureCount": 480,
+      "byteLength": 223448,
+      "url": "/data/parcels/2026-05-12/cells/17-10.fgb"
+    },
+    {
+      "id": "17-11",
+      "bounds": [-9665184, 4312528, -9663136, 4314576],
+      "featureCount": 1691,
+      "byteLength": 872176,
+      "url": "/data/parcels/2026-05-12/cells/17-11.fgb"
+    },
+    {
+      "id": "17-12",
+      "bounds": [-9665184, 4314576, -9663136, 4316624],
+      "featureCount": 1812,
+      "byteLength": 813000,
+      "url": "/data/parcels/2026-05-12/cells/17-12.fgb"
+    },
+    {
+      "id": "17-13",
+      "bounds": [-9665184, 4316624, -9663136, 4318672],
+      "featureCount": 2280,
+      "byteLength": 955440,
+      "url": "/data/parcels/2026-05-12/cells/17-13.fgb"
+    },
+    {
+      "id": "17-14",
+      "bounds": [-9665184, 4318672, -9663136, 4320720],
+      "featureCount": 2743,
+      "byteLength": 1168272,
+      "url": "/data/parcels/2026-05-12/cells/17-14.fgb"
+    },
+    {
+      "id": "17-15",
+      "bounds": [-9665184, 4320720, -9663136, 4322768],
+      "featureCount": 1744,
+      "byteLength": 733048,
+      "url": "/data/parcels/2026-05-12/cells/17-15.fgb"
+    },
+    {
+      "id": "17-16",
+      "bounds": [-9665184, 4322768, -9663136, 4324816],
+      "featureCount": 2051,
+      "byteLength": 732208,
+      "url": "/data/parcels/2026-05-12/cells/17-16.fgb"
+    },
+    {
+      "id": "17-17",
+      "bounds": [-9665184, 4324816, -9663136, 4326864],
+      "featureCount": 2817,
+      "byteLength": 1078464,
+      "url": "/data/parcels/2026-05-12/cells/17-17.fgb"
+    },
+    {
+      "id": "17-18",
+      "bounds": [-9665184, 4326864, -9663136, 4328912],
+      "featureCount": 537,
+      "byteLength": 264072,
+      "url": "/data/parcels/2026-05-12/cells/17-18.fgb"
+    },
+    {
+      "id": "17-19",
+      "bounds": [-9665184, 4328912, -9663136, 4330960],
+      "featureCount": 1337,
+      "byteLength": 538024,
+      "url": "/data/parcels/2026-05-12/cells/17-19.fgb"
+    },
+    {
+      "id": "17-20",
+      "bounds": [-9665184, 4330960, -9663136, 4333008],
+      "featureCount": 667,
+      "byteLength": 262216,
+      "url": "/data/parcels/2026-05-12/cells/17-20.fgb"
+    },
+    {
+      "id": "17-21",
+      "bounds": [-9665184, 4333008, -9663136, 4335056],
+      "featureCount": 490,
+      "byteLength": 201184,
+      "url": "/data/parcels/2026-05-12/cells/17-21.fgb"
+    },
+    {
+      "id": "17-22",
+      "bounds": [-9665184, 4335056, -9663136, 4337104],
+      "featureCount": 67,
+      "byteLength": 37976,
+      "url": "/data/parcels/2026-05-12/cells/17-22.fgb"
+    },
+    {
+      "id": "17-23",
+      "bounds": [-9665184, 4337104, -9663136, 4339152],
+      "featureCount": 26,
+      "byteLength": 23136,
+      "url": "/data/parcels/2026-05-12/cells/17-23.fgb"
+    },
+    {
+      "id": "17-24",
+      "bounds": [-9665184, 4339152, -9663136, 4341200],
+      "featureCount": 65,
+      "byteLength": 42760,
+      "url": "/data/parcels/2026-05-12/cells/17-24.fgb"
+    },
+    {
+      "id": "17-25",
+      "bounds": [-9665184, 4341200, -9663136, 4343248],
+      "featureCount": 88,
+      "byteLength": 52112,
+      "url": "/data/parcels/2026-05-12/cells/17-25.fgb"
+    },
+    {
+      "id": "17-26",
+      "bounds": [-9665184, 4343248, -9663136, 4345296],
+      "featureCount": 70,
+      "byteLength": 38720,
+      "url": "/data/parcels/2026-05-12/cells/17-26.fgb"
+    },
+    {
+      "id": "17-27",
+      "bounds": [-9665184, 4345296, -9663136, 4347344],
+      "featureCount": 69,
+      "byteLength": 43040,
+      "url": "/data/parcels/2026-05-12/cells/17-27.fgb"
+    },
+    {
+      "id": "17-28",
+      "bounds": [-9665184, 4347344, -9663136, 4349392],
+      "featureCount": 96,
+      "byteLength": 60096,
+      "url": "/data/parcels/2026-05-12/cells/17-28.fgb"
+    },
+    {
+      "id": "17-29",
+      "bounds": [-9665184, 4349392, -9663136, 4351440],
+      "featureCount": 7,
+      "byteLength": 6296,
+      "url": "/data/parcels/2026-05-12/cells/17-29.fgb"
+    },
+    {
+      "id": "17-7",
+      "bounds": [-9665184, 4304336, -9663136, 4306384],
+      "featureCount": 57,
+      "byteLength": 31800,
+      "url": "/data/parcels/2026-05-12/cells/17-7.fgb"
+    },
+    {
+      "id": "17-8",
+      "bounds": [-9665184, 4306384, -9663136, 4308432],
+      "featureCount": 339,
+      "byteLength": 182600,
+      "url": "/data/parcels/2026-05-12/cells/17-8.fgb"
+    },
+    {
+      "id": "17-9",
+      "bounds": [-9665184, 4308432, -9663136, 4310480],
+      "featureCount": 427,
+      "byteLength": 205920,
+      "url": "/data/parcels/2026-05-12/cells/17-9.fgb"
+    },
+    {
+      "id": "18-10",
+      "bounds": [-9663136, 4310480, -9661088, 4312528],
+      "featureCount": 309,
+      "byteLength": 144392,
+      "url": "/data/parcels/2026-05-12/cells/18-10.fgb"
+    },
+    {
+      "id": "18-11",
+      "bounds": [-9663136, 4312528, -9661088, 4314576],
+      "featureCount": 1488,
+      "byteLength": 742920,
+      "url": "/data/parcels/2026-05-12/cells/18-11.fgb"
+    },
+    {
+      "id": "18-12",
+      "bounds": [-9663136, 4314576, -9661088, 4316624],
+      "featureCount": 1577,
+      "byteLength": 695408,
+      "url": "/data/parcels/2026-05-12/cells/18-12.fgb"
+    },
+    {
+      "id": "18-13",
+      "bounds": [-9663136, 4316624, -9661088, 4318672],
+      "featureCount": 2439,
+      "byteLength": 950088,
+      "url": "/data/parcels/2026-05-12/cells/18-13.fgb"
+    },
+    {
+      "id": "18-14",
+      "bounds": [-9663136, 4318672, -9661088, 4320720],
+      "featureCount": 2289,
+      "byteLength": 944160,
+      "url": "/data/parcels/2026-05-12/cells/18-14.fgb"
+    },
+    {
+      "id": "18-15",
+      "bounds": [-9663136, 4320720, -9661088, 4322768],
+      "featureCount": 2713,
+      "byteLength": 1130024,
+      "url": "/data/parcels/2026-05-12/cells/18-15.fgb"
+    },
+    {
+      "id": "18-16",
+      "bounds": [-9663136, 4322768, -9661088, 4324816],
+      "featureCount": 1818,
+      "byteLength": 734680,
+      "url": "/data/parcels/2026-05-12/cells/18-16.fgb"
+    },
+    {
+      "id": "18-17",
+      "bounds": [-9663136, 4324816, -9661088, 4326864],
+      "featureCount": 2725,
+      "byteLength": 1122856,
+      "url": "/data/parcels/2026-05-12/cells/18-17.fgb"
+    },
+    {
+      "id": "18-18",
+      "bounds": [-9663136, 4326864, -9661088, 4328912],
+      "featureCount": 242,
+      "byteLength": 145864,
+      "url": "/data/parcels/2026-05-12/cells/18-18.fgb"
+    },
+    {
+      "id": "18-19",
+      "bounds": [-9663136, 4328912, -9661088, 4330960],
+      "featureCount": 1495,
+      "byteLength": 588392,
+      "url": "/data/parcels/2026-05-12/cells/18-19.fgb"
+    },
+    {
+      "id": "18-20",
+      "bounds": [-9663136, 4330960, -9661088, 4333008],
+      "featureCount": 987,
+      "byteLength": 431680,
+      "url": "/data/parcels/2026-05-12/cells/18-20.fgb"
+    },
+    {
+      "id": "18-21",
+      "bounds": [-9663136, 4333008, -9661088, 4335056],
+      "featureCount": 391,
+      "byteLength": 161304,
+      "url": "/data/parcels/2026-05-12/cells/18-21.fgb"
+    },
+    {
+      "id": "18-22",
+      "bounds": [-9663136, 4335056, -9661088, 4337104],
+      "featureCount": 43,
+      "byteLength": 27008,
+      "url": "/data/parcels/2026-05-12/cells/18-22.fgb"
+    },
+    {
+      "id": "18-23",
+      "bounds": [-9663136, 4337104, -9661088, 4339152],
+      "featureCount": 115,
+      "byteLength": 65264,
+      "url": "/data/parcels/2026-05-12/cells/18-23.fgb"
+    },
+    {
+      "id": "18-24",
+      "bounds": [-9663136, 4339152, -9661088, 4341200],
+      "featureCount": 399,
+      "byteLength": 167504,
+      "url": "/data/parcels/2026-05-12/cells/18-24.fgb"
+    },
+    {
+      "id": "18-25",
+      "bounds": [-9663136, 4341200, -9661088, 4343248],
+      "featureCount": 110,
+      "byteLength": 61728,
+      "url": "/data/parcels/2026-05-12/cells/18-25.fgb"
+    },
+    {
+      "id": "18-26",
+      "bounds": [-9663136, 4343248, -9661088, 4345296],
+      "featureCount": 101,
+      "byteLength": 48856,
+      "url": "/data/parcels/2026-05-12/cells/18-26.fgb"
+    },
+    {
+      "id": "18-27",
+      "bounds": [-9663136, 4345296, -9661088, 4347344],
+      "featureCount": 109,
+      "byteLength": 51816,
+      "url": "/data/parcels/2026-05-12/cells/18-27.fgb"
+    },
+    {
+      "id": "18-28",
+      "bounds": [-9663136, 4347344, -9661088, 4349392],
+      "featureCount": 99,
+      "byteLength": 54224,
+      "url": "/data/parcels/2026-05-12/cells/18-28.fgb"
+    },
+    {
+      "id": "18-29",
+      "bounds": [-9663136, 4349392, -9661088, 4351440],
+      "featureCount": 19,
+      "byteLength": 18968,
+      "url": "/data/parcels/2026-05-12/cells/18-29.fgb"
+    },
+    {
+      "id": "18-30",
+      "bounds": [-9663136, 4351440, -9661088, 4353488],
+      "featureCount": 26,
+      "byteLength": 17632,
+      "url": "/data/parcels/2026-05-12/cells/18-30.fgb"
+    },
+    {
+      "id": "18-7",
+      "bounds": [-9663136, 4304336, -9661088, 4306384],
+      "featureCount": 91,
+      "byteLength": 45000,
+      "url": "/data/parcels/2026-05-12/cells/18-7.fgb"
+    },
+    {
+      "id": "18-8",
+      "bounds": [-9663136, 4306384, -9661088, 4308432],
+      "featureCount": 101,
+      "byteLength": 63952,
+      "url": "/data/parcels/2026-05-12/cells/18-8.fgb"
+    },
+    {
+      "id": "18-9",
+      "bounds": [-9663136, 4308432, -9661088, 4310480],
+      "featureCount": 88,
+      "byteLength": 48752,
+      "url": "/data/parcels/2026-05-12/cells/18-9.fgb"
+    },
+    {
+      "id": "19-10",
+      "bounds": [-9661088, 4310480, -9659040, 4312528],
+      "featureCount": 304,
+      "byteLength": 129976,
+      "url": "/data/parcels/2026-05-12/cells/19-10.fgb"
+    },
+    {
+      "id": "19-11",
+      "bounds": [-9661088, 4312528, -9659040, 4314576],
+      "featureCount": 436,
+      "byteLength": 183352,
+      "url": "/data/parcels/2026-05-12/cells/19-11.fgb"
+    },
+    {
+      "id": "19-12",
+      "bounds": [-9661088, 4314576, -9659040, 4316624],
+      "featureCount": 997,
+      "byteLength": 429656,
+      "url": "/data/parcels/2026-05-12/cells/19-12.fgb"
+    },
+    {
+      "id": "19-13",
+      "bounds": [-9661088, 4316624, -9659040, 4318672],
+      "featureCount": 2446,
+      "byteLength": 1012648,
+      "url": "/data/parcels/2026-05-12/cells/19-13.fgb"
+    },
+    {
+      "id": "19-14",
+      "bounds": [-9661088, 4318672, -9659040, 4320720],
+      "featureCount": 2115,
+      "byteLength": 910584,
+      "url": "/data/parcels/2026-05-12/cells/19-14.fgb"
+    },
+    {
+      "id": "19-15",
+      "bounds": [-9661088, 4320720, -9659040, 4322768],
+      "featureCount": 3468,
+      "byteLength": 1633352,
+      "url": "/data/parcels/2026-05-12/cells/19-15.fgb"
+    },
+    {
+      "id": "19-16",
+      "bounds": [-9661088, 4322768, -9659040, 4324816],
+      "featureCount": 2656,
+      "byteLength": 1253128,
+      "url": "/data/parcels/2026-05-12/cells/19-16.fgb"
+    },
+    {
+      "id": "19-17",
+      "bounds": [-9661088, 4324816, -9659040, 4326864],
+      "featureCount": 810,
+      "byteLength": 335768,
+      "url": "/data/parcels/2026-05-12/cells/19-17.fgb"
+    },
+    {
+      "id": "19-18",
+      "bounds": [-9661088, 4326864, -9659040, 4328912],
+      "featureCount": 1516,
+      "byteLength": 597792,
+      "url": "/data/parcels/2026-05-12/cells/19-18.fgb"
+    },
+    {
+      "id": "19-19",
+      "bounds": [-9661088, 4328912, -9659040, 4330960],
+      "featureCount": 824,
+      "byteLength": 315896,
+      "url": "/data/parcels/2026-05-12/cells/19-19.fgb"
+    },
+    {
+      "id": "19-20",
+      "bounds": [-9661088, 4330960, -9659040, 4333008],
+      "featureCount": 578,
+      "byteLength": 253264,
+      "url": "/data/parcels/2026-05-12/cells/19-20.fgb"
+    },
+    {
+      "id": "19-21",
+      "bounds": [-9661088, 4333008, -9659040, 4335056],
+      "featureCount": 1356,
+      "byteLength": 571112,
+      "url": "/data/parcels/2026-05-12/cells/19-21.fgb"
+    },
+    {
+      "id": "19-22",
+      "bounds": [-9661088, 4335056, -9659040, 4337104],
+      "featureCount": 1286,
+      "byteLength": 523696,
+      "url": "/data/parcels/2026-05-12/cells/19-22.fgb"
+    },
+    {
+      "id": "19-23",
+      "bounds": [-9661088, 4337104, -9659040, 4339152],
+      "featureCount": 391,
+      "byteLength": 178144,
+      "url": "/data/parcels/2026-05-12/cells/19-23.fgb"
+    },
+    {
+      "id": "19-24",
+      "bounds": [-9661088, 4339152, -9659040, 4341200],
+      "featureCount": 309,
+      "byteLength": 142104,
+      "url": "/data/parcels/2026-05-12/cells/19-24.fgb"
+    },
+    {
+      "id": "19-25",
+      "bounds": [-9661088, 4341200, -9659040, 4343248],
+      "featureCount": 78,
+      "byteLength": 45600,
+      "url": "/data/parcels/2026-05-12/cells/19-25.fgb"
+    },
+    {
+      "id": "19-26",
+      "bounds": [-9661088, 4343248, -9659040, 4345296],
+      "featureCount": 91,
+      "byteLength": 51536,
+      "url": "/data/parcels/2026-05-12/cells/19-26.fgb"
+    },
+    {
+      "id": "19-27",
+      "bounds": [-9661088, 4345296, -9659040, 4347344],
+      "featureCount": 158,
+      "byteLength": 89032,
+      "url": "/data/parcels/2026-05-12/cells/19-27.fgb"
+    },
+    {
+      "id": "19-28",
+      "bounds": [-9661088, 4347344, -9659040, 4349392],
+      "featureCount": 102,
+      "byteLength": 56320,
+      "url": "/data/parcels/2026-05-12/cells/19-28.fgb"
+    },
+    {
+      "id": "19-29",
+      "bounds": [-9661088, 4349392, -9659040, 4351440],
+      "featureCount": 77,
+      "byteLength": 46360,
+      "url": "/data/parcels/2026-05-12/cells/19-29.fgb"
+    },
+    {
+      "id": "19-30",
+      "bounds": [-9661088, 4351440, -9659040, 4353488],
+      "featureCount": 74,
+      "byteLength": 44296,
+      "url": "/data/parcels/2026-05-12/cells/19-30.fgb"
+    },
+    {
+      "id": "19-31",
+      "bounds": [-9661088, 4353488, -9659040, 4355536],
+      "featureCount": 60,
+      "byteLength": 43576,
+      "url": "/data/parcels/2026-05-12/cells/19-31.fgb"
+    },
+    {
+      "id": "19-7",
+      "bounds": [-9661088, 4304336, -9659040, 4306384],
+      "featureCount": 751,
+      "byteLength": 353792,
+      "url": "/data/parcels/2026-05-12/cells/19-7.fgb"
+    },
+    {
+      "id": "19-8",
+      "bounds": [-9661088, 4306384, -9659040, 4308432],
+      "featureCount": 337,
+      "byteLength": 156576,
+      "url": "/data/parcels/2026-05-12/cells/19-8.fgb"
+    },
+    {
+      "id": "19-9",
+      "bounds": [-9661088, 4308432, -9659040, 4310480],
+      "featureCount": 341,
+      "byteLength": 147200,
+      "url": "/data/parcels/2026-05-12/cells/19-9.fgb"
+    },
+    {
+      "id": "20-10",
+      "bounds": [-9659040, 4310480, -9656992, 4312528],
+      "featureCount": 720,
+      "byteLength": 285728,
+      "url": "/data/parcels/2026-05-12/cells/20-10.fgb"
+    },
+    {
+      "id": "20-11",
+      "bounds": [-9659040, 4312528, -9656992, 4314576],
+      "featureCount": 197,
+      "byteLength": 93208,
+      "url": "/data/parcels/2026-05-12/cells/20-11.fgb"
+    },
+    {
+      "id": "20-12",
+      "bounds": [-9659040, 4314576, -9656992, 4316624],
+      "featureCount": 391,
+      "byteLength": 173232,
+      "url": "/data/parcels/2026-05-12/cells/20-12.fgb"
+    },
+    {
+      "id": "20-13",
+      "bounds": [-9659040, 4316624, -9656992, 4318672],
+      "featureCount": 1417,
+      "byteLength": 567040,
+      "url": "/data/parcels/2026-05-12/cells/20-13.fgb"
+    },
+    {
+      "id": "20-14",
+      "bounds": [-9659040, 4318672, -9656992, 4320720],
+      "featureCount": 2042,
+      "byteLength": 861192,
+      "url": "/data/parcels/2026-05-12/cells/20-14.fgb"
+    },
+    {
+      "id": "20-15",
+      "bounds": [-9659040, 4320720, -9656992, 4322768],
+      "featureCount": 1187,
+      "byteLength": 476936,
+      "url": "/data/parcels/2026-05-12/cells/20-15.fgb"
+    },
+    {
+      "id": "20-16",
+      "bounds": [-9659040, 4322768, -9656992, 4324816],
+      "featureCount": 1409,
+      "byteLength": 581144,
+      "url": "/data/parcels/2026-05-12/cells/20-16.fgb"
+    },
+    {
+      "id": "20-17",
+      "bounds": [-9659040, 4324816, -9656992, 4326864],
+      "featureCount": 2089,
+      "byteLength": 770512,
+      "url": "/data/parcels/2026-05-12/cells/20-17.fgb"
+    },
+    {
+      "id": "20-18",
+      "bounds": [-9659040, 4326864, -9656992, 4328912],
+      "featureCount": 2939,
+      "byteLength": 1103728,
+      "url": "/data/parcels/2026-05-12/cells/20-18.fgb"
+    },
+    {
+      "id": "20-19",
+      "bounds": [-9659040, 4328912, -9656992, 4330960],
+      "featureCount": 1586,
+      "byteLength": 611072,
+      "url": "/data/parcels/2026-05-12/cells/20-19.fgb"
+    },
+    {
+      "id": "20-20",
+      "bounds": [-9659040, 4330960, -9656992, 4333008],
+      "featureCount": 1085,
+      "byteLength": 444504,
+      "url": "/data/parcels/2026-05-12/cells/20-20.fgb"
+    },
+    {
+      "id": "20-21",
+      "bounds": [-9659040, 4333008, -9656992, 4335056],
+      "featureCount": 500,
+      "byteLength": 248088,
+      "url": "/data/parcels/2026-05-12/cells/20-21.fgb"
+    },
+    {
+      "id": "20-22",
+      "bounds": [-9659040, 4335056, -9656992, 4337104],
+      "featureCount": 825,
+      "byteLength": 361224,
+      "url": "/data/parcels/2026-05-12/cells/20-22.fgb"
+    },
+    {
+      "id": "20-23",
+      "bounds": [-9659040, 4337104, -9656992, 4339152],
+      "featureCount": 565,
+      "byteLength": 243312,
+      "url": "/data/parcels/2026-05-12/cells/20-23.fgb"
+    },
+    {
+      "id": "20-24",
+      "bounds": [-9659040, 4339152, -9656992, 4341200],
+      "featureCount": 278,
+      "byteLength": 122400,
+      "url": "/data/parcels/2026-05-12/cells/20-24.fgb"
+    },
+    {
+      "id": "20-25",
+      "bounds": [-9659040, 4341200, -9656992, 4343248],
+      "featureCount": 91,
+      "byteLength": 56160,
+      "url": "/data/parcels/2026-05-12/cells/20-25.fgb"
+    },
+    {
+      "id": "20-26",
+      "bounds": [-9659040, 4343248, -9656992, 4345296],
+      "featureCount": 96,
+      "byteLength": 55904,
+      "url": "/data/parcels/2026-05-12/cells/20-26.fgb"
+    },
+    {
+      "id": "20-27",
+      "bounds": [-9659040, 4345296, -9656992, 4347344],
+      "featureCount": 78,
+      "byteLength": 45536,
+      "url": "/data/parcels/2026-05-12/cells/20-27.fgb"
+    },
+    {
+      "id": "20-28",
+      "bounds": [-9659040, 4347344, -9656992, 4349392],
+      "featureCount": 125,
+      "byteLength": 69104,
+      "url": "/data/parcels/2026-05-12/cells/20-28.fgb"
+    },
+    {
+      "id": "20-29",
+      "bounds": [-9659040, 4349392, -9656992, 4351440],
+      "featureCount": 88,
+      "byteLength": 48816,
+      "url": "/data/parcels/2026-05-12/cells/20-29.fgb"
+    },
+    {
+      "id": "20-30",
+      "bounds": [-9659040, 4351440, -9656992, 4353488],
+      "featureCount": 105,
+      "byteLength": 61408,
+      "url": "/data/parcels/2026-05-12/cells/20-30.fgb"
+    },
+    {
+      "id": "20-31",
+      "bounds": [-9659040, 4353488, -9656992, 4355536],
+      "featureCount": 81,
+      "byteLength": 49704,
+      "url": "/data/parcels/2026-05-12/cells/20-31.fgb"
+    },
+    {
+      "id": "20-32",
+      "bounds": [-9659040, 4355536, -9656992, 4357584],
+      "featureCount": 28,
+      "byteLength": 19632,
+      "url": "/data/parcels/2026-05-12/cells/20-32.fgb"
+    },
+    {
+      "id": "20-6",
+      "bounds": [-9659040, 4302288, -9656992, 4304336],
+      "featureCount": 280,
+      "byteLength": 124416,
+      "url": "/data/parcels/2026-05-12/cells/20-6.fgb"
+    },
+    {
+      "id": "20-7",
+      "bounds": [-9659040, 4304336, -9656992, 4306384],
+      "featureCount": 1635,
+      "byteLength": 736104,
+      "url": "/data/parcels/2026-05-12/cells/20-7.fgb"
+    },
+    {
+      "id": "20-8",
+      "bounds": [-9659040, 4306384, -9656992, 4308432],
+      "featureCount": 979,
+      "byteLength": 453888,
+      "url": "/data/parcels/2026-05-12/cells/20-8.fgb"
+    },
+    {
+      "id": "20-9",
+      "bounds": [-9659040, 4308432, -9656992, 4310480],
+      "featureCount": 1086,
+      "byteLength": 422512,
+      "url": "/data/parcels/2026-05-12/cells/20-9.fgb"
+    },
+    {
+      "id": "21-10",
+      "bounds": [-9656992, 4310480, -9654944, 4312528],
+      "featureCount": 1322,
+      "byteLength": 493144,
+      "url": "/data/parcels/2026-05-12/cells/21-10.fgb"
+    },
+    {
+      "id": "21-11",
+      "bounds": [-9656992, 4312528, -9654944, 4314576],
+      "featureCount": 860,
+      "byteLength": 330536,
+      "url": "/data/parcels/2026-05-12/cells/21-11.fgb"
+    },
+    {
+      "id": "21-12",
+      "bounds": [-9656992, 4314576, -9654944, 4316624],
+      "featureCount": 1847,
+      "byteLength": 671328,
+      "url": "/data/parcels/2026-05-12/cells/21-12.fgb"
+    },
+    {
+      "id": "21-13",
+      "bounds": [-9656992, 4316624, -9654944, 4318672],
+      "featureCount": 1746,
+      "byteLength": 647744,
+      "url": "/data/parcels/2026-05-12/cells/21-13.fgb"
+    },
+    {
+      "id": "21-14",
+      "bounds": [-9656992, 4318672, -9654944, 4320720],
+      "featureCount": 368,
+      "byteLength": 178872,
+      "url": "/data/parcels/2026-05-12/cells/21-14.fgb"
+    },
+    {
+      "id": "21-15",
+      "bounds": [-9656992, 4320720, -9654944, 4322768],
+      "featureCount": 208,
+      "byteLength": 113616,
+      "url": "/data/parcels/2026-05-12/cells/21-15.fgb"
+    },
+    {
+      "id": "21-16",
+      "bounds": [-9656992, 4322768, -9654944, 4324816],
+      "featureCount": 1788,
+      "byteLength": 642568,
+      "url": "/data/parcels/2026-05-12/cells/21-16.fgb"
+    },
+    {
+      "id": "21-17",
+      "bounds": [-9656992, 4324816, -9654944, 4326864],
+      "featureCount": 2330,
+      "byteLength": 838792,
+      "url": "/data/parcels/2026-05-12/cells/21-17.fgb"
+    },
+    {
+      "id": "21-18",
+      "bounds": [-9656992, 4326864, -9654944, 4328912],
+      "featureCount": 3259,
+      "byteLength": 1331664,
+      "url": "/data/parcels/2026-05-12/cells/21-18.fgb"
+    },
+    {
+      "id": "21-19",
+      "bounds": [-9656992, 4328912, -9654944, 4330960],
+      "featureCount": 1232,
+      "byteLength": 479112,
+      "url": "/data/parcels/2026-05-12/cells/21-19.fgb"
+    },
+    {
+      "id": "21-20",
+      "bounds": [-9656992, 4330960, -9654944, 4333008],
+      "featureCount": 840,
+      "byteLength": 320568,
+      "url": "/data/parcels/2026-05-12/cells/21-20.fgb"
+    },
+    {
+      "id": "21-21",
+      "bounds": [-9656992, 4333008, -9654944, 4335056],
+      "featureCount": 880,
+      "byteLength": 368392,
+      "url": "/data/parcels/2026-05-12/cells/21-21.fgb"
+    },
+    {
+      "id": "21-22",
+      "bounds": [-9656992, 4335056, -9654944, 4337104],
+      "featureCount": 660,
+      "byteLength": 281344,
+      "url": "/data/parcels/2026-05-12/cells/21-22.fgb"
+    },
+    {
+      "id": "21-23",
+      "bounds": [-9656992, 4337104, -9654944, 4339152],
+      "featureCount": 272,
+      "byteLength": 123800,
+      "url": "/data/parcels/2026-05-12/cells/21-23.fgb"
+    },
+    {
+      "id": "21-24",
+      "bounds": [-9656992, 4339152, -9654944, 4341200],
+      "featureCount": 484,
+      "byteLength": 236104,
+      "url": "/data/parcels/2026-05-12/cells/21-24.fgb"
+    },
+    {
+      "id": "21-25",
+      "bounds": [-9656992, 4341200, -9654944, 4343248],
+      "featureCount": 226,
+      "byteLength": 111624,
+      "url": "/data/parcels/2026-05-12/cells/21-25.fgb"
+    },
+    {
+      "id": "21-26",
+      "bounds": [-9656992, 4343248, -9654944, 4345296],
+      "featureCount": 85,
+      "byteLength": 46408,
+      "url": "/data/parcels/2026-05-12/cells/21-26.fgb"
+    },
+    {
+      "id": "21-27",
+      "bounds": [-9656992, 4345296, -9654944, 4347344],
+      "featureCount": 71,
+      "byteLength": 38616,
+      "url": "/data/parcels/2026-05-12/cells/21-27.fgb"
+    },
+    {
+      "id": "21-28",
+      "bounds": [-9656992, 4347344, -9654944, 4349392],
+      "featureCount": 84,
+      "byteLength": 42168,
+      "url": "/data/parcels/2026-05-12/cells/21-28.fgb"
+    },
+    {
+      "id": "21-29",
+      "bounds": [-9656992, 4349392, -9654944, 4351440],
+      "featureCount": 127,
+      "byteLength": 59328,
+      "url": "/data/parcels/2026-05-12/cells/21-29.fgb"
+    },
+    {
+      "id": "21-30",
+      "bounds": [-9656992, 4351440, -9654944, 4353488],
+      "featureCount": 278,
+      "byteLength": 131200,
+      "url": "/data/parcels/2026-05-12/cells/21-30.fgb"
+    },
+    {
+      "id": "21-31",
+      "bounds": [-9656992, 4353488, -9654944, 4355536],
+      "featureCount": 73,
+      "byteLength": 43240,
+      "url": "/data/parcels/2026-05-12/cells/21-31.fgb"
+    },
+    {
+      "id": "21-32",
+      "bounds": [-9656992, 4355536, -9654944, 4357584],
+      "featureCount": 20,
+      "byteLength": 16096,
+      "url": "/data/parcels/2026-05-12/cells/21-32.fgb"
+    },
+    {
+      "id": "21-5",
+      "bounds": [-9656992, 4300240, -9654944, 4302288],
+      "featureCount": 45,
+      "byteLength": 20928,
+      "url": "/data/parcels/2026-05-12/cells/21-5.fgb"
+    },
+    {
+      "id": "21-6",
+      "bounds": [-9656992, 4302288, -9654944, 4304336],
+      "featureCount": 1086,
+      "byteLength": 468912,
+      "url": "/data/parcels/2026-05-12/cells/21-6.fgb"
+    },
+    {
+      "id": "21-7",
+      "bounds": [-9656992, 4304336, -9654944, 4306384],
+      "featureCount": 1002,
+      "byteLength": 458696,
+      "url": "/data/parcels/2026-05-12/cells/21-7.fgb"
+    },
+    {
+      "id": "21-8",
+      "bounds": [-9656992, 4306384, -9654944, 4308432],
+      "featureCount": 1524,
+      "byteLength": 613648,
+      "url": "/data/parcels/2026-05-12/cells/21-8.fgb"
+    },
+    {
+      "id": "21-9",
+      "bounds": [-9656992, 4308432, -9654944, 4310480],
+      "featureCount": 771,
+      "byteLength": 323616,
+      "url": "/data/parcels/2026-05-12/cells/21-9.fgb"
+    },
+    {
+      "id": "22-10",
+      "bounds": [-9654944, 4310480, -9652896, 4312528],
+      "featureCount": 1457,
+      "byteLength": 606568,
+      "url": "/data/parcels/2026-05-12/cells/22-10.fgb"
+    },
+    {
+      "id": "22-11",
+      "bounds": [-9654944, 4312528, -9652896, 4314576],
+      "featureCount": 1439,
+      "byteLength": 552840,
+      "url": "/data/parcels/2026-05-12/cells/22-11.fgb"
+    },
+    {
+      "id": "22-12",
+      "bounds": [-9654944, 4314576, -9652896, 4316624],
+      "featureCount": 862,
+      "byteLength": 343440,
+      "url": "/data/parcels/2026-05-12/cells/22-12.fgb"
+    },
+    {
+      "id": "22-13",
+      "bounds": [-9654944, 4316624, -9652896, 4318672],
+      "featureCount": 808,
+      "byteLength": 325608,
+      "url": "/data/parcels/2026-05-12/cells/22-13.fgb"
+    },
+    {
+      "id": "22-14",
+      "bounds": [-9654944, 4318672, -9652896, 4320720],
+      "featureCount": 226,
+      "byteLength": 122136,
+      "url": "/data/parcels/2026-05-12/cells/22-14.fgb"
+    },
+    {
+      "id": "22-15",
+      "bounds": [-9654944, 4320720, -9652896, 4322768],
+      "featureCount": 509,
+      "byteLength": 218224,
+      "url": "/data/parcels/2026-05-12/cells/22-15.fgb"
+    },
+    {
+      "id": "22-16",
+      "bounds": [-9654944, 4322768, -9652896, 4324816],
+      "featureCount": 454,
+      "byteLength": 222440,
+      "url": "/data/parcels/2026-05-12/cells/22-16.fgb"
+    },
+    {
+      "id": "22-17",
+      "bounds": [-9654944, 4324816, -9652896, 4326864],
+      "featureCount": 1952,
+      "byteLength": 857232,
+      "url": "/data/parcels/2026-05-12/cells/22-17.fgb"
+    },
+    {
+      "id": "22-18",
+      "bounds": [-9654944, 4326864, -9652896, 4328912],
+      "featureCount": 2622,
+      "byteLength": 1114416,
+      "url": "/data/parcels/2026-05-12/cells/22-18.fgb"
+    },
+    {
+      "id": "22-19",
+      "bounds": [-9654944, 4328912, -9652896, 4330960],
+      "featureCount": 1876,
+      "byteLength": 679744,
+      "url": "/data/parcels/2026-05-12/cells/22-19.fgb"
+    },
+    {
+      "id": "22-20",
+      "bounds": [-9654944, 4330960, -9652896, 4333008],
+      "featureCount": 1394,
+      "byteLength": 525640,
+      "url": "/data/parcels/2026-05-12/cells/22-20.fgb"
+    },
+    {
+      "id": "22-21",
+      "bounds": [-9654944, 4333008, -9652896, 4335056],
+      "featureCount": 573,
+      "byteLength": 246912,
+      "url": "/data/parcels/2026-05-12/cells/22-21.fgb"
+    },
+    {
+      "id": "22-22",
+      "bounds": [-9654944, 4335056, -9652896, 4337104],
+      "featureCount": 841,
+      "byteLength": 339464,
+      "url": "/data/parcels/2026-05-12/cells/22-22.fgb"
+    },
+    {
+      "id": "22-23",
+      "bounds": [-9654944, 4337104, -9652896, 4339152],
+      "featureCount": 1488,
+      "byteLength": 632576,
+      "url": "/data/parcels/2026-05-12/cells/22-23.fgb"
+    },
+    {
+      "id": "22-24",
+      "bounds": [-9654944, 4339152, -9652896, 4341200],
+      "featureCount": 809,
+      "byteLength": 326408,
+      "url": "/data/parcels/2026-05-12/cells/22-24.fgb"
+    },
+    {
+      "id": "22-25",
+      "bounds": [-9654944, 4341200, -9652896, 4343248],
+      "featureCount": 806,
+      "byteLength": 339696,
+      "url": "/data/parcels/2026-05-12/cells/22-25.fgb"
+    },
+    {
+      "id": "22-26",
+      "bounds": [-9654944, 4343248, -9652896, 4345296],
+      "featureCount": 632,
+      "byteLength": 256128,
+      "url": "/data/parcels/2026-05-12/cells/22-26.fgb"
+    },
+    {
+      "id": "22-27",
+      "bounds": [-9654944, 4345296, -9652896, 4347344],
+      "featureCount": 671,
+      "byteLength": 300320,
+      "url": "/data/parcels/2026-05-12/cells/22-27.fgb"
+    },
+    {
+      "id": "22-28",
+      "bounds": [-9654944, 4347344, -9652896, 4349392],
+      "featureCount": 156,
+      "byteLength": 95248,
+      "url": "/data/parcels/2026-05-12/cells/22-28.fgb"
+    },
+    {
+      "id": "22-29",
+      "bounds": [-9654944, 4349392, -9652896, 4351440],
+      "featureCount": 74,
+      "byteLength": 36184,
+      "url": "/data/parcels/2026-05-12/cells/22-29.fgb"
+    },
+    {
+      "id": "22-30",
+      "bounds": [-9654944, 4351440, -9652896, 4353488],
+      "featureCount": 71,
+      "byteLength": 37712,
+      "url": "/data/parcels/2026-05-12/cells/22-30.fgb"
+    },
+    {
+      "id": "22-31",
+      "bounds": [-9654944, 4353488, -9652896, 4355536],
+      "featureCount": 1,
+      "byteLength": 1112,
+      "url": "/data/parcels/2026-05-12/cells/22-31.fgb"
+    },
+    {
+      "id": "22-5",
+      "bounds": [-9654944, 4300240, -9652896, 4302288],
+      "featureCount": 252,
+      "byteLength": 108072,
+      "url": "/data/parcels/2026-05-12/cells/22-5.fgb"
+    },
+    {
+      "id": "22-6",
+      "bounds": [-9654944, 4302288, -9652896, 4304336],
+      "featureCount": 1258,
+      "byteLength": 517488,
+      "url": "/data/parcels/2026-05-12/cells/22-6.fgb"
+    },
+    {
+      "id": "22-7",
+      "bounds": [-9654944, 4304336, -9652896, 4306384],
+      "featureCount": 1295,
+      "byteLength": 550240,
+      "url": "/data/parcels/2026-05-12/cells/22-7.fgb"
+    },
+    {
+      "id": "22-8",
+      "bounds": [-9654944, 4306384, -9652896, 4308432],
+      "featureCount": 1093,
+      "byteLength": 454008,
+      "url": "/data/parcels/2026-05-12/cells/22-8.fgb"
+    },
+    {
+      "id": "22-9",
+      "bounds": [-9654944, 4308432, -9652896, 4310480],
+      "featureCount": 1057,
+      "byteLength": 444056,
+      "url": "/data/parcels/2026-05-12/cells/22-9.fgb"
+    },
+    {
+      "id": "23-10",
+      "bounds": [-9652896, 4310480, -9650848, 4312528],
+      "featureCount": 1336,
+      "byteLength": 529752,
+      "url": "/data/parcels/2026-05-12/cells/23-10.fgb"
+    },
+    {
+      "id": "23-11",
+      "bounds": [-9652896, 4312528, -9650848, 4314576],
+      "featureCount": 787,
+      "byteLength": 322040,
+      "url": "/data/parcels/2026-05-12/cells/23-11.fgb"
+    },
+    {
+      "id": "23-12",
+      "bounds": [-9652896, 4314576, -9650848, 4316624],
+      "featureCount": 672,
+      "byteLength": 283704,
+      "url": "/data/parcels/2026-05-12/cells/23-12.fgb"
+    },
+    {
+      "id": "23-13",
+      "bounds": [-9652896, 4316624, -9650848, 4318672],
+      "featureCount": 1075,
+      "byteLength": 422048,
+      "url": "/data/parcels/2026-05-12/cells/23-13.fgb"
+    },
+    {
+      "id": "23-14",
+      "bounds": [-9652896, 4318672, -9650848, 4320720],
+      "featureCount": 633,
+      "byteLength": 282576,
+      "url": "/data/parcels/2026-05-12/cells/23-14.fgb"
+    },
+    {
+      "id": "23-15",
+      "bounds": [-9652896, 4320720, -9650848, 4322768],
+      "featureCount": 469,
+      "byteLength": 213648,
+      "url": "/data/parcels/2026-05-12/cells/23-15.fgb"
+    },
+    {
+      "id": "23-16",
+      "bounds": [-9652896, 4322768, -9650848, 4324816],
+      "featureCount": 757,
+      "byteLength": 334608,
+      "url": "/data/parcels/2026-05-12/cells/23-16.fgb"
+    },
+    {
+      "id": "23-17",
+      "bounds": [-9652896, 4324816, -9650848, 4326864],
+      "featureCount": 553,
+      "byteLength": 270040,
+      "url": "/data/parcels/2026-05-12/cells/23-17.fgb"
+    },
+    {
+      "id": "23-18",
+      "bounds": [-9652896, 4326864, -9650848, 4328912],
+      "featureCount": 1138,
+      "byteLength": 501384,
+      "url": "/data/parcels/2026-05-12/cells/23-18.fgb"
+    },
+    {
+      "id": "23-19",
+      "bounds": [-9652896, 4328912, -9650848, 4330960],
+      "featureCount": 812,
+      "byteLength": 326968,
+      "url": "/data/parcels/2026-05-12/cells/23-19.fgb"
+    },
+    {
+      "id": "23-20",
+      "bounds": [-9652896, 4330960, -9650848, 4333008],
+      "featureCount": 406,
+      "byteLength": 180440,
+      "url": "/data/parcels/2026-05-12/cells/23-20.fgb"
+    },
+    {
+      "id": "23-21",
+      "bounds": [-9652896, 4333008, -9650848, 4335056],
+      "featureCount": 1338,
+      "byteLength": 514408,
+      "url": "/data/parcels/2026-05-12/cells/23-21.fgb"
+    },
+    {
+      "id": "23-22",
+      "bounds": [-9652896, 4335056, -9650848, 4337104],
+      "featureCount": 1745,
+      "byteLength": 638424,
+      "url": "/data/parcels/2026-05-12/cells/23-22.fgb"
+    },
+    {
+      "id": "23-23",
+      "bounds": [-9652896, 4337104, -9650848, 4339152],
+      "featureCount": 1596,
+      "byteLength": 619792,
+      "url": "/data/parcels/2026-05-12/cells/23-23.fgb"
+    },
+    {
+      "id": "23-24",
+      "bounds": [-9652896, 4339152, -9650848, 4341200],
+      "featureCount": 1003,
+      "byteLength": 404056,
+      "url": "/data/parcels/2026-05-12/cells/23-24.fgb"
+    },
+    {
+      "id": "23-25",
+      "bounds": [-9652896, 4341200, -9650848, 4343248],
+      "featureCount": 617,
+      "byteLength": 283304,
+      "url": "/data/parcels/2026-05-12/cells/23-25.fgb"
+    },
+    {
+      "id": "23-26",
+      "bounds": [-9652896, 4343248, -9650848, 4345296],
+      "featureCount": 417,
+      "byteLength": 214848,
+      "url": "/data/parcels/2026-05-12/cells/23-26.fgb"
+    },
+    {
+      "id": "23-27",
+      "bounds": [-9652896, 4345296, -9650848, 4347344],
+      "featureCount": 161,
+      "byteLength": 87384,
+      "url": "/data/parcels/2026-05-12/cells/23-27.fgb"
+    },
+    {
+      "id": "23-4",
+      "bounds": [-9652896, 4298192, -9650848, 4300240],
+      "featureCount": 1,
+      "byteLength": 1968,
+      "url": "/data/parcels/2026-05-12/cells/23-4.fgb"
+    },
+    {
+      "id": "23-5",
+      "bounds": [-9652896, 4300240, -9650848, 4302288],
+      "featureCount": 593,
+      "byteLength": 289816,
+      "url": "/data/parcels/2026-05-12/cells/23-5.fgb"
+    },
+    {
+      "id": "23-6",
+      "bounds": [-9652896, 4302288, -9650848, 4304336],
+      "featureCount": 2006,
+      "byteLength": 810248,
+      "url": "/data/parcels/2026-05-12/cells/23-6.fgb"
+    },
+    {
+      "id": "23-7",
+      "bounds": [-9652896, 4304336, -9650848, 4306384],
+      "featureCount": 1402,
+      "byteLength": 633272,
+      "url": "/data/parcels/2026-05-12/cells/23-7.fgb"
+    },
+    {
+      "id": "23-8",
+      "bounds": [-9652896, 4306384, -9650848, 4308432],
+      "featureCount": 1494,
+      "byteLength": 589328,
+      "url": "/data/parcels/2026-05-12/cells/23-8.fgb"
+    },
+    {
+      "id": "23-9",
+      "bounds": [-9652896, 4308432, -9650848, 4310480],
+      "featureCount": 1370,
+      "byteLength": 531048,
+      "url": "/data/parcels/2026-05-12/cells/23-9.fgb"
+    },
+    {
+      "id": "24-10",
+      "bounds": [-9650848, 4310480, -9648800, 4312528],
+      "featureCount": 693,
+      "byteLength": 294984,
+      "url": "/data/parcels/2026-05-12/cells/24-10.fgb"
+    },
+    {
+      "id": "24-11",
+      "bounds": [-9650848, 4312528, -9648800, 4314576],
+      "featureCount": 93,
+      "byteLength": 57792,
+      "url": "/data/parcels/2026-05-12/cells/24-11.fgb"
+    },
+    {
+      "id": "24-12",
+      "bounds": [-9650848, 4314576, -9648800, 4316624],
+      "featureCount": 227,
+      "byteLength": 100696,
+      "url": "/data/parcels/2026-05-12/cells/24-12.fgb"
+    },
+    {
+      "id": "24-13",
+      "bounds": [-9650848, 4316624, -9648800, 4318672],
+      "featureCount": 10,
+      "byteLength": 14336,
+      "url": "/data/parcels/2026-05-12/cells/24-13.fgb"
+    },
+    {
+      "id": "24-14",
+      "bounds": [-9650848, 4318672, -9648800, 4320720],
+      "featureCount": 31,
+      "byteLength": 34728,
+      "url": "/data/parcels/2026-05-12/cells/24-14.fgb"
+    },
+    {
+      "id": "24-15",
+      "bounds": [-9650848, 4320720, -9648800, 4322768],
+      "featureCount": 514,
+      "byteLength": 254496,
+      "url": "/data/parcels/2026-05-12/cells/24-15.fgb"
+    },
+    {
+      "id": "24-16",
+      "bounds": [-9650848, 4322768, -9648800, 4324816],
+      "featureCount": 1013,
+      "byteLength": 422472,
+      "url": "/data/parcels/2026-05-12/cells/24-16.fgb"
+    },
+    {
+      "id": "24-17",
+      "bounds": [-9650848, 4324816, -9648800, 4326864],
+      "featureCount": 501,
+      "byteLength": 216760,
+      "url": "/data/parcels/2026-05-12/cells/24-17.fgb"
+    },
+    {
+      "id": "24-18",
+      "bounds": [-9650848, 4326864, -9648800, 4328912],
+      "featureCount": 382,
+      "byteLength": 173760,
+      "url": "/data/parcels/2026-05-12/cells/24-18.fgb"
+    },
+    {
+      "id": "24-19",
+      "bounds": [-9650848, 4328912, -9648800, 4330960],
+      "featureCount": 417,
+      "byteLength": 185416,
+      "url": "/data/parcels/2026-05-12/cells/24-19.fgb"
+    },
+    {
+      "id": "24-20",
+      "bounds": [-9650848, 4330960, -9648800, 4333008],
+      "featureCount": 308,
+      "byteLength": 145032,
+      "url": "/data/parcels/2026-05-12/cells/24-20.fgb"
+    },
+    {
+      "id": "24-21",
+      "bounds": [-9650848, 4333008, -9648800, 4335056],
+      "featureCount": 685,
+      "byteLength": 276880,
+      "url": "/data/parcels/2026-05-12/cells/24-21.fgb"
+    },
+    {
+      "id": "24-22",
+      "bounds": [-9650848, 4335056, -9648800, 4337104],
+      "featureCount": 1030,
+      "byteLength": 402008,
+      "url": "/data/parcels/2026-05-12/cells/24-22.fgb"
+    },
+    {
+      "id": "24-23",
+      "bounds": [-9650848, 4337104, -9648800, 4339152],
+      "featureCount": 825,
+      "byteLength": 321368,
+      "url": "/data/parcels/2026-05-12/cells/24-23.fgb"
+    },
+    {
+      "id": "24-24",
+      "bounds": [-9650848, 4339152, -9648800, 4341200],
+      "featureCount": 385,
+      "byteLength": 190392,
+      "url": "/data/parcels/2026-05-12/cells/24-24.fgb"
+    },
+    {
+      "id": "24-25",
+      "bounds": [-9650848, 4341200, -9648800, 4343248],
+      "featureCount": 542,
+      "byteLength": 275504,
+      "url": "/data/parcels/2026-05-12/cells/24-25.fgb"
+    },
+    {
+      "id": "24-26",
+      "bounds": [-9650848, 4343248, -9648800, 4345296],
+      "featureCount": 662,
+      "byteLength": 278384,
+      "url": "/data/parcels/2026-05-12/cells/24-26.fgb"
+    },
+    {
+      "id": "24-4",
+      "bounds": [-9650848, 4298192, -9648800, 4300240],
+      "featureCount": 559,
+      "byteLength": 223448,
+      "url": "/data/parcels/2026-05-12/cells/24-4.fgb"
+    },
+    {
+      "id": "24-5",
+      "bounds": [-9650848, 4300240, -9648800, 4302288],
+      "featureCount": 1580,
+      "byteLength": 643808,
+      "url": "/data/parcels/2026-05-12/cells/24-5.fgb"
+    },
+    {
+      "id": "24-6",
+      "bounds": [-9650848, 4302288, -9648800, 4304336],
+      "featureCount": 807,
+      "byteLength": 357264,
+      "url": "/data/parcels/2026-05-12/cells/24-6.fgb"
+    },
+    {
+      "id": "24-7",
+      "bounds": [-9650848, 4304336, -9648800, 4306384],
+      "featureCount": 575,
+      "byteLength": 249608,
+      "url": "/data/parcels/2026-05-12/cells/24-7.fgb"
+    },
+    {
+      "id": "24-8",
+      "bounds": [-9650848, 4306384, -9648800, 4308432],
+      "featureCount": 1191,
+      "byteLength": 487904,
+      "url": "/data/parcels/2026-05-12/cells/24-8.fgb"
+    },
+    {
+      "id": "24-9",
+      "bounds": [-9650848, 4308432, -9648800, 4310480],
+      "featureCount": 1130,
+      "byteLength": 453480,
+      "url": "/data/parcels/2026-05-12/cells/24-9.fgb"
+    },
+    {
+      "id": "25-10",
+      "bounds": [-9648800, 4310480, -9646752, 4312528],
+      "featureCount": 1290,
+      "byteLength": 523968,
+      "url": "/data/parcels/2026-05-12/cells/25-10.fgb"
+    },
+    {
+      "id": "25-11",
+      "bounds": [-9648800, 4312528, -9646752, 4314576],
+      "featureCount": 477,
+      "byteLength": 196496,
+      "url": "/data/parcels/2026-05-12/cells/25-11.fgb"
+    },
+    {
+      "id": "25-12",
+      "bounds": [-9648800, 4314576, -9646752, 4316624],
+      "featureCount": 72,
+      "byteLength": 60480,
+      "url": "/data/parcels/2026-05-12/cells/25-12.fgb"
+    },
+    {
+      "id": "25-13",
+      "bounds": [-9648800, 4316624, -9646752, 4318672],
+      "featureCount": 5,
+      "byteLength": 30200,
+      "url": "/data/parcels/2026-05-12/cells/25-13.fgb"
+    },
+    {
+      "id": "25-14",
+      "bounds": [-9648800, 4318672, -9646752, 4320720],
+      "featureCount": 129,
+      "byteLength": 89032,
+      "url": "/data/parcels/2026-05-12/cells/25-14.fgb"
+    },
+    {
+      "id": "25-15",
+      "bounds": [-9648800, 4320720, -9646752, 4322768],
+      "featureCount": 1157,
+      "byteLength": 477056,
+      "url": "/data/parcels/2026-05-12/cells/25-15.fgb"
+    },
+    {
+      "id": "25-16",
+      "bounds": [-9648800, 4322768, -9646752, 4324816],
+      "featureCount": 982,
+      "byteLength": 421176,
+      "url": "/data/parcels/2026-05-12/cells/25-16.fgb"
+    },
+    {
+      "id": "25-17",
+      "bounds": [-9648800, 4324816, -9646752, 4326864],
+      "featureCount": 376,
+      "byteLength": 183968,
+      "url": "/data/parcels/2026-05-12/cells/25-17.fgb"
+    },
+    {
+      "id": "25-18",
+      "bounds": [-9648800, 4326864, -9646752, 4328912],
+      "featureCount": 243,
+      "byteLength": 141824,
+      "url": "/data/parcels/2026-05-12/cells/25-18.fgb"
+    },
+    {
+      "id": "25-19",
+      "bounds": [-9648800, 4328912, -9646752, 4330960],
+      "featureCount": 92,
+      "byteLength": 50568,
+      "url": "/data/parcels/2026-05-12/cells/25-19.fgb"
+    },
+    {
+      "id": "25-20",
+      "bounds": [-9648800, 4330960, -9646752, 4333008],
+      "featureCount": 208,
+      "byteLength": 90152,
+      "url": "/data/parcels/2026-05-12/cells/25-20.fgb"
+    },
+    {
+      "id": "25-21",
+      "bounds": [-9648800, 4333008, -9646752, 4335056],
+      "featureCount": 1037,
+      "byteLength": 429912,
+      "url": "/data/parcels/2026-05-12/cells/25-21.fgb"
+    },
+    {
+      "id": "25-22",
+      "bounds": [-9648800, 4335056, -9646752, 4337104],
+      "featureCount": 550,
+      "byteLength": 278912,
+      "url": "/data/parcels/2026-05-12/cells/25-22.fgb"
+    },
+    {
+      "id": "25-23",
+      "bounds": [-9648800, 4337104, -9646752, 4339152],
+      "featureCount": 750,
+      "byteLength": 318968,
+      "url": "/data/parcels/2026-05-12/cells/25-23.fgb"
+    },
+    {
+      "id": "25-24",
+      "bounds": [-9648800, 4339152, -9646752, 4341200],
+      "featureCount": 74,
+      "byteLength": 48000,
+      "url": "/data/parcels/2026-05-12/cells/25-24.fgb"
+    },
+    {
+      "id": "25-25",
+      "bounds": [-9648800, 4341200, -9646752, 4343248],
+      "featureCount": 71,
+      "byteLength": 51472,
+      "url": "/data/parcels/2026-05-12/cells/25-25.fgb"
+    },
+    {
+      "id": "25-26",
+      "bounds": [-9648800, 4343248, -9646752, 4345296],
+      "featureCount": 11,
+      "byteLength": 8000,
+      "url": "/data/parcels/2026-05-12/cells/25-26.fgb"
+    },
+    {
+      "id": "25-3",
+      "bounds": [-9648800, 4296144, -9646752, 4298192],
+      "featureCount": 9,
+      "byteLength": 4344,
+      "url": "/data/parcels/2026-05-12/cells/25-3.fgb"
+    },
+    {
+      "id": "25-4",
+      "bounds": [-9648800, 4298192, -9646752, 4300240],
+      "featureCount": 1563,
+      "byteLength": 615368,
+      "url": "/data/parcels/2026-05-12/cells/25-4.fgb"
+    },
+    {
+      "id": "25-5",
+      "bounds": [-9648800, 4300240, -9646752, 4302288],
+      "featureCount": 126,
+      "byteLength": 64856,
+      "url": "/data/parcels/2026-05-12/cells/25-5.fgb"
+    },
+    {
+      "id": "25-6",
+      "bounds": [-9648800, 4302288, -9646752, 4304336],
+      "featureCount": 699,
+      "byteLength": 292424,
+      "url": "/data/parcels/2026-05-12/cells/25-6.fgb"
+    },
+    {
+      "id": "25-7",
+      "bounds": [-9648800, 4304336, -9646752, 4306384],
+      "featureCount": 914,
+      "byteLength": 392896,
+      "url": "/data/parcels/2026-05-12/cells/25-7.fgb"
+    },
+    {
+      "id": "25-8",
+      "bounds": [-9648800, 4306384, -9646752, 4308432],
+      "featureCount": 666,
+      "byteLength": 322824,
+      "url": "/data/parcels/2026-05-12/cells/25-8.fgb"
+    },
+    {
+      "id": "25-9",
+      "bounds": [-9648800, 4308432, -9646752, 4310480],
+      "featureCount": 1029,
+      "byteLength": 418688,
+      "url": "/data/parcels/2026-05-12/cells/25-9.fgb"
+    },
+    {
+      "id": "26-10",
+      "bounds": [-9646752, 4310480, -9644704, 4312528],
+      "featureCount": 1445,
+      "byteLength": 595200,
+      "url": "/data/parcels/2026-05-12/cells/26-10.fgb"
+    },
+    {
+      "id": "26-11",
+      "bounds": [-9646752, 4312528, -9644704, 4314576],
+      "featureCount": 596,
+      "byteLength": 290136,
+      "url": "/data/parcels/2026-05-12/cells/26-11.fgb"
+    },
+    {
+      "id": "26-12",
+      "bounds": [-9646752, 4314576, -9644704, 4316624],
+      "featureCount": 75,
+      "byteLength": 57824,
+      "url": "/data/parcels/2026-05-12/cells/26-12.fgb"
+    },
+    {
+      "id": "26-13",
+      "bounds": [-9646752, 4316624, -9644704, 4318672],
+      "featureCount": 132,
+      "byteLength": 66560,
+      "url": "/data/parcels/2026-05-12/cells/26-13.fgb"
+    },
+    {
+      "id": "26-14",
+      "bounds": [-9646752, 4318672, -9644704, 4320720],
+      "featureCount": 520,
+      "byteLength": 224168,
+      "url": "/data/parcels/2026-05-12/cells/26-14.fgb"
+    },
+    {
+      "id": "26-15",
+      "bounds": [-9646752, 4320720, -9644704, 4322768],
+      "featureCount": 1123,
+      "byteLength": 462048,
+      "url": "/data/parcels/2026-05-12/cells/26-15.fgb"
+    },
+    {
+      "id": "26-16",
+      "bounds": [-9646752, 4322768, -9644704, 4324816],
+      "featureCount": 485,
+      "byteLength": 232832,
+      "url": "/data/parcels/2026-05-12/cells/26-16.fgb"
+    },
+    {
+      "id": "26-17",
+      "bounds": [-9646752, 4324816, -9644704, 4326864],
+      "featureCount": 353,
+      "byteLength": 195256,
+      "url": "/data/parcels/2026-05-12/cells/26-17.fgb"
+    },
+    {
+      "id": "26-18",
+      "bounds": [-9646752, 4326864, -9644704, 4328912],
+      "featureCount": 339,
+      "byteLength": 158984,
+      "url": "/data/parcels/2026-05-12/cells/26-18.fgb"
+    },
+    {
+      "id": "26-19",
+      "bounds": [-9646752, 4328912, -9644704, 4330960],
+      "featureCount": 38,
+      "byteLength": 38808,
+      "url": "/data/parcels/2026-05-12/cells/26-19.fgb"
+    },
+    {
+      "id": "26-20",
+      "bounds": [-9646752, 4330960, -9644704, 4333008],
+      "featureCount": 196,
+      "byteLength": 93312,
+      "url": "/data/parcels/2026-05-12/cells/26-20.fgb"
+    },
+    {
+      "id": "26-21",
+      "bounds": [-9646752, 4333008, -9644704, 4335056],
+      "featureCount": 757,
+      "byteLength": 299528,
+      "url": "/data/parcels/2026-05-12/cells/26-21.fgb"
+    },
+    {
+      "id": "26-22",
+      "bounds": [-9646752, 4335056, -9644704, 4337104],
+      "featureCount": 1564,
+      "byteLength": 619432,
+      "url": "/data/parcels/2026-05-12/cells/26-22.fgb"
+    },
+    {
+      "id": "26-23",
+      "bounds": [-9646752, 4337104, -9644704, 4339152],
+      "featureCount": 311,
+      "byteLength": 137200,
+      "url": "/data/parcels/2026-05-12/cells/26-23.fgb"
+    },
+    {
+      "id": "26-24",
+      "bounds": [-9646752, 4339152, -9644704, 4341200],
+      "featureCount": 3,
+      "byteLength": 13440,
+      "url": "/data/parcels/2026-05-12/cells/26-24.fgb"
+    },
+    {
+      "id": "26-25",
+      "bounds": [-9646752, 4341200, -9644704, 4343248],
+      "featureCount": 1,
+      "byteLength": 10056,
+      "url": "/data/parcels/2026-05-12/cells/26-25.fgb"
+    },
+    {
+      "id": "26-3",
+      "bounds": [-9646752, 4296144, -9644704, 4298192],
+      "featureCount": 26,
+      "byteLength": 10416,
+      "url": "/data/parcels/2026-05-12/cells/26-3.fgb"
+    },
+    {
+      "id": "26-4",
+      "bounds": [-9646752, 4298192, -9644704, 4300240],
+      "featureCount": 156,
+      "byteLength": 69064,
+      "url": "/data/parcels/2026-05-12/cells/26-4.fgb"
+    },
+    {
+      "id": "26-5",
+      "bounds": [-9646752, 4300240, -9644704, 4302288],
+      "featureCount": 1020,
+      "byteLength": 409888,
+      "url": "/data/parcels/2026-05-12/cells/26-5.fgb"
+    },
+    {
+      "id": "26-6",
+      "bounds": [-9646752, 4302288, -9644704, 4304336],
+      "featureCount": 974,
+      "byteLength": 385240,
+      "url": "/data/parcels/2026-05-12/cells/26-6.fgb"
+    },
+    {
+      "id": "26-7",
+      "bounds": [-9646752, 4304336, -9644704, 4306384],
+      "featureCount": 118,
+      "byteLength": 102904,
+      "url": "/data/parcels/2026-05-12/cells/26-7.fgb"
+    },
+    {
+      "id": "26-8",
+      "bounds": [-9646752, 4306384, -9644704, 4308432],
+      "featureCount": 714,
+      "byteLength": 326840,
+      "url": "/data/parcels/2026-05-12/cells/26-8.fgb"
+    },
+    {
+      "id": "26-9",
+      "bounds": [-9646752, 4308432, -9644704, 4310480],
+      "featureCount": 1109,
+      "byteLength": 453856,
+      "url": "/data/parcels/2026-05-12/cells/26-9.fgb"
+    },
+    {
+      "id": "27-10",
+      "bounds": [-9644704, 4310480, -9642656, 4312528],
+      "featureCount": 1585,
+      "byteLength": 627192,
+      "url": "/data/parcels/2026-05-12/cells/27-10.fgb"
+    },
+    {
+      "id": "27-11",
+      "bounds": [-9644704, 4312528, -9642656, 4314576],
+      "featureCount": 1218,
+      "byteLength": 552472,
+      "url": "/data/parcels/2026-05-12/cells/27-11.fgb"
+    },
+    {
+      "id": "27-12",
+      "bounds": [-9644704, 4314576, -9642656, 4316624],
+      "featureCount": 61,
+      "byteLength": 112352,
+      "url": "/data/parcels/2026-05-12/cells/27-12.fgb"
+    },
+    {
+      "id": "27-13",
+      "bounds": [-9644704, 4316624, -9642656, 4318672],
+      "featureCount": 1040,
+      "byteLength": 507720,
+      "url": "/data/parcels/2026-05-12/cells/27-13.fgb"
+    },
+    {
+      "id": "27-14",
+      "bounds": [-9644704, 4318672, -9642656, 4320720],
+      "featureCount": 1497,
+      "byteLength": 702800,
+      "url": "/data/parcels/2026-05-12/cells/27-14.fgb"
+    },
+    {
+      "id": "27-15",
+      "bounds": [-9644704, 4320720, -9642656, 4322768],
+      "featureCount": 909,
+      "byteLength": 445320,
+      "url": "/data/parcels/2026-05-12/cells/27-15.fgb"
+    },
+    {
+      "id": "27-16",
+      "bounds": [-9644704, 4322768, -9642656, 4324816],
+      "featureCount": 763,
+      "byteLength": 335184,
+      "url": "/data/parcels/2026-05-12/cells/27-16.fgb"
+    },
+    {
+      "id": "27-17",
+      "bounds": [-9644704, 4324816, -9642656, 4326864],
+      "featureCount": 271,
+      "byteLength": 165048,
+      "url": "/data/parcels/2026-05-12/cells/27-17.fgb"
+    },
+    {
+      "id": "27-18",
+      "bounds": [-9644704, 4326864, -9642656, 4328912],
+      "featureCount": 1503,
+      "byteLength": 579024,
+      "url": "/data/parcels/2026-05-12/cells/27-18.fgb"
+    },
+    {
+      "id": "27-19",
+      "bounds": [-9644704, 4328912, -9642656, 4330960],
+      "featureCount": 1085,
+      "byteLength": 464848,
+      "url": "/data/parcels/2026-05-12/cells/27-19.fgb"
+    },
+    {
+      "id": "27-20",
+      "bounds": [-9644704, 4330960, -9642656, 4333008],
+      "featureCount": 1002,
+      "byteLength": 433544,
+      "url": "/data/parcels/2026-05-12/cells/27-20.fgb"
+    },
+    {
+      "id": "27-21",
+      "bounds": [-9644704, 4333008, -9642656, 4335056],
+      "featureCount": 981,
+      "byteLength": 377088,
+      "url": "/data/parcels/2026-05-12/cells/27-21.fgb"
+    },
+    {
+      "id": "27-22",
+      "bounds": [-9644704, 4335056, -9642656, 4337104],
+      "featureCount": 41,
+      "byteLength": 27240,
+      "url": "/data/parcels/2026-05-12/cells/27-22.fgb"
+    },
+    {
+      "id": "27-3",
+      "bounds": [-9644704, 4296144, -9642656, 4298192],
+      "featureCount": 49,
+      "byteLength": 25216,
+      "url": "/data/parcels/2026-05-12/cells/27-3.fgb"
+    },
+    {
+      "id": "27-4",
+      "bounds": [-9644704, 4298192, -9642656, 4300240],
+      "featureCount": 256,
+      "byteLength": 110472,
+      "url": "/data/parcels/2026-05-12/cells/27-4.fgb"
+    },
+    {
+      "id": "27-5",
+      "bounds": [-9644704, 4300240, -9642656, 4302288],
+      "featureCount": 780,
+      "byteLength": 322312,
+      "url": "/data/parcels/2026-05-12/cells/27-5.fgb"
+    },
+    {
+      "id": "27-6",
+      "bounds": [-9644704, 4302288, -9642656, 4304336],
+      "featureCount": 106,
+      "byteLength": 50632,
+      "url": "/data/parcels/2026-05-12/cells/27-6.fgb"
+    },
+    {
+      "id": "27-7",
+      "bounds": [-9644704, 4304336, -9642656, 4306384],
+      "featureCount": 552,
+      "byteLength": 232184,
+      "url": "/data/parcels/2026-05-12/cells/27-7.fgb"
+    },
+    {
+      "id": "27-8",
+      "bounds": [-9644704, 4306384, -9642656, 4308432],
+      "featureCount": 533,
+      "byteLength": 238040,
+      "url": "/data/parcels/2026-05-12/cells/27-8.fgb"
+    },
+    {
+      "id": "27-9",
+      "bounds": [-9644704, 4308432, -9642656, 4310480],
+      "featureCount": 875,
+      "byteLength": 351192,
+      "url": "/data/parcels/2026-05-12/cells/27-9.fgb"
+    },
+    {
+      "id": "28-10",
+      "bounds": [-9642656, 4310480, -9640608, 4312528],
+      "featureCount": 2244,
+      "byteLength": 915336,
+      "url": "/data/parcels/2026-05-12/cells/28-10.fgb"
+    },
+    {
+      "id": "28-11",
+      "bounds": [-9642656, 4312528, -9640608, 4314576],
+      "featureCount": 777,
+      "byteLength": 439816,
+      "url": "/data/parcels/2026-05-12/cells/28-11.fgb"
+    },
+    {
+      "id": "28-12",
+      "bounds": [-9642656, 4314576, -9640608, 4316624],
+      "featureCount": 237,
+      "byteLength": 234128,
+      "url": "/data/parcels/2026-05-12/cells/28-12.fgb"
+    },
+    {
+      "id": "28-13",
+      "bounds": [-9642656, 4316624, -9640608, 4318672],
+      "featureCount": 83,
+      "byteLength": 171192,
+      "url": "/data/parcels/2026-05-12/cells/28-13.fgb"
+    },
+    {
+      "id": "28-14",
+      "bounds": [-9642656, 4318672, -9640608, 4320720],
+      "featureCount": 86,
+      "byteLength": 180536,
+      "url": "/data/parcels/2026-05-12/cells/28-14.fgb"
+    },
+    {
+      "id": "28-15",
+      "bounds": [-9642656, 4320720, -9640608, 4322768],
+      "featureCount": 4,
+      "byteLength": 144064,
+      "url": "/data/parcels/2026-05-12/cells/28-15.fgb"
+    },
+    {
+      "id": "28-16",
+      "bounds": [-9642656, 4322768, -9640608, 4324816],
+      "featureCount": 890,
+      "byteLength": 444344,
+      "url": "/data/parcels/2026-05-12/cells/28-16.fgb"
+    },
+    {
+      "id": "28-17",
+      "bounds": [-9642656, 4324816, -9640608, 4326864],
+      "featureCount": 765,
+      "byteLength": 340224,
+      "url": "/data/parcels/2026-05-12/cells/28-17.fgb"
+    },
+    {
+      "id": "28-18",
+      "bounds": [-9642656, 4326864, -9640608, 4328912],
+      "featureCount": 1078,
+      "byteLength": 432832,
+      "url": "/data/parcels/2026-05-12/cells/28-18.fgb"
+    },
+    {
+      "id": "28-19",
+      "bounds": [-9642656, 4328912, -9640608, 4330960],
+      "featureCount": 324,
+      "byteLength": 141880,
+      "url": "/data/parcels/2026-05-12/cells/28-19.fgb"
+    },
+    {
+      "id": "28-20",
+      "bounds": [-9642656, 4330960, -9640608, 4333008],
+      "featureCount": 271,
+      "byteLength": 119120,
+      "url": "/data/parcels/2026-05-12/cells/28-20.fgb"
+    },
+    {
+      "id": "28-21",
+      "bounds": [-9642656, 4333008, -9640608, 4335056],
+      "featureCount": 400,
+      "byteLength": 176384,
+      "url": "/data/parcels/2026-05-12/cells/28-21.fgb"
+    },
+    {
+      "id": "28-3",
+      "bounds": [-9642656, 4296144, -9640608, 4298192],
+      "featureCount": 158,
+      "byteLength": 74992,
+      "url": "/data/parcels/2026-05-12/cells/28-3.fgb"
+    },
+    {
+      "id": "28-4",
+      "bounds": [-9642656, 4298192, -9640608, 4300240],
+      "featureCount": 541,
+      "byteLength": 210240,
+      "url": "/data/parcels/2026-05-12/cells/28-4.fgb"
+    },
+    {
+      "id": "28-5",
+      "bounds": [-9642656, 4300240, -9640608, 4302288],
+      "featureCount": 69,
+      "byteLength": 35096,
+      "url": "/data/parcels/2026-05-12/cells/28-5.fgb"
+    },
+    {
+      "id": "28-6",
+      "bounds": [-9642656, 4302288, -9640608, 4304336],
+      "featureCount": 89,
+      "byteLength": 54536,
+      "url": "/data/parcels/2026-05-12/cells/28-6.fgb"
+    },
+    {
+      "id": "28-7",
+      "bounds": [-9642656, 4304336, -9640608, 4306384],
+      "featureCount": 973,
+      "byteLength": 425456,
+      "url": "/data/parcels/2026-05-12/cells/28-7.fgb"
+    },
+    {
+      "id": "28-8",
+      "bounds": [-9642656, 4306384, -9640608, 4308432],
+      "featureCount": 1561,
+      "byteLength": 698168,
+      "url": "/data/parcels/2026-05-12/cells/28-8.fgb"
+    },
+    {
+      "id": "28-9",
+      "bounds": [-9642656, 4308432, -9640608, 4310480],
+      "featureCount": 1685,
+      "byteLength": 660272,
+      "url": "/data/parcels/2026-05-12/cells/28-9.fgb"
+    },
+    {
+      "id": "29-10",
+      "bounds": [-9640608, 4310480, -9638560, 4312528],
+      "featureCount": 1253,
+      "byteLength": 635384,
+      "url": "/data/parcels/2026-05-12/cells/29-10.fgb"
+    },
+    {
+      "id": "29-11",
+      "bounds": [-9640608, 4312528, -9638560, 4314576],
+      "featureCount": 36,
+      "byteLength": 109176,
+      "url": "/data/parcels/2026-05-12/cells/29-11.fgb"
+    },
+    {
+      "id": "29-12",
+      "bounds": [-9640608, 4314576, -9638560, 4316624],
+      "featureCount": 164,
+      "byteLength": 114376,
+      "url": "/data/parcels/2026-05-12/cells/29-12.fgb"
+    },
+    {
+      "id": "29-13",
+      "bounds": [-9640608, 4316624, -9638560, 4318672],
+      "featureCount": 1,
+      "byteLength": 77176,
+      "url": "/data/parcels/2026-05-12/cells/29-13.fgb"
+    },
+    {
+      "id": "29-14",
+      "bounds": [-9640608, 4318672, -9638560, 4320720],
+      "featureCount": 127,
+      "byteLength": 127680,
+      "url": "/data/parcels/2026-05-12/cells/29-14.fgb"
+    },
+    {
+      "id": "29-15",
+      "bounds": [-9640608, 4320720, -9638560, 4322768],
+      "featureCount": 683,
+      "byteLength": 373712,
+      "url": "/data/parcels/2026-05-12/cells/29-15.fgb"
+    },
+    {
+      "id": "29-16",
+      "bounds": [-9640608, 4322768, -9638560, 4324816],
+      "featureCount": 842,
+      "byteLength": 434960,
+      "url": "/data/parcels/2026-05-12/cells/29-16.fgb"
+    },
+    {
+      "id": "29-17",
+      "bounds": [-9640608, 4324816, -9638560, 4326864],
+      "featureCount": 1628,
+      "byteLength": 689744,
+      "url": "/data/parcels/2026-05-12/cells/29-17.fgb"
+    },
+    {
+      "id": "29-18",
+      "bounds": [-9640608, 4326864, -9638560, 4328912],
+      "featureCount": 1472,
+      "byteLength": 612272,
+      "url": "/data/parcels/2026-05-12/cells/29-18.fgb"
+    },
+    {
+      "id": "29-19",
+      "bounds": [-9640608, 4328912, -9638560, 4330960],
+      "featureCount": 1628,
+      "byteLength": 633272,
+      "url": "/data/parcels/2026-05-12/cells/29-19.fgb"
+    },
+    {
+      "id": "29-20",
+      "bounds": [-9640608, 4330960, -9638560, 4333008],
+      "featureCount": 1156,
+      "byteLength": 493640,
+      "url": "/data/parcels/2026-05-12/cells/29-20.fgb"
+    },
+    {
+      "id": "29-21",
+      "bounds": [-9640608, 4333008, -9638560, 4335056],
+      "featureCount": 104,
+      "byteLength": 44656,
+      "url": "/data/parcels/2026-05-12/cells/29-21.fgb"
+    },
+    {
+      "id": "29-5",
+      "bounds": [-9640608, 4300240, -9638560, 4302288],
+      "featureCount": 4,
+      "byteLength": 4024,
+      "url": "/data/parcels/2026-05-12/cells/29-5.fgb"
+    },
+    {
+      "id": "29-6",
+      "bounds": [-9640608, 4302288, -9638560, 4304336],
+      "featureCount": 50,
+      "byteLength": 33072,
+      "url": "/data/parcels/2026-05-12/cells/29-6.fgb"
+    },
+    {
+      "id": "29-7",
+      "bounds": [-9640608, 4304336, -9638560, 4306384],
+      "featureCount": 777,
+      "byteLength": 371808,
+      "url": "/data/parcels/2026-05-12/cells/29-7.fgb"
+    },
+    {
+      "id": "29-8",
+      "bounds": [-9640608, 4306384, -9638560, 4308432],
+      "featureCount": 1596,
+      "byteLength": 693536,
+      "url": "/data/parcels/2026-05-12/cells/29-8.fgb"
+    },
+    {
+      "id": "29-9",
+      "bounds": [-9640608, 4308432, -9638560, 4310480],
+      "featureCount": 1022,
+      "byteLength": 469080,
+      "url": "/data/parcels/2026-05-12/cells/29-9.fgb"
+    },
+    {
+      "id": "30-10",
+      "bounds": [-9638560, 4310480, -9636512, 4312528],
+      "featureCount": 260,
+      "byteLength": 207992,
+      "url": "/data/parcels/2026-05-12/cells/30-10.fgb"
+    },
+    {
+      "id": "30-11",
+      "bounds": [-9638560, 4312528, -9636512, 4314576],
+      "featureCount": 10,
+      "byteLength": 116208,
+      "url": "/data/parcels/2026-05-12/cells/30-11.fgb"
+    },
+    {
+      "id": "30-12",
+      "bounds": [-9638560, 4314576, -9636512, 4316624],
+      "featureCount": 4,
+      "byteLength": 68088,
+      "url": "/data/parcels/2026-05-12/cells/30-12.fgb"
+    },
+    {
+      "id": "30-13",
+      "bounds": [-9638560, 4316624, -9636512, 4318672],
+      "featureCount": 2,
+      "byteLength": 143200,
+      "url": "/data/parcels/2026-05-12/cells/30-13.fgb"
+    },
+    {
+      "id": "30-14",
+      "bounds": [-9638560, 4318672, -9636512, 4320720],
+      "featureCount": 160,
+      "byteLength": 210520,
+      "url": "/data/parcels/2026-05-12/cells/30-14.fgb"
+    },
+    {
+      "id": "30-15",
+      "bounds": [-9638560, 4320720, -9636512, 4322768],
+      "featureCount": 1059,
+      "byteLength": 556816,
+      "url": "/data/parcels/2026-05-12/cells/30-15.fgb"
+    },
+    {
+      "id": "30-16",
+      "bounds": [-9638560, 4322768, -9636512, 4324816],
+      "featureCount": 864,
+      "byteLength": 424912,
+      "url": "/data/parcels/2026-05-12/cells/30-16.fgb"
+    },
+    {
+      "id": "30-17",
+      "bounds": [-9638560, 4324816, -9636512, 4326864],
+      "featureCount": 614,
+      "byteLength": 256880,
+      "url": "/data/parcels/2026-05-12/cells/30-17.fgb"
+    },
+    {
+      "id": "30-18",
+      "bounds": [-9638560, 4326864, -9636512, 4328912],
+      "featureCount": 415,
+      "byteLength": 167976,
+      "url": "/data/parcels/2026-05-12/cells/30-18.fgb"
+    },
+    {
+      "id": "30-19",
+      "bounds": [-9638560, 4328912, -9636512, 4330960],
+      "featureCount": 250,
+      "byteLength": 96840,
+      "url": "/data/parcels/2026-05-12/cells/30-19.fgb"
+    },
+    {
+      "id": "30-6",
+      "bounds": [-9638560, 4302288, -9636512, 4304336],
+      "featureCount": 18,
+      "byteLength": 9384,
+      "url": "/data/parcels/2026-05-12/cells/30-6.fgb"
+    },
+    {
+      "id": "30-7",
+      "bounds": [-9638560, 4304336, -9636512, 4306384],
+      "featureCount": 1581,
+      "byteLength": 665400,
+      "url": "/data/parcels/2026-05-12/cells/30-7.fgb"
+    },
+    {
+      "id": "30-8",
+      "bounds": [-9638560, 4306384, -9636512, 4308432],
+      "featureCount": 383,
+      "byteLength": 201576,
+      "url": "/data/parcels/2026-05-12/cells/30-8.fgb"
+    },
+    {
+      "id": "30-9",
+      "bounds": [-9638560, 4308432, -9636512, 4310480],
+      "featureCount": 601,
+      "byteLength": 291248,
+      "url": "/data/parcels/2026-05-12/cells/30-9.fgb"
+    },
+    {
+      "id": "31-10",
+      "bounds": [-9636512, 4310480, -9634464, 4312528],
+      "featureCount": 2,
+      "byteLength": 104144,
+      "url": "/data/parcels/2026-05-12/cells/31-10.fgb"
+    },
+    {
+      "id": "31-11",
+      "bounds": [-9636512, 4312528, -9634464, 4314576],
+      "featureCount": 21,
+      "byteLength": 130512,
+      "url": "/data/parcels/2026-05-12/cells/31-11.fgb"
+    },
+    {
+      "id": "31-12",
+      "bounds": [-9636512, 4314576, -9634464, 4316624],
+      "featureCount": 128,
+      "byteLength": 178680,
+      "url": "/data/parcels/2026-05-12/cells/31-12.fgb"
+    },
+    {
+      "id": "31-13",
+      "bounds": [-9636512, 4316624, -9634464, 4318672],
+      "featureCount": 30,
+      "byteLength": 155112,
+      "url": "/data/parcels/2026-05-12/cells/31-13.fgb"
+    },
+    {
+      "id": "31-14",
+      "bounds": [-9636512, 4318672, -9634464, 4320720],
+      "featureCount": 112,
+      "byteLength": 187600,
+      "url": "/data/parcels/2026-05-12/cells/31-14.fgb"
+    },
+    {
+      "id": "31-15",
+      "bounds": [-9636512, 4320720, -9634464, 4322768],
+      "featureCount": 84,
+      "byteLength": 110440,
+      "url": "/data/parcels/2026-05-12/cells/31-15.fgb"
+    },
+    {
+      "id": "31-16",
+      "bounds": [-9636512, 4322768, -9634464, 4324816],
+      "featureCount": 16,
+      "byteLength": 83408,
+      "url": "/data/parcels/2026-05-12/cells/31-16.fgb"
+    },
+    {
+      "id": "31-7",
+      "bounds": [-9636512, 4304336, -9634464, 4306384],
+      "featureCount": 11,
+      "byteLength": 54248,
+      "url": "/data/parcels/2026-05-12/cells/31-7.fgb"
+    },
+    {
+      "id": "31-8",
+      "bounds": [-9636512, 4306384, -9634464, 4308432],
+      "featureCount": 1,
+      "byteLength": 47832,
+      "url": "/data/parcels/2026-05-12/cells/31-8.fgb"
+    },
+    {
+      "id": "31-9",
+      "bounds": [-9636512, 4308432, -9634464, 4310480],
+      "featureCount": 1,
+      "byteLength": 47832,
+      "url": "/data/parcels/2026-05-12/cells/31-9.fgb"
+    },
+    {
+      "id": "32-10",
+      "bounds": [-9634464, 4310480, -9632416, 4312528],
+      "featureCount": 2,
+      "byteLength": 57448,
+      "url": "/data/parcels/2026-05-12/cells/32-10.fgb"
+    },
+    {
+      "id": "32-11",
+      "bounds": [-9634464, 4312528, -9632416, 4314576],
+      "featureCount": 36,
+      "byteLength": 136304,
+      "url": "/data/parcels/2026-05-12/cells/32-11.fgb"
+    },
+    {
+      "id": "32-12",
+      "bounds": [-9634464, 4314576, -9632416, 4316624],
+      "featureCount": 74,
+      "byteLength": 152904,
+      "url": "/data/parcels/2026-05-12/cells/32-12.fgb"
+    },
+    {
+      "id": "32-13",
+      "bounds": [-9634464, 4316624, -9632416, 4318672],
+      "featureCount": 99,
+      "byteLength": 131136,
+      "url": "/data/parcels/2026-05-12/cells/32-13.fgb"
+    },
+    {
+      "id": "32-14",
+      "bounds": [-9634464, 4318672, -9632416, 4320720],
+      "featureCount": 11,
+      "byteLength": 80704,
+      "url": "/data/parcels/2026-05-12/cells/32-14.fgb"
+    },
+    {
+      "id": "33-10",
+      "bounds": [-9632416, 4310480, -9630368, 4312528],
+      "featureCount": 4,
+      "byteLength": 58768,
+      "url": "/data/parcels/2026-05-12/cells/33-10.fgb"
+    },
+    {
+      "id": "33-11",
+      "bounds": [-9632416, 4312528, -9630368, 4314576],
+      "featureCount": 40,
+      "byteLength": 74400,
+      "url": "/data/parcels/2026-05-12/cells/33-11.fgb"
+    },
+    {
+      "id": "33-12",
+      "bounds": [-9632416, 4314576, -9630368, 4316624],
+      "featureCount": 31,
+      "byteLength": 68608,
+      "url": "/data/parcels/2026-05-12/cells/33-12.fgb"
+    },
+    {
+      "id": "33-13",
+      "bounds": [-9632416, 4316624, -9630368, 4318672],
+      "featureCount": 2,
+      "byteLength": 14624,
+      "url": "/data/parcels/2026-05-12/cells/33-13.fgb"
+    },
+    {
+      "id": "33-14",
+      "bounds": [-9632416, 4318672, -9630368, 4320720],
+      "featureCount": 12,
+      "byteLength": 11888,
+      "url": "/data/parcels/2026-05-12/cells/33-14.fgb"
+    },
+    {
+      "id": "4-4",
+      "bounds": [-9691808, 4298192, -9689760, 4300240],
+      "featureCount": 1,
+      "byteLength": 1488,
+      "url": "/data/parcels/2026-05-12/cells/4-4.fgb"
+    },
+    {
+      "id": "4-5",
+      "bounds": [-9691808, 4300240, -9689760, 4302288],
+      "featureCount": 3,
+      "byteLength": 4256,
+      "url": "/data/parcels/2026-05-12/cells/4-5.fgb"
+    },
+    {
+      "id": "4-6",
+      "bounds": [-9691808, 4302288, -9689760, 4304336],
+      "featureCount": 7,
+      "byteLength": 9832,
+      "url": "/data/parcels/2026-05-12/cells/4-6.fgb"
+    },
+    {
+      "id": "4-7",
+      "bounds": [-9691808, 4304336, -9689760, 4306384],
+      "featureCount": 5,
+      "byteLength": 9768,
+      "url": "/data/parcels/2026-05-12/cells/4-7.fgb"
+    },
+    {
+      "id": "4-8",
+      "bounds": [-9691808, 4306384, -9689760, 4308432],
+      "featureCount": 1,
+      "byteLength": 5320,
+      "url": "/data/parcels/2026-05-12/cells/4-8.fgb"
+    },
+    {
+      "id": "5-10",
+      "bounds": [-9689760, 4310480, -9687712, 4312528],
+      "featureCount": 7,
+      "byteLength": 11520,
+      "url": "/data/parcels/2026-05-12/cells/5-10.fgb"
+    },
+    {
+      "id": "5-11",
+      "bounds": [-9689760, 4312528, -9687712, 4314576],
+      "featureCount": 28,
+      "byteLength": 19192,
+      "url": "/data/parcels/2026-05-12/cells/5-11.fgb"
+    },
+    {
+      "id": "5-12",
+      "bounds": [-9689760, 4314576, -9687712, 4316624],
+      "featureCount": 4,
+      "byteLength": 2152,
+      "url": "/data/parcels/2026-05-12/cells/5-12.fgb"
+    },
+    {
+      "id": "5-4",
+      "bounds": [-9689760, 4298192, -9687712, 4300240],
+      "featureCount": 18,
+      "byteLength": 11904,
+      "url": "/data/parcels/2026-05-12/cells/5-4.fgb"
+    },
+    {
+      "id": "5-5",
+      "bounds": [-9689760, 4300240, -9687712, 4302288],
+      "featureCount": 74,
+      "byteLength": 44336,
+      "url": "/data/parcels/2026-05-12/cells/5-5.fgb"
+    },
+    {
+      "id": "5-6",
+      "bounds": [-9689760, 4302288, -9687712, 4304336],
+      "featureCount": 50,
+      "byteLength": 43264,
+      "url": "/data/parcels/2026-05-12/cells/5-6.fgb"
+    },
+    {
+      "id": "5-7",
+      "bounds": [-9689760, 4304336, -9687712, 4306384],
+      "featureCount": 33,
+      "byteLength": 35224,
+      "url": "/data/parcels/2026-05-12/cells/5-7.fgb"
+    },
+    {
+      "id": "5-8",
+      "bounds": [-9689760, 4306384, -9687712, 4308432],
+      "featureCount": 34,
+      "byteLength": 31504,
+      "url": "/data/parcels/2026-05-12/cells/5-8.fgb"
+    },
+    {
+      "id": "5-9",
+      "bounds": [-9689760, 4308432, -9687712, 4310480],
+      "featureCount": 6,
+      "byteLength": 8824,
+      "url": "/data/parcels/2026-05-12/cells/5-9.fgb"
+    },
+    {
+      "id": "6-10",
+      "bounds": [-9687712, 4310480, -9685664, 4312528],
+      "featureCount": 590,
+      "byteLength": 263704,
+      "url": "/data/parcels/2026-05-12/cells/6-10.fgb"
+    },
+    {
+      "id": "6-11",
+      "bounds": [-9687712, 4312528, -9685664, 4314576],
+      "featureCount": 506,
+      "byteLength": 209528,
+      "url": "/data/parcels/2026-05-12/cells/6-11.fgb"
+    },
+    {
+      "id": "6-12",
+      "bounds": [-9687712, 4314576, -9685664, 4316624],
+      "featureCount": 70,
+      "byteLength": 36408,
+      "url": "/data/parcels/2026-05-12/cells/6-12.fgb"
+    },
+    {
+      "id": "6-13",
+      "bounds": [-9687712, 4316624, -9685664, 4318672],
+      "featureCount": 6,
+      "byteLength": 3496,
+      "url": "/data/parcels/2026-05-12/cells/6-13.fgb"
+    },
+    {
+      "id": "6-4",
+      "bounds": [-9687712, 4298192, -9685664, 4300240],
+      "featureCount": 9,
+      "byteLength": 7152,
+      "url": "/data/parcels/2026-05-12/cells/6-4.fgb"
+    },
+    {
+      "id": "6-5",
+      "bounds": [-9687712, 4300240, -9685664, 4302288],
+      "featureCount": 58,
+      "byteLength": 35608,
+      "url": "/data/parcels/2026-05-12/cells/6-5.fgb"
+    },
+    {
+      "id": "6-6",
+      "bounds": [-9687712, 4302288, -9685664, 4304336],
+      "featureCount": 91,
+      "byteLength": 64856,
+      "url": "/data/parcels/2026-05-12/cells/6-6.fgb"
+    },
+    {
+      "id": "6-7",
+      "bounds": [-9687712, 4304336, -9685664, 4306384],
+      "featureCount": 78,
+      "byteLength": 44640,
+      "url": "/data/parcels/2026-05-12/cells/6-7.fgb"
+    },
+    {
+      "id": "6-8",
+      "bounds": [-9687712, 4306384, -9685664, 4308432],
+      "featureCount": 43,
+      "byteLength": 31344,
+      "url": "/data/parcels/2026-05-12/cells/6-8.fgb"
+    },
+    {
+      "id": "6-9",
+      "bounds": [-9687712, 4308432, -9685664, 4310480],
+      "featureCount": 9,
+      "byteLength": 10416,
+      "url": "/data/parcels/2026-05-12/cells/6-9.fgb"
+    },
+    {
+      "id": "7-10",
+      "bounds": [-9685664, 4310480, -9683616, 4312528],
+      "featureCount": 573,
+      "byteLength": 250280,
+      "url": "/data/parcels/2026-05-12/cells/7-10.fgb"
+    },
+    {
+      "id": "7-11",
+      "bounds": [-9685664, 4312528, -9683616, 4314576],
+      "featureCount": 512,
+      "byteLength": 234408,
+      "url": "/data/parcels/2026-05-12/cells/7-11.fgb"
+    },
+    {
+      "id": "7-12",
+      "bounds": [-9685664, 4314576, -9683616, 4316624],
+      "featureCount": 88,
+      "byteLength": 47016,
+      "url": "/data/parcels/2026-05-12/cells/7-12.fgb"
+    },
+    {
+      "id": "7-13",
+      "bounds": [-9685664, 4316624, -9683616, 4318672],
+      "featureCount": 92,
+      "byteLength": 53944,
+      "url": "/data/parcels/2026-05-12/cells/7-13.fgb"
+    },
+    {
+      "id": "7-14",
+      "bounds": [-9685664, 4318672, -9683616, 4320720],
+      "featureCount": 34,
+      "byteLength": 23472,
+      "url": "/data/parcels/2026-05-12/cells/7-14.fgb"
+    },
+    {
+      "id": "7-15",
+      "bounds": [-9685664, 4320720, -9683616, 4322768],
+      "featureCount": 6,
+      "byteLength": 7464,
+      "url": "/data/parcels/2026-05-12/cells/7-15.fgb"
+    },
+    {
+      "id": "7-16",
+      "bounds": [-9685664, 4322768, -9683616, 4324816],
+      "featureCount": 20,
+      "byteLength": 14248,
+      "url": "/data/parcels/2026-05-12/cells/7-16.fgb"
+    },
+    {
+      "id": "7-17",
+      "bounds": [-9685664, 4324816, -9683616, 4326864],
+      "featureCount": 5,
+      "byteLength": 4736,
+      "url": "/data/parcels/2026-05-12/cells/7-17.fgb"
+    },
+    {
+      "id": "7-5",
+      "bounds": [-9685664, 4300240, -9683616, 4302288],
+      "featureCount": 5,
+      "byteLength": 3872,
+      "url": "/data/parcels/2026-05-12/cells/7-5.fgb"
+    },
+    {
+      "id": "7-6",
+      "bounds": [-9685664, 4302288, -9683616, 4304336],
+      "featureCount": 87,
+      "byteLength": 44432,
+      "url": "/data/parcels/2026-05-12/cells/7-6.fgb"
+    },
+    {
+      "id": "7-7",
+      "bounds": [-9685664, 4304336, -9683616, 4306384],
+      "featureCount": 89,
+      "byteLength": 44416,
+      "url": "/data/parcels/2026-05-12/cells/7-7.fgb"
+    },
+    {
+      "id": "7-8",
+      "bounds": [-9685664, 4306384, -9683616, 4308432],
+      "featureCount": 129,
+      "byteLength": 77776,
+      "url": "/data/parcels/2026-05-12/cells/7-8.fgb"
+    },
+    {
+      "id": "7-9",
+      "bounds": [-9685664, 4308432, -9683616, 4310480],
+      "featureCount": 133,
+      "byteLength": 75424,
+      "url": "/data/parcels/2026-05-12/cells/7-9.fgb"
+    },
+    {
+      "id": "8-10",
+      "bounds": [-9683616, 4310480, -9681568, 4312528],
+      "featureCount": 611,
+      "byteLength": 295952,
+      "url": "/data/parcels/2026-05-12/cells/8-10.fgb"
+    },
+    {
+      "id": "8-11",
+      "bounds": [-9683616, 4312528, -9681568, 4314576],
+      "featureCount": 157,
+      "byteLength": 88512,
+      "url": "/data/parcels/2026-05-12/cells/8-11.fgb"
+    },
+    {
+      "id": "8-12",
+      "bounds": [-9683616, 4314576, -9681568, 4316624],
+      "featureCount": 65,
+      "byteLength": 41304,
+      "url": "/data/parcels/2026-05-12/cells/8-12.fgb"
+    },
+    {
+      "id": "8-13",
+      "bounds": [-9683616, 4316624, -9681568, 4318672],
+      "featureCount": 65,
+      "byteLength": 51736,
+      "url": "/data/parcels/2026-05-12/cells/8-13.fgb"
+    },
+    {
+      "id": "8-14",
+      "bounds": [-9683616, 4318672, -9681568, 4320720],
+      "featureCount": 19,
+      "byteLength": 19848,
+      "url": "/data/parcels/2026-05-12/cells/8-14.fgb"
+    },
+    {
+      "id": "8-15",
+      "bounds": [-9683616, 4320720, -9681568, 4322768],
+      "featureCount": 11,
+      "byteLength": 14080,
+      "url": "/data/parcels/2026-05-12/cells/8-15.fgb"
+    },
+    {
+      "id": "8-16",
+      "bounds": [-9683616, 4322768, -9681568, 4324816],
+      "featureCount": 22,
+      "byteLength": 24120,
+      "url": "/data/parcels/2026-05-12/cells/8-16.fgb"
+    },
+    {
+      "id": "8-17",
+      "bounds": [-9683616, 4324816, -9681568, 4326864],
+      "featureCount": 54,
+      "byteLength": 38528,
+      "url": "/data/parcels/2026-05-12/cells/8-17.fgb"
+    },
+    {
+      "id": "8-18",
+      "bounds": [-9683616, 4326864, -9681568, 4328912],
+      "featureCount": 44,
+      "byteLength": 40336,
+      "url": "/data/parcels/2026-05-12/cells/8-18.fgb"
+    },
+    {
+      "id": "8-19",
+      "bounds": [-9683616, 4328912, -9681568, 4330960],
+      "featureCount": 27,
+      "byteLength": 40624,
+      "url": "/data/parcels/2026-05-12/cells/8-19.fgb"
+    },
+    {
+      "id": "8-20",
+      "bounds": [-9683616, 4330960, -9681568, 4333008],
+      "featureCount": 34,
+      "byteLength": 17568,
+      "url": "/data/parcels/2026-05-12/cells/8-20.fgb"
+    },
+    {
+      "id": "8-21",
+      "bounds": [-9683616, 4333008, -9681568, 4335056],
+      "featureCount": 17,
+      "byteLength": 12608,
+      "url": "/data/parcels/2026-05-12/cells/8-21.fgb"
+    },
+    {
+      "id": "8-22",
+      "bounds": [-9683616, 4335056, -9681568, 4337104],
+      "featureCount": 12,
+      "byteLength": 10480,
+      "url": "/data/parcels/2026-05-12/cells/8-22.fgb"
+    },
+    {
+      "id": "8-6",
+      "bounds": [-9683616, 4302288, -9681568, 4304336],
+      "featureCount": 36,
+      "byteLength": 18960,
+      "url": "/data/parcels/2026-05-12/cells/8-6.fgb"
+    },
+    {
+      "id": "8-7",
+      "bounds": [-9683616, 4304336, -9681568, 4306384],
+      "featureCount": 151,
+      "byteLength": 85632,
+      "url": "/data/parcels/2026-05-12/cells/8-7.fgb"
+    },
+    {
+      "id": "8-8",
+      "bounds": [-9683616, 4306384, -9681568, 4308432],
+      "featureCount": 331,
+      "byteLength": 163912,
+      "url": "/data/parcels/2026-05-12/cells/8-8.fgb"
+    },
+    {
+      "id": "8-9",
+      "bounds": [-9683616, 4308432, -9681568, 4310480],
+      "featureCount": 592,
+      "byteLength": 306080,
+      "url": "/data/parcels/2026-05-12/cells/8-9.fgb"
+    },
+    {
+      "id": "9-10",
+      "bounds": [-9681568, 4310480, -9679520, 4312528],
+      "featureCount": 478,
+      "byteLength": 272088,
+      "url": "/data/parcels/2026-05-12/cells/9-10.fgb"
+    },
+    {
+      "id": "9-11",
+      "bounds": [-9681568, 4312528, -9679520, 4314576],
+      "featureCount": 150,
+      "byteLength": 72744,
+      "url": "/data/parcels/2026-05-12/cells/9-11.fgb"
+    },
+    {
+      "id": "9-12",
+      "bounds": [-9681568, 4314576, -9679520, 4316624],
+      "featureCount": 64,
+      "byteLength": 38840,
+      "url": "/data/parcels/2026-05-12/cells/9-12.fgb"
+    },
+    {
+      "id": "9-13",
+      "bounds": [-9681568, 4316624, -9679520, 4318672],
+      "featureCount": 72,
+      "byteLength": 44680,
+      "url": "/data/parcels/2026-05-12/cells/9-13.fgb"
+    },
+    {
+      "id": "9-14",
+      "bounds": [-9681568, 4318672, -9679520, 4320720],
+      "featureCount": 46,
+      "byteLength": 31576,
+      "url": "/data/parcels/2026-05-12/cells/9-14.fgb"
+    },
+    {
+      "id": "9-15",
+      "bounds": [-9681568, 4320720, -9679520, 4322768],
+      "featureCount": 74,
+      "byteLength": 41528,
+      "url": "/data/parcels/2026-05-12/cells/9-15.fgb"
+    },
+    {
+      "id": "9-16",
+      "bounds": [-9681568, 4322768, -9679520, 4324816],
+      "featureCount": 6,
+      "byteLength": 11416,
+      "url": "/data/parcels/2026-05-12/cells/9-16.fgb"
+    },
+    {
+      "id": "9-17",
+      "bounds": [-9681568, 4324816, -9679520, 4326864],
+      "featureCount": 42,
+      "byteLength": 43584,
+      "url": "/data/parcels/2026-05-12/cells/9-17.fgb"
+    },
+    {
+      "id": "9-18",
+      "bounds": [-9681568, 4326864, -9679520, 4328912],
+      "featureCount": 44,
+      "byteLength": 60816,
+      "url": "/data/parcels/2026-05-12/cells/9-18.fgb"
+    },
+    {
+      "id": "9-19",
+      "bounds": [-9681568, 4328912, -9679520, 4330960],
+      "featureCount": 63,
+      "byteLength": 70296,
+      "url": "/data/parcels/2026-05-12/cells/9-19.fgb"
+    },
+    {
+      "id": "9-20",
+      "bounds": [-9681568, 4330960, -9679520, 4333008],
+      "featureCount": 71,
+      "byteLength": 36424,
+      "url": "/data/parcels/2026-05-12/cells/9-20.fgb"
+    },
+    {
+      "id": "9-21",
+      "bounds": [-9681568, 4333008, -9679520, 4335056],
+      "featureCount": 42,
+      "byteLength": 22016,
+      "url": "/data/parcels/2026-05-12/cells/9-21.fgb"
+    },
+    {
+      "id": "9-22",
+      "bounds": [-9681568, 4335056, -9679520, 4337104],
+      "featureCount": 55,
+      "byteLength": 38112,
+      "url": "/data/parcels/2026-05-12/cells/9-22.fgb"
+    },
+    {
+      "id": "9-23",
+      "bounds": [-9681568, 4337104, -9679520, 4339152],
+      "featureCount": 51,
+      "byteLength": 41592,
+      "url": "/data/parcels/2026-05-12/cells/9-23.fgb"
+    },
+    {
+      "id": "9-24",
+      "bounds": [-9681568, 4339152, -9679520, 4341200],
+      "featureCount": 2,
+      "byteLength": 4608,
+      "url": "/data/parcels/2026-05-12/cells/9-24.fgb"
+    },
+    {
+      "id": "9-6",
+      "bounds": [-9681568, 4302288, -9679520, 4304336],
+      "featureCount": 2,
+      "byteLength": 1216,
+      "url": "/data/parcels/2026-05-12/cells/9-6.fgb"
+    },
+    {
+      "id": "9-7",
+      "bounds": [-9681568, 4304336, -9679520, 4306384],
+      "featureCount": 772,
+      "byteLength": 344536,
+      "url": "/data/parcels/2026-05-12/cells/9-7.fgb"
+    },
+    {
+      "id": "9-8",
+      "bounds": [-9681568, 4306384, -9679520, 4308432],
+      "featureCount": 1028,
+      "byteLength": 468304,
+      "url": "/data/parcels/2026-05-12/cells/9-8.fgb"
+    },
+    {
+      "id": "9-9",
+      "bounds": [-9681568, 4308432, -9679520, 4310480],
+      "featureCount": 1023,
+      "byteLength": 574552,
+      "url": "/data/parcels/2026-05-12/cells/9-9.fgb"
+    }
+  ],
+  "statistics": {
+    "appraisalQuantiles": [260000, 358600, 468000, 711900],
+    "landUse": [
+      {
+        "key": "011",
+        "label": "SINGLE FAMILY",
+        "count": 150017
+      },
+      {
+        "key": "015",
+        "label": "RESIDENTIAL CONDO",
+        "count": 55186
+      },
+      {
+        "key": "010",
+        "label": "VACANT RESIDENTIAL LAND",
+        "count": 22598
+      },
+      {
+        "key": "unknown",
+        "label": "Not available",
+        "count": 15476
+      },
+      {
+        "key": "012",
+        "label": "DUPLEX",
+        "count": 7052
+      },
+      {
+        "key": "081",
+        "label": "SINGLE FAMILY",
+        "count": 6853
+      },
+      {
+        "key": "016",
+        "label": "ZERO LOT LINE",
+        "count": 5420
+      },
+      {
+        "key": "080",
+        "label": "VACANT RURAL LAND",
+        "count": 3209
+      },
+      {
+        "key": "020",
+        "label": "VACANT COMMERCIAL LAND",
+        "count": 2554
+      },
+      {
+        "key": "032",
+        "label": "OFFICE BLDG (ONE OR TWO STORIES)",
+        "count": 1804
+      },
+      {
+        "key": "048",
+        "label": "PARKING LOT",
+        "count": 1465
+      },
+      {
+        "key": "091",
+        "label": "CHURCH",
+        "count": 889
+      },
+      {
+        "key": "064",
+        "label": "SMALL WAREHOUSE",
+        "count": 880
+      },
+      {
+        "key": "025",
+        "label": "ONE STORY GENERAL RETAIL STORE",
+        "count": 868
+      },
+      {
+        "key": "036",
+        "label": "CONDOMINIUM OFC OR OTHER COM CONDO",
+        "count": 751
+      },
+      {
+        "key": "022",
+        "label": "STRIP SHOPPING CENTER",
+        "count": 687
+      },
+      {
+        "key": "038",
+        "label": "APARTMENT: LOW RISE (BUILT SINCE 1960)",
+        "count": 668
+      },
+      {
+        "key": "077",
+        "label": "TERMINAL/DISTRIBUTION WARHOUSE",
+        "count": 625
+      },
+      {
+        "key": "042",
+        "label": "AUTO REPAIR/BODY SHOP",
+        "count": 482
+      },
+      {
+        "key": "051",
+        "label": "RESTURANT/CAFETERIA",
+        "count": 446
+      },
+      {
+        "key": "019",
+        "label": "RESIDENTIAL COMBO/MISC",
+        "count": 431
+      },
+      {
+        "key": "070",
+        "label": "VACANT INDUSTRIAL LAND",
+        "count": 390
+      },
+      {
+        "key": "041",
+        "label": "AUTO DEALER",
+        "count": 376
+      },
+      {
+        "key": "013",
+        "label": "TRIPLEX",
+        "count": 352
+      },
+      {
+        "key": "052",
+        "label": "FAST FOOD",
+        "count": 341
+      },
+      {
+        "key": "034",
+        "label": "MEDICAL OFFICE (ONE OR TWO STORIES)",
+        "count": 330
+      },
+      {
+        "key": "024",
+        "label": "SMALL SERVICE SHOP",
+        "count": 328
+      },
+      {
+        "key": "093",
+        "label": "SCHOOL OR COLLEGE",
+        "count": 309
+      },
+      {
+        "key": "071",
+        "label": "LIGHT MANUFACTURING",
+        "count": 309
+      },
+      {
+        "key": "096",
+        "label": "MORTUARY/CEMETERY",
+        "count": 305
+      },
+      {
+        "key": "002",
+        "label": "METRO OTHER THAN OFC, SCHOOL,HOSP, OR PARK",
+        "count": 294
+      },
+      {
+        "key": "085",
+        "label": "FARM BUILDINGS ONLY",
+        "count": 289
+      },
+      {
+        "key": "059",
+        "label": "HOTEL/MOTEL",
+        "count": 281
+      },
+      {
+        "key": "045",
+        "label": "CONVENIENCE MARKET WITH GAS",
+        "count": 261
+      },
+      {
+        "key": "088",
+        "label": "MOBILE HOME",
+        "count": 261
+      },
+      {
+        "key": "014",
+        "label": "QUADPLEX",
+        "count": 244
+      },
+      {
+        "key": "039",
+        "label": "APARTMENT: HIGH RISE (3 STORIES OR GREATER)",
+        "count": 222
+      },
+      {
+        "key": "033",
+        "label": "OFFICE BLDG (3 OR MORE STORIES)",
+        "count": 213
+      },
+      {
+        "key": "031",
+        "label": "BRANCH FINANCIAL INSTITUTION",
+        "count": 178
+      },
+      {
+        "key": "089",
+        "label": "RURAL COMBO",
+        "count": 172
+      },
+      {
+        "key": "018",
+        "label": "MOBILE HOME",
+        "count": 165
+      },
+      {
+        "key": "078",
+        "label": "OPEN STORAGE",
+        "count": 136
+      },
+      {
+        "key": "001",
+        "label": "PARK OR RECREATION",
+        "count": 134
+      },
+      {
+        "key": "030",
+        "label": "VACANT ZONED MULTI FAMILY",
+        "count": 117
+      },
+      {
+        "key": "053",
+        "label": "NIGHTCLUB/LOUNGE",
+        "count": 117
+      },
+      {
+        "key": "063",
+        "label": "MINI WAREHOUSE",
+        "count": 112
+      },
+      {
+        "key": "058",
+        "label": "RECORDING STUDIO",
+        "count": 107
+      },
+      {
+        "key": "027",
+        "label": "DAY CARE CENTER",
+        "count": 104
+      },
+      {
+        "key": "075",
+        "label": "BUSINESS CENTER",
+        "count": 101
+      },
+      {
+        "key": "017",
+        "label": "DORMITORY/BOARDING HOUSE",
+        "count": 98
+      },
+      {
+        "key": "072",
+        "label": "HEAVY MANUFACTURING",
+        "count": 97
+      },
+      {
+        "key": "055",
+        "label": "TRANSMITTING TOWERS",
+        "count": 93
+      },
+      {
+        "key": "098",
+        "label": "CLUB/UNION HALL/LODGE",
+        "count": 89
+      },
+      {
+        "key": "037",
+        "label": "APARTMENT: WALK UP (BUILT PRIOR TO 1960)\r\nA",
+        "count": 87
+      },
+      {
+        "key": "029",
+        "label": "CONVENIENCE MARKET WITHOUT GAS",
+        "count": 75
+      },
+      {
+        "key": "023",
+        "label": "SHOPPING CENTER",
+        "count": 74
+      },
+      {
+        "key": "049",
+        "label": "PARKING GARAGE",
+        "count": 58
+      },
+      {
+        "key": "095",
+        "label": "NURSING HOME",
+        "count": 58
+      },
+      {
+        "key": "047",
+        "label": "CAR WASH",
+        "count": 57
+      },
+      {
+        "key": "097",
+        "label": "NON-PROFIT CHARITABLE SERVICE",
+        "count": 49
+      },
+      {
+        "key": "021",
+        "label": "NEIGHBORHOOD SUPERMARKET (FREE STANDING)",
+        "count": 49
+      },
+      {
+        "key": "082",
+        "label": "DUPLEX",
+        "count": 47
+      },
+      {
+        "key": "005",
+        "label": "FEDERAL OTHER THAN OFC, SCHOOL, HOSP, PARK",
+        "count": 46
+      },
+      {
+        "key": "056",
+        "label": "RECREATIONAL",
+        "count": 46
+      },
+      {
+        "key": "092",
+        "label": "PARSONAGE",
+        "count": 43
+      },
+      {
+        "key": "076",
+        "label": "MINERAL PROCESSING",
+        "count": 43
+      },
+      {
+        "key": "074",
+        "label": "PACKING PLANT/FOOD PROCESSING",
+        "count": 42
+      },
+      {
+        "key": "094",
+        "label": "HOSPITAL OR CLINIC",
+        "count": 39
+      },
+      {
+        "key": "065",
+        "label": "WHOLESALE OUTLET",
+        "count": 39
+      },
+      {
+        "key": "046",
+        "label": "MINI LUBE",
+        "count": 38
+      },
+      {
+        "key": "062",
+        "label": "MOBILE HOME PARK",
+        "count": 35
+      },
+      {
+        "key": "007",
+        "label": "FIRE STATION",
+        "count": 29
+      },
+      {
+        "key": "099",
+        "label": "MUSEUM OR OTHER CULTURAL ORG.",
+        "count": 26
+      },
+      {
+        "key": "004",
+        "label": "STATE OTHER THAN OFC, SCHOOL, HOSP, OR PARK",
+        "count": 23
+      },
+      {
+        "key": "057",
+        "label": "GOLF COURSE/DRIVING RANGE",
+        "count": 23
+      },
+      {
+        "key": "003",
+        "label": "SATELLITE CITY OTHER THAN OFC, SCHOOL, HOSP, PARK",
+        "count": 20
+      },
+      {
+        "key": "073",
+        "label": "LUMBER YARD/SAWMILL",
+        "count": 20
+      },
+      {
+        "key": "035",
+        "label": "MEDICAL OFFICE (THREE STORIES OR GREATER)",
+        "count": 16
+      },
+      {
+        "key": "043",
+        "label": "SERVICE STATION FULL SERVICE",
+        "count": 12
+      },
+      {
+        "key": "066",
+        "label": "GREENHOUSE/NURSERY",
+        "count": 12
+      },
+      {
+        "key": "054",
+        "label": "THEATER/AUDITORIUM",
+        "count": 11
+      },
+      {
+        "key": "044",
+        "label": "SELF SERVICE STATION (GAS ONLY)",
+        "count": 11
+      },
+      {
+        "key": "090",
+        "label": "EXEMPT VACANT LAND",
+        "count": 11
+      },
+      {
+        "key": "006",
+        "label": "LIBRARY",
+        "count": 9
+      },
+      {
+        "key": "026",
+        "label": "DEPARTMENT STORE",
+        "count": 6
+      },
+      {
+        "key": "061",
+        "label": "CAMP GROUND",
+        "count": 6
+      },
+      {
+        "key": "028",
+        "label": "ENCLOSED MALL",
+        "count": 4
+      },
+      {
+        "key": "067",
+        "label": "DOCK/MARINA",
+        "count": 3
+      },
+      {
+        "key": "086",
+        "label": "RESIDENTIAL CONDO",
+        "count": 2
+      },
+      {
+        "key": "069",
+        "label": "EVENT CENTER",
+        "count": 1
+      },
+      {
+        "key": "80M",
+        "label": "VACANT RURAL LAND",
+        "count": 1
+      },
+      {
+        "key": "008",
+        "label": "POLICE SUB STATION",
+        "count": 1
+      }
+    ],
+    "zoning": [
+      {
+        "key": "RS10",
+        "label": "RS10",
+        "count": 39029
+      },
+      {
+        "key": "R10",
+        "label": "R10",
+        "count": 32068
+      },
+      {
+        "key": "SP",
+        "label": "SP",
+        "count": 19169
+      },
+      {
+        "key": "RS7.5",
+        "label": "RS7.5",
+        "count": 18991
+      },
+      {
+        "key": "RS15",
+        "label": "RS15",
+        "count": 16477
+      },
+      {
+        "key": "R6",
+        "label": "R6",
+        "count": 14415
+      },
+      {
+        "key": "RS20",
+        "label": "RS20",
+        "count": 12151
+      },
+      {
+        "key": "R8",
+        "label": "R8",
+        "count": 11662
+      },
+      {
+        "key": "R15",
+        "label": "R15",
+        "count": 11313
+      },
+      {
+        "key": "RS5",
+        "label": "RS5",
+        "count": 9934
+      },
+      {
+        "key": "AR2A",
+        "label": "AR2A",
+        "count": 9028
+      },
+      {
+        "key": "R20",
+        "label": "R20",
+        "count": 8707
+      },
+      {
+        "key": "RM9",
+        "label": "RM9",
+        "count": 8358
+      },
+      {
+        "key": "RM20",
+        "label": "RM20",
+        "count": 6652
+      },
+      {
+        "key": "RS40",
+        "label": "RS40",
+        "count": 6047
+      },
+      {
+        "key": "DTC",
+        "label": "DTC",
+        "count": 5653
+      },
+      {
+        "key": "CS",
+        "label": "CS",
+        "count": 5384
+      },
+      {
+        "key": "6ZZ",
+        "label": "6ZZ",
+        "count": 4056
+      },
+      {
+        "key": "RM15",
+        "label": "RM15",
+        "count": 3133
+      },
+      {
+        "key": "R40",
+        "label": "R40",
+        "count": 3115
+      },
+      {
+        "key": "RM40",
+        "label": "RM40",
+        "count": 2712
+      },
+      {
+        "key": "R6-A",
+        "label": "R6-A",
+        "count": 2668
+      },
+      {
+        "key": "RM6",
+        "label": "RM6",
+        "count": 2558
+      },
+      {
+        "key": "5ZZ",
+        "label": "5ZZ",
+        "count": 2140
+      },
+      {
+        "key": "OR20",
+        "label": "OR20",
+        "count": 2095
+      },
+      {
+        "key": "RM40-A-NS",
+        "label": "RM40-A-NS",
+        "count": 2086
+      },
+      {
+        "key": "8ZZ",
+        "label": "8ZZ",
+        "count": 2037
+      },
+      {
+        "key": "MUL",
+        "label": "MUL",
+        "count": 1955
+      },
+      {
+        "key": "IWD",
+        "label": "IWD",
+        "count": 1797
+      },
+      {
+        "key": "MUL-A",
+        "label": "MUL-A",
+        "count": 1752
+      },
+      {
+        "key": "IR",
+        "label": "IR",
+        "count": 1618
+      },
+      {
+        "key": "CL",
+        "label": "CL",
+        "count": 1378
+      },
+      {
+        "key": "3ZZ",
+        "label": "3ZZ",
+        "count": 1227
+      },
+      {
+        "key": "RM20-A",
+        "label": "RM20-A",
+        "count": 1190
+      },
+      {
+        "key": "ORI",
+        "label": "ORI",
+        "count": 1121
+      },
+      {
+        "key": "RM20-A-NS",
+        "label": "RM20-A-NS",
+        "count": 957
+      },
+      {
+        "key": "RM4",
+        "label": "RM4",
+        "count": 929
+      },
+      {
+        "key": "RS80",
+        "label": "RS80",
+        "count": 922
+      },
+      {
+        "key": "4ZZ",
+        "label": "4ZZ",
+        "count": 921
+      },
+      {
+        "key": "RS30",
+        "label": "RS30",
+        "count": 894
+      },
+      {
+        "key": "MUG-A",
+        "label": "MUG-A",
+        "count": 865
+      },
+      {
+        "key": "MUI-A",
+        "label": "MUI-A",
+        "count": 645
+      },
+      {
+        "key": "ORI-A",
+        "label": "ORI-A",
+        "count": 593
+      },
+      {
+        "key": "MUN",
+        "label": "MUN",
+        "count": 573
+      },
+      {
+        "key": "MUG",
+        "label": "MUG",
+        "count": 573
+      },
+      {
+        "key": "SCR",
+        "label": "SCR",
+        "count": 504
+      },
+      {
+        "key": "MUL-A-NS",
+        "label": "MUL-A-NS",
+        "count": 469
+      },
+      {
+        "key": "RS3.75",
+        "label": "RS3.75",
+        "count": 435
+      },
+      {
+        "key": "CF",
+        "label": "CF",
+        "count": 427
+      },
+      {
+        "key": "RM9-NS",
+        "label": "RM9-NS",
+        "count": 290
+      },
+      {
+        "key": "R80",
+        "label": "R80",
+        "count": 263
+      },
+      {
+        "key": "MUN-A",
+        "label": "MUN-A",
+        "count": 242
+      },
+      {
+        "key": "OL",
+        "label": "OL",
+        "count": 184
+      },
+      {
+        "key": "CN",
+        "label": "CN",
+        "count": 180
+      },
+      {
+        "key": "RM15-A",
+        "label": "RM15-A",
+        "count": 173
+      },
+      {
+        "key": "RM2",
+        "label": "RM2",
+        "count": 164
+      },
+      {
+        "key": "SCC",
+        "label": "SCC",
+        "count": 151
+      },
+      {
+        "key": "OR20-A",
+        "label": "OR20-A",
+        "count": 146
+      },
+      {
+        "key": "OR40",
+        "label": "OR40",
+        "count": 121
+      },
+      {
+        "key": "RM40-A",
+        "label": "RM40-A",
+        "count": 121
+      },
+      {
+        "key": "MUI",
+        "label": "MUI",
+        "count": 101
+      },
+      {
+        "key": "RM15-A-NS",
+        "label": "RM15-A-NS",
+        "count": 100
+      },
+      {
+        "key": "RM9-A",
+        "label": "RM9-A",
+        "count": 96
+      },
+      {
+        "key": "IG",
+        "label": "IG",
+        "count": 79
+      },
+      {
+        "key": "unknown",
+        "label": "Not available",
+        "count": 67
+      },
+      {
+        "key": "CA",
+        "label": "CA",
+        "count": 59
+      },
+      {
+        "key": "R30",
+        "label": "R30",
+        "count": 58
+      },
+      {
+        "key": "OG",
+        "label": "OG",
+        "count": 56
+      },
+      {
+        "key": "ON",
+        "label": "ON",
+        "count": 55
+      },
+      {
+        "key": "9ZZ",
+        "label": "9ZZ",
+        "count": 45
+      },
+      {
+        "key": "R8-A",
+        "label": "R8-A",
+        "count": 43
+      },
+      {
+        "key": "OR40-A-NS",
+        "label": "OR40-A-NS",
+        "count": 40
+      },
+      {
+        "key": "MUN-A-NS",
+        "label": "MUN-A-NS",
+        "count": 32
+      },
+      {
+        "key": "RM9-A-NS",
+        "label": "RM9-A-NS",
+        "count": 31
+      },
+      {
+        "key": "OR20-NS",
+        "label": "OR20-NS",
+        "count": 25
+      },
+      {
+        "key": "SCN",
+        "label": "SCN",
+        "count": 22
+      },
+      {
+        "key": "CL-NS",
+        "label": "CL-NS",
+        "count": 20
+      },
+      {
+        "key": "MUG-A-NS",
+        "label": "MUG-A-NS",
+        "count": 18
+      },
+      {
+        "key": "CS-A",
+        "label": "CS-A",
+        "count": 16
+      },
+      {
+        "key": "OR40-A",
+        "label": "OR40-A",
+        "count": 15
+      },
+      {
+        "key": "MUG-NS",
+        "label": "MUG-NS",
+        "count": 12
+      },
+      {
+        "key": "MUL-NS",
+        "label": "MUL-NS",
+        "count": 6
+      },
+      {
+        "key": "OR20-A-NS",
+        "label": "OR20-A-NS",
+        "count": 6
+      },
+      {
+        "key": "RM15-NS",
+        "label": "RM15-NS",
+        "count": 5
+      },
+      {
+        "key": "CS-NS",
+        "label": "CS-NS",
+        "count": 5
+      },
+      {
+        "key": "CL-A",
+        "label": "CL-A",
+        "count": 4
+      },
+      {
+        "key": "RM2-NS",
+        "label": "RM2-NS",
+        "count": 4
+      },
+      {
+        "key": "MUN-NS",
+        "label": "MUN-NS",
+        "count": 4
+      },
+      {
+        "key": "RM40-NS",
+        "label": "RM40-NS",
+        "count": 3
+      },
+      {
+        "key": "MUI-A-NS",
+        "label": "MUI-A-NS",
+        "count": 3
+      },
+      {
+        "key": "RM20-NS",
+        "label": "RM20-NS",
+        "count": 2
+      },
+      {
+        "key": "RM60",
+        "label": "RM60",
+        "count": 2
+      },
+      {
+        "key": "TRD-SEND",
+        "label": "TRD-SEND",
+        "count": 1
+      },
+      {
+        "key": "I",
+        "label": "I",
+        "count": 1
+      },
+      {
+        "key": "RM4-NS",
+        "label": "RM4-NS",
+        "count": 1
+      },
+      {
+        "key": "CS-A-NS",
+        "label": "CS-A-NS",
+        "count": 1
+      },
+      {
+        "key": "LW-R",
+        "label": "LW-R",
+        "count": 1
+      },
+      {
+        "key": "RM6-NS",
+        "label": "RM6-NS",
+        "count": 1
+      }
+    ],
+    "featureTypes": [
+      {
+        "key": "Lot",
+        "label": "Lot",
+        "count": 156319
+      },
+      {
+        "key": "Condo",
+        "label": "Condo",
+        "count": 47858
+      },
+      {
+        "key": "Other",
+        "label": "Other",
+        "count": 26758
+      },
+      {
+        "key": "Multistory Cond",
+        "label": "Multistory Cond",
+        "count": 21798
+      },
+      {
+        "key": "Acreage Tract",
+        "label": "Acreage Tract",
+        "count": 20513
+      },
+      {
+        "key": "Common Area",
+        "label": "Common Area",
+        "count": 9081
+      },
+      {
+        "key": "Open Space",
+        "label": "Open Space",
+        "count": 3431
+      },
+      {
+        "key": "Cemetery",
+        "label": "Cemetery",
+        "count": 315
+      },
+      {
+        "key": "Williamson",
+        "label": "Williamson",
+        "count": 103
+      },
+      {
+        "key": "Multistory Comm",
+        "label": "Multistory Comm",
+        "count": 81
+      },
+      {
+        "key": "Wilson",
+        "label": "Wilson",
+        "count": 58
+      },
+      {
+        "key": "USA",
+        "label": "USA",
+        "count": 48
+      },
+      {
+        "key": "Robertson",
+        "label": "Robertson",
+        "count": 46
+      },
+      {
+        "key": "Cheatham",
+        "label": "Cheatham",
+        "count": 45
+      },
+      {
+        "key": "Rutherford",
+        "label": "Rutherford",
+        "count": 4
+      }
+    ],
+    "missingAddress": 50,
+    "missingLandUse": 15476,
+    "missingZoning": 67
+  },
+  "validation": {
+    "repairedRings": 0,
+    "sourceCoordinateCount": 3354442,
+    "projectedCoordinateCount": 3354442,
+    "simplifiedCoordinateCount": 0,
+    "shardRecordReferences": 305913,
+    "deduplicatedRecordCount": 286458,
+    "warnings": [],
+    "generatedAt": "2026-07-23T05:14:50.002Z"
+  }
+}

@@ -1,0 +1,17 @@
+node_modules
+.DS_Store
+dist
+dist-ssr
+*.local
+.env
+.nitro
+.tanstack
+.wrangler
+.output
+.vinxi
+.netlify
+coverage
+playwright-report
+test-results
+__unconfig*
+todos.json

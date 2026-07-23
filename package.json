@@ -1,0 +1,71 @@
+{
+  "name": "city-builder-prototype",
+  "private": true,
+  "type": "module",
+  "imports": {
+    "#/*": "./src/*"
+  },
+  "scripts": {
+    "dev": "vite dev --port 20073",
+    "generate-routes": "tsr generate",
+    "build": "vite build",
+    "preview": "vite preview",
+    "lint": "eslint",
+    "format": "prettier --write . && eslint --fix",
+    "check": "prettier --check .",
+    "data:build": "node --max-old-space-size=4096 scripts/build-parcels.mjs",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:e2e": "playwright test"
+  },
+  "dependencies": {
+    "@fontsource-variable/manrope": "^5.3.0",
+    "@fontsource/barlow-condensed": "^5.3.0",
+    "@fontsource/ibm-plex-mono": "^5.3.0",
+    "@tailwindcss/vite": "^4.1.18",
+    "@tanstack/react-devtools": "latest",
+    "@tanstack/react-router": "latest",
+    "@tanstack/react-router-devtools": "latest",
+    "@tanstack/react-start": "latest",
+    "earcut": "^3.2.3",
+    "flatgeobuf": "^4.4.0",
+    "proj4": "^2.20.9",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "shapefile": "^0.6.6",
+    "tailwindcss": "^4.1.18",
+    "three": "^0.185.1",
+    "three-mesh-bvh": "^0.9.13",
+    "unzipper": "^0.12.5",
+    "zod": "^4.4.3"
+  },
+  "devDependencies": {
+    "@netlify/vite-plugin-tanstack-start": "^1.2.15",
+    "@playwright/test": "^1.61.1",
+    "@tanstack/devtools-vite": "latest",
+    "@tanstack/eslint-config": "latest",
+    "@tanstack/router-cli": "^1.132.0",
+    "@testing-library/jest-dom": "^7.0.0",
+    "@testing-library/react": "^16.3.2",
+    "@types/earcut": "^3.0.0",
+    "@types/node": "^22.10.2",
+    "@types/react": "^19.2.0",
+    "@types/react-dom": "^19.2.0",
+    "@types/shapefile": "^0.6.4",
+    "@types/three": "^0.185.1",
+    "@types/unzipper": "^0.10.11",
+    "@vitejs/plugin-react": "^6.0.1",
+    "eslint": "^9.20.0",
+    "jsdom": "^29.1.1",
+    "prettier": "^3.8.1",
+    "typescript": "^6.0.2",
+    "vite": "^8.0.0",
+    "vitest": "^4.1.10"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "esbuild",
+      "lightningcss"
+    ]
+  }
+}

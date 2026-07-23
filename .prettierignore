@@ -1,0 +1,7 @@
+node_modules
+dist
+.netlify
+public/data/parcels/**/*.fgb
+playwright-report
+test-results
+coverage
