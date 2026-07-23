@@ -1,5 +1,5 @@
-import { expect, test  } from '@playwright/test'
-import type {Page} from '@playwright/test';
+import { expect, test } from '@playwright/test'
+import type { Page } from '@playwright/test'
 
 async function waitForMap(page: Page) {
   await expect(page.locator('canvas')).toBeVisible()
