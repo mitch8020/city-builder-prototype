@@ -6,13 +6,7 @@ import {
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import type { FormEvent, ReactNode } from 'react'
 import { CityMap } from '../map/CityMap'
-import {
-  LANDMARKS,
-  METRO_GEOCODER,
-  METRO_PARCELS,
-  METRO_VIEWER,
-  MODE_DETAILS,
-} from '../map/constants'
+import { LANDMARKS, METRO_VIEWER, MODE_DETAILS } from '../map/constants'
 import {
   displayValue,
   formatAcres,
@@ -21,6 +15,7 @@ import {
   legendForMode,
   tooltipDetail,
 } from '../map/map-utils'
+import { landmarkSuggestions, searchNashville } from '../map/nashville-search'
 import type {
   CityMapController,
   MapMode,
@@ -29,12 +24,7 @@ import type {
   SceneStatus,
   SearchResult,
 } from '../map/types'
-import {
-  geocoderResponseSchema,
-  mapSearchSchema,
-  metroParcelResponseSchema,
-  parcelManifestSchema,
-} from '../map/validation'
+import { mapSearchSchema, parcelManifestSchema } from '../map/validation'
 
 export const Route = createFileRoute('/')({
   validateSearch: mapSearchSchema,
@@ -164,95 +154,10 @@ function NashvilleApp() {
   }, [handleSelect, selectedGroup])
   const handleUnsupported = useCallback(() => setUnsupported(true), [])
 
-  const runSearch = useCallback(async (value: string, signal?: AbortSignal) => {
-    const trimmed = value.trim()
-    if (trimmed.length < 2) return []
-    const parcelIdMatch = /^parId:(\d+)$/i.exec(trimmed)
-    const local = LANDMARKS.filter((result) =>
-      `${result.label} ${result.detail}`
-        .toLowerCase()
-        .includes(trimmed.toLowerCase()),
-    )
-    const parcelLike =
-      Boolean(parcelIdMatch) ||
-      (/^[\d\s-]+$/.test(trimmed) && trimmed.replace(/\D/g, '').length >= 8)
-
-    if (local.length > 0 && !parcelLike) {
-      return local.slice(0, 7)
-    }
-
-    if (parcelLike) {
-      const where = parcelIdMatch
-        ? `ParID=${parcelIdMatch[1]}`
-        : `APN='${trimmed.replaceAll("'", "''")}'`
-      const params = new URLSearchParams({
-        where,
-        outFields: 'APN,ParID,PropAddr',
-        returnGeometry: 'true',
-        outSR: '3857',
-        resultRecordCount: '6',
-        f: 'geojson',
-      })
-      const response = await fetch(`${METRO_PARCELS}?${params}`, { signal })
-      if (!response.ok) throw new Error('Parcel search is unavailable')
-      const collection = metroParcelResponseSchema.parse(await response.json())
-      const parcels: SearchResult[] = collection.features.map((feature) => {
-        const [x, y] = geometryCenter(feature.geometry)
-        return {
-          id: `parcel-${feature.properties.ParID || feature.properties.APN || 'result'}`,
-          label: `${feature.properties.PropAddr || 'Parcel'}`,
-          detail: `Parcel ${feature.properties.APN || trimmed}`.trim(),
-          x,
-          y,
-          kind: 'parcel' as const,
-          parcel: `${feature.properties.APN || ''}` || undefined,
-          parId: Number.isFinite(Number(feature.properties.ParID))
-            ? Number(feature.properties.ParID)
-            : undefined,
-        }
-      })
-      return [...parcels, ...local].slice(0, 7)
-    }
-
-    const params = new URLSearchParams({
-      SingleLine: trimmed,
-      outFields: 'Match_addr,Addr_type',
-      outSR: '3857',
-      maxLocations: '6',
-      f: 'json',
-    })
-    const response = await fetch(`${METRO_GEOCODER}?${params}`, { signal })
-    if (!response.ok) throw new Error('Address search is unavailable')
-    const data = geocoderResponseSchema.parse(await response.json())
-    const addresses: SearchResult[] = data.candidates
-      .filter(
-        (
-          candidate,
-        ): candidate is typeof candidate & {
-          location: { x: number; y: number }
-        } => candidate.score >= 70 && Boolean(candidate.location),
-      )
-      .map((candidate) => ({
-        id: `address-${candidate.location.x}-${candidate.location.y}`,
-        label: candidate.address,
-        detail: `${candidate.attributes?.Addr_type || 'Nashville address'} · ${Math.round(candidate.score)}% match`,
-        x: candidate.location.x,
-        y: candidate.location.y,
-        kind: 'address' as const,
-      }))
-    return [...local, ...addresses].slice(0, 7)
-  }, [])
-
   useEffect(() => {
     searchAbortRef.current?.abort()
     if (query.trim().length < 2) {
-      setResults(
-        query.trim()
-          ? LANDMARKS.filter((item) =>
-              item.label.toLowerCase().includes(query.toLowerCase()),
-            )
-          : LANDMARKS.slice(0, 3),
-      )
+      setResults(landmarkSuggestions(query))
       setSearching(false)
       return
     }
@@ -260,15 +165,12 @@ function NashvilleApp() {
     searchAbortRef.current = controller
     const timer = setTimeout(() => {
       setSearching(true)
-      runSearch(query, controller.signal)
+      searchNashville(query, { signal: controller.signal })
         .then(setResults)
         .catch((error: unknown) => {
           if (error instanceof DOMException && error.name === 'AbortError')
             return
-          const local = LANDMARKS.filter((result) =>
-            result.label.toLowerCase().includes(query.toLowerCase()),
-          )
-          setResults(local)
+          setResults(landmarkSuggestions(query))
           setToast('Metro search is offline. Landmark jumps still work.')
         })
         .finally(() => {
@@ -279,7 +181,7 @@ function NashvilleApp() {
       clearTimeout(timer)
       controller.abort()
     }
-  }, [query, runSearch])
+  }, [query])
 
   useEffect(() => {
     if (
@@ -291,7 +193,7 @@ function NashvilleApp() {
       return
     }
     shareResolvedRef.current = true
-    runSearch(
+    searchNashville(
       search.parId !== undefined ? `parId:${search.parId}` : search.parcel,
     )
       .then((matches) => {
@@ -309,7 +211,7 @@ function NashvilleApp() {
         })
       })
       .catch(() => setToast('That shared parcel could not be restored.'))
-  }, [manifest, runSearch, search.parcel, search.parId])
+  }, [manifest, search.parcel, search.parId])
 
   const selectResult = (result: SearchResult) => {
     setQuery(result.label)
@@ -882,30 +784,6 @@ function Control({
       </div>
     </div>
   )
-}
-
-function geometryCenter(geometry: { type: string; coordinates: unknown }) {
-  const coordinates: number[][] = []
-  const visit = (value: unknown) => {
-    if (
-      Array.isArray(value) &&
-      value.length >= 2 &&
-      typeof value[0] === 'number' &&
-      typeof value[1] === 'number'
-    ) {
-      coordinates.push(value as number[])
-      return
-    }
-    if (Array.isArray(value)) value.forEach(visit)
-  }
-  visit(geometry.coordinates)
-  if (!coordinates.length) return [0, 0] as const
-  const xs = coordinates.map((point) => point[0])
-  const ys = coordinates.map((point) => point[1])
-  return [
-    (Math.min(...xs) + Math.max(...xs)) / 2,
-    (Math.min(...ys) + Math.max(...ys)) / 2,
-  ] as const
 }
 
 function formatDate(value: string) {
