@@ -25,6 +25,19 @@ describe('shareable URL state', () => {
       mode: 'overview',
       parId: undefined,
     })
+    expect(
+      mapSearchSchema.parse({
+        mode: 'value',
+        parcel: '',
+        parId: '-1',
+        floor: 'x'.repeat(33),
+      }),
+    ).toEqual({
+      mode: 'value',
+      parcel: undefined,
+      parId: undefined,
+      floor: undefined,
+    })
   })
 })
 

@@ -132,7 +132,7 @@ test('selects and cycles a condo, restores its share URL, and searches APN', asy
 
   const search = page.getByLabel('Search Nashville address or parcel number')
   await search.fill('930 Commerce')
-  await page.getByRole('button', { name: /930 COMMERCE ST, 37203/ }).click()
+  await page.getByRole('option', { name: /930 COMMERCE ST, 37203/ }).click()
   await expect(page.getByText(/of 32/)).toBeVisible({ timeout: 20_000 })
 
   const firstAddress = await page
@@ -165,7 +165,7 @@ test('selects and cycles a condo, restores its share URL, and searches APN', asy
   expect(foundHover).toBe(true)
 
   await search.fill('09306208600')
-  await page.getByRole('button', { name: /100 BROADWAY Parcel/ }).click()
+  await page.getByRole('option', { name: /100 BROADWAY Parcel/ }).click()
   await expect(page).toHaveURL(/parcel=09306208600/)
   await expect(
     page.getByRole('heading', { name: '108 2ND AVE N' }),

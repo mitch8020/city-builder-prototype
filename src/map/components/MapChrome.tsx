@@ -33,14 +33,22 @@ export function UnsupportedScreen() {
   )
 }
 
-export function ManifestErrorScreen({ message }: { message: string }) {
+export function ManifestErrorScreen({
+  message,
+  onRetry,
+}: {
+  message: string
+  onRetry: () => void
+}) {
   return (
     <main className="fatal-screen">
       <BrandMark />
       <p className="eyebrow">Parcel package</p>
       <h1>The map data did not load</h1>
       <p>{message}</p>
-      <code>npm run data:build -- --input ..\Parcels_view_....zip</code>
+      <button className="primary-link" type="button" onClick={onRetry}>
+        Try loading the map again <ArrowIcon />
+      </button>
     </main>
   )
 }

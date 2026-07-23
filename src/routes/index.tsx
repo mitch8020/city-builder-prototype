@@ -54,6 +54,7 @@ function NashvilleApp() {
   const search = Route.useSearch()
   const navigate = useNavigate({ from: '/' })
   const mapRef = useRef<CityMapController | null>(null)
+  const searchInputRef = useRef<HTMLInputElement>(null)
   const searchAbortRef = useRef<AbortController | undefined>(undefined)
   const shareResolvedRef = useRef(false)
   const anchorUpdateRef = useRef({ time: 0, x: 0, y: 0 })
@@ -90,7 +91,7 @@ function NashvilleApp() {
       .catch((error: unknown) => {
         if (error instanceof DOMException && error.name === 'AbortError') return
         setManifestError(
-          error instanceof Error ? error.message : 'Parcel data is unavailable',
+          'The packaged parcel snapshot is unavailable or invalid.',
         )
       })
     return () => controller.abort()
@@ -161,10 +162,16 @@ function NashvilleApp() {
   }, [])
 
   const handleEscape = useCallback(() => {
-    setHelpOpen(false)
-    setSearchOpen(false)
+    if (helpOpen) {
+      setHelpOpen(false)
+      return
+    }
+    if (searchOpen) {
+      setSearchOpen(false)
+      return
+    }
     if (selectedGroup) handleSelect(undefined)
-  }, [handleSelect, selectedGroup])
+  }, [handleSelect, helpOpen, searchOpen, selectedGroup])
 
   const handleUnsupported = useCallback(() => setUnsupported(true), [])
 
@@ -175,10 +182,11 @@ function NashvilleApp() {
       setSearching(false)
       return
     }
+    setResults([])
+    setSearching(true)
     const controller = new AbortController()
     searchAbortRef.current = controller
     const timer = setTimeout(() => {
-      setSearching(true)
       searchNashville(query, { signal: controller.signal })
         .then(setResults)
         .catch((error: unknown) => {
@@ -195,6 +203,25 @@ function NashvilleApp() {
       clearTimeout(timer)
       controller.abort()
     }
+  }, [query])
+
+  useEffect(() => {
+    const focusSearch = (event: KeyboardEvent) => {
+      const target = event.target as HTMLElement | null
+      if (
+        event.key !== '/' ||
+        target?.matches('input, textarea, select') ||
+        target?.isContentEditable
+      ) {
+        return
+      }
+      event.preventDefault()
+      setSearchOpen(true)
+      if (!query) setResults(landmarkSuggestions(query))
+      searchInputRef.current?.focus()
+    }
+    window.addEventListener('keydown', focusSearch)
+    return () => window.removeEventListener('keydown', focusSearch)
   }, [query])
 
   useEffect(() => {
@@ -229,6 +256,7 @@ function NashvilleApp() {
 
   const selectResult = (result: SearchResult) => {
     setQuery(result.label)
+    setSearching(false)
     setSearchOpen(false)
     mapRef.current?.selectAt(result.x, result.y, {
       address: result.label,
@@ -259,12 +287,23 @@ function NashvilleApp() {
   }
 
   const copyLink = async () => {
-    await navigator.clipboard.writeText(window.location.href)
-    setToast('Parcel link copied')
+    try {
+      await navigator.clipboard.writeText(window.location.href)
+      setToast('Parcel link copied')
+    } catch {
+      setToast('Could not copy the link. Copy it from the address bar.')
+    }
   }
 
   if (unsupported) return <UnsupportedScreen />
-  if (manifestError) return <ManifestErrorScreen message={manifestError} />
+  if (manifestError) {
+    return (
+      <ManifestErrorScreen
+        message={manifestError}
+        onRetry={() => window.location.reload()}
+      />
+    )
+  }
 
   const hasSelection = Boolean(selectedGroup && selectedRid !== undefined)
 
@@ -272,83 +311,97 @@ function NashvilleApp() {
     <main className="city-app">
       <DesktopGuard />
 
-      <div className="map-stage">
-        {manifest ? (
-          <ClientOnly fallback={<MapLoading />}>
-            <CityMap
-              ref={mapRef}
-              manifest={manifest}
-              mode={search.mode}
-              selectedRid={selectedRid}
-              onSelect={handleSelect}
-              onHover={setHoveredGroup}
-              onStatus={setStatus}
-              onAnchor={handleAnchor}
-              onModeShortcut={setMode}
-              onEscape={handleEscape}
-              onUnsupported={handleUnsupported}
-            />
-          </ClientOnly>
-        ) : (
-          <MapLoading />
-        )}
-      </div>
+      <div className="desktop-experience">
+        <div className="map-stage">
+          {manifest ? (
+            <ClientOnly fallback={<MapLoading />}>
+              <CityMap
+                ref={mapRef}
+                manifest={manifest}
+                mode={search.mode}
+                selectedRid={selectedRid}
+                onSelect={handleSelect}
+                onHover={setHoveredGroup}
+                onStatus={setStatus}
+                onAnchor={handleAnchor}
+                onModeShortcut={setMode}
+                onEscape={handleEscape}
+                onUnsupported={handleUnsupported}
+              />
+            </ClientOnly>
+          ) : (
+            <MapLoading />
+          )}
+        </div>
 
-      <MapTopbar
-        manifest={manifest}
-        status={status}
-        onOpenControls={() => setHelpOpen(true)}
-        search={
-          <MapSearch
-            query={query}
-            results={results}
-            searching={searching}
-            open={searchOpen}
-            onQueryChange={(value) => {
-              setQuery(value)
-              setSearchOpen(true)
-            }}
-            onOpen={() => {
-              setSearchOpen(true)
-              if (!query) setResults(landmarkSuggestions(query))
-            }}
-            onSelect={selectResult}
-          />
-        }
-      />
-
-      <LegendPanel manifest={manifest} mode={search.mode} />
-      <CameraRail mapRef={mapRef} inspectorOpen={hasSelection} />
-
-      {selectedGroup && selectedRid !== undefined && (
-        <ParcelInspector
-          group={selectedGroup}
-          selectedRid={selectedRid}
-          onClose={() => handleSelect(undefined)}
-          onCycleUnit={cycleUnit}
-          onCopyLink={() => void copyLink()}
-        />
-      )}
-
-      {anchor && hasSelection && <SurveyTether anchor={anchor} />}
-      {hoveredGroup && !hasSelection && (
-        <HoverCard group={hoveredGroup} mode={search.mode} />
-      )}
-
-      <ModeRibbon mode={search.mode} onModeChange={setMode} />
-      <MapFooter status={status} />
-
-      {status.phase === 'zoom-to-parcels' && (
-        <ZoomInvitation
-          onActivate={() => {
-            const downtown = LANDMARKS[0]
-            mapRef.current?.flyTo(downtown.x, downtown.y, 2_400)
+        <MapTopbar
+          manifest={manifest}
+          status={status}
+          onOpenControls={() => {
+            setSearchOpen(false)
+            setHelpOpen(true)
           }}
+          search={
+            <MapSearch
+              query={query}
+              results={results}
+              searching={searching}
+              open={searchOpen}
+              inputRef={searchInputRef}
+              onQueryChange={(value) => {
+                setQuery(value)
+                setSearchOpen(true)
+                if (value.trim().length < 2) {
+                  setResults(landmarkSuggestions(value))
+                  setSearching(false)
+                } else {
+                  setResults([])
+                  setSearching(true)
+                }
+              }}
+              onOpen={() => {
+                setSearchOpen(true)
+                if (!query) setResults(landmarkSuggestions(query))
+              }}
+              onClose={() => setSearchOpen(false)}
+              onSelect={selectResult}
+            />
+          }
         />
-      )}
 
-      {helpOpen && <ControlsModal onClose={() => setHelpOpen(false)} />}
-      {toast && <MapToast message={toast} />}
+        <LegendPanel manifest={manifest} mode={search.mode} />
+        <CameraRail mapRef={mapRef} inspectorOpen={hasSelection} />
+
+        {selectedGroup && selectedRid !== undefined && (
+          <ParcelInspector
+            group={selectedGroup}
+            selectedRid={selectedRid}
+            onClose={() => handleSelect(undefined)}
+            onCycleUnit={cycleUnit}
+            onCopyLink={() => void copyLink()}
+          />
+        )}
+
+        {anchor && hasSelection && <SurveyTether anchor={anchor} />}
+        {hoveredGroup && !hasSelection && (
+          <HoverCard group={hoveredGroup} mode={search.mode} />
+        )}
+
+        <ModeRibbon mode={search.mode} onModeChange={setMode} />
+        <MapFooter status={status} />
+
+        {status.phase === 'zoom-to-parcels' && (
+          <ZoomInvitation
+            onActivate={() => {
+              const downtown = LANDMARKS[0]
+              mapRef.current?.flyTo(downtown.x, downtown.y, 2_400)
+            }}
+          />
+        )}
+
+        {helpOpen && <ControlsModal onClose={() => setHelpOpen(false)} />}
+        {toast && <MapToast message={toast} />}
+      </div>
     </main>
   )
 }

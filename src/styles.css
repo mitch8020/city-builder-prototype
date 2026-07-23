@@ -90,6 +90,10 @@ svg {
   isolation: isolate;
 }
 
+.desktop-experience {
+  display: contents;
+}
+
 .map-stage {
   z-index: 0;
   background:
@@ -1243,9 +1247,11 @@ kbd {
   gap: 8px;
   margin-top: 17px;
   padding: 11px 14px;
+  border: 0;
   border-radius: 10px 10px 10px 3px;
   color: var(--white);
   background: var(--ink);
+  cursor: pointer;
   font-size: 11px;
   font-weight: 750;
   text-decoration: none;
@@ -1323,6 +1329,10 @@ kbd {
 @media (max-width: 959px), (max-height: 620px) {
   .desktop-guard {
     display: grid;
+  }
+
+  .desktop-experience {
+    display: none;
   }
 }
 

@@ -1,5 +1,11 @@
-import { HeadContent, Scripts, createRootRoute } from '@tanstack/react-router'
+import {
+  HeadContent,
+  Link,
+  Scripts,
+  createRootRoute,
+} from '@tanstack/react-router'
 import type { ReactNode } from 'react'
+import { ArrowIcon, BrandMark } from '../map/components/icons'
 import appCss from '../styles.css?url'
 
 export const Route = createRootRoute({
@@ -26,6 +32,7 @@ export const Route = createRootRoute({
       { rel: 'icon', href: '/favicon.svg', type: 'image/svg+xml' },
     ],
   }),
+  notFoundComponent: NotFoundScreen,
   shellComponent: RootDocument,
 })
 
@@ -42,5 +49,22 @@ function RootDocument({ children }: { children: ReactNode }) {
         <Scripts />
       </body>
     </html>
+  )
+}
+
+function NotFoundScreen() {
+  return (
+    <main className="fatal-screen">
+      <BrandMark />
+      <p className="eyebrow">404 / Map edge</p>
+      <h1>That Nashville view does not exist</h1>
+      <p>
+        The link may be incomplete or outdated. Return to the county map and
+        search for the parcel again.
+      </p>
+      <Link className="primary-link" to="/">
+        Return to the county map <ArrowIcon />
+      </Link>
+    </main>
   )
 }

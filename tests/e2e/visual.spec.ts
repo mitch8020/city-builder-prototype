@@ -56,7 +56,7 @@ test('selected parcel visual', async ({ page }) => {
   await waitForCounty(page)
   const search = page.getByLabel('Search Nashville address or parcel number')
   await search.fill('930 Commerce')
-  await page.getByRole('button', { name: /930 COMMERCE ST, 37203/ }).click()
+  await page.getByRole('option', { name: /930 COMMERCE ST, 37203/ }).click()
   await expect(page.getByText(/of 32/)).toBeVisible({ timeout: 20_000 })
   await page.waitForTimeout(1_200)
   await expect(page).toHaveScreenshot('selected-parcel.png', {

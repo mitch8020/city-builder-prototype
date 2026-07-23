@@ -72,9 +72,9 @@ export const mapSearchSchema = z.object({
     .enum(['overview', 'landUse', 'zoning', 'value'])
     .default('overview')
     .catch('overview'),
-  parcel: z.string().optional(),
-  parId: z.coerce.number().optional().catch(undefined),
-  floor: z.string().optional(),
+  parcel: z.string().trim().min(1).max(64).optional().catch(undefined),
+  parId: z.coerce.number().int().nonnegative().optional().catch(undefined),
+  floor: z.string().trim().min(1).max(32).optional().catch(undefined),
 })
 
 export const geocoderResponseSchema = z.object({

@@ -16,7 +16,7 @@ npm install
 npm run dev
 ```
 
-Open `http://localhost:3000` in a current desktop version of Chrome or Edge.
+Open `http://localhost:20073` in a current desktop version of Chrome or Edge.
 WebGL2, a mouse, and a keyboard are required.
 
 ## Rebuild the parcel snapshot
@@ -42,6 +42,16 @@ The output manifest includes:
 Only map-facing fields are retained. Owner names, mailing addresses, legal
 descriptions, and sale history are not packaged.
 
+Audit every packaged shard without rebuilding or replacing the snapshot:
+
+```bash
+npm run data:audit
+```
+
+The audit decodes all 570 FlatGeobuf files, enforces the public field allowlist,
+and reconciles byte, feature-reference, and de-duplicated record counts with the
+manifest.
+
 ## Controls
 
 | Input         | Action                 |
@@ -65,6 +75,7 @@ not run while a search field or other control is focused.
 ```bash
 npm run lint
 npm run check
+npm run data:audit
 npm test
 npm run test:e2e
 npm run build
@@ -72,9 +83,9 @@ npm run build
 
 Unit coverage includes projection, sharding, geometry holes and multipolygons,
 condominium grouping, camera limits, key mappings, tile math, legends,
-formatting, URL state, and the generated data manifest. Playwright runs at
-1440×900 and covers the interaction shell, search, modes, controls, and Metro
-service failure behavior.
+formatting, URL state, and the generated data manifest. Playwright builds and
+serves the production bundle at 1440×900, then covers the interaction shell,
+search, modes, controls, failure states, and Metro service degradation.
 
 ## Architecture
 

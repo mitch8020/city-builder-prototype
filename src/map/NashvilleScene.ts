@@ -124,10 +124,10 @@ export class NashvilleScene implements CityMapController {
     })
     this.worker.onmessage = (event: MessageEvent<ParcelWorkerResponse>) =>
       this.handleWorkerMessage(event.data)
-    this.worker.onerror = (event) => {
+    this.worker.onerror = () => {
       this.callbacks.onStatus({
         phase: 'error',
-        message: `Parcel worker failed: ${event.message}`,
+        message: 'The parcel renderer stopped. Reload the map to restore it.',
         visibleParcels: this.parcelLayer.count,
         onlineTiles: this.tileAvailable,
       })
@@ -587,9 +587,10 @@ export class NashvilleScene implements CityMapController {
       return
     }
     if (response.type === 'error') {
+      this.activeShardKey = ''
       this.callbacks.onStatus({
         phase: 'error',
-        message: response.message,
+        message: 'Parcel data did not load. Move or zoom the map to retry.',
         visibleParcels: this.parcelLayer.count,
         onlineTiles: this.tileAvailable,
       })

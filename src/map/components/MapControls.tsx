@@ -1,4 +1,5 @@
-import type { ReactNode, RefObject } from 'react'
+import { useEffect, useRef } from 'react'
+import type { KeyboardEvent, ReactNode, RefObject } from 'react'
 import { MODE_DETAILS } from '../constants'
 import type { CityMapController, MapMode } from '../types'
 import {
@@ -108,13 +109,60 @@ export function ModeRibbon({
 }
 
 export function ControlsModal({ onClose }: { onClose: () => void }) {
+  const modalRef = useRef<HTMLElement>(null)
+  const closeRef = useRef<HTMLButtonElement>(null)
+
+  useEffect(() => {
+    const returnFocus =
+      document.activeElement instanceof HTMLElement
+        ? document.activeElement
+        : undefined
+    closeRef.current?.focus()
+    return () => returnFocus?.focus()
+  }, [])
+
+  const handleKeyDown = (event: KeyboardEvent<HTMLElement>) => {
+    event.stopPropagation()
+    if (event.key === 'Escape') {
+      event.preventDefault()
+      onClose()
+      return
+    }
+    if (event.key !== 'Tab' || !modalRef.current) return
+
+    const focusable = [
+      ...modalRef.current.querySelectorAll<HTMLElement>(
+        'button, a[href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
+      ),
+    ].filter((element) => !element.hasAttribute('disabled'))
+    if (focusable.length === 0) return
+
+    const first = focusable[0]
+    const last = focusable.at(-1)
+    if (event.shiftKey && document.activeElement === first) {
+      event.preventDefault()
+      last?.focus()
+    } else if (!event.shiftKey && document.activeElement === last) {
+      event.preventDefault()
+      first.focus()
+    }
+  }
+
   return (
-    <div className="modal-backdrop" role="presentation">
+    <div
+      className="modal-backdrop"
+      role="presentation"
+      onMouseDown={(event) => {
+        if (event.target === event.currentTarget) onClose()
+      }}
+    >
       <section
+        ref={modalRef}
         className="controls-modal"
         role="dialog"
         aria-modal="true"
         aria-labelledby="controls-title"
+        onKeyDown={handleKeyDown}
       >
         <div className="modal-head">
           <div>
@@ -122,6 +170,7 @@ export function ControlsModal({ onClose }: { onClose: () => void }) {
             <h2 id="controls-title">Move like a city planner</h2>
           </div>
           <button
+            ref={closeRef}
             className="icon-button"
             type="button"
             aria-label="Close controls"
@@ -152,7 +201,7 @@ export function ControlsModal({ onClose }: { onClose: () => void }) {
             detail="Move closer to or farther from the map."
           />
           <Control
-            icon={<KeysIcon keys="Home" />}
+            icon={<KeysIcon keys="Home / End" />}
             title="Tilt"
             detail="Home and End raise or lower the camera angle."
           />

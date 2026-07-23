@@ -1,3 +1,4 @@
+import { useEffect, useRef } from 'react'
 import { METRO_VIEWER } from '../constants'
 import {
   displayValue,
@@ -30,10 +31,15 @@ export function ParcelInspector({
   onCycleUnit,
   onCopyLink,
 }: ParcelInspectorProps) {
+  const closeRef = useRef<HTMLButtonElement>(null)
   const activeRecord = groupPrimaryRecord(group, selectedRid)
   const unitIndex = group.records.findIndex(
     (record) => record.rid === selectedRid,
   )
+
+  useEffect(() => {
+    closeRef.current?.focus({ preventScroll: true })
+  }, [])
 
   return (
     <aside className="parcel-inspector">
@@ -50,6 +56,7 @@ export function ParcelInspector({
           </p>
         </div>
         <button
+          ref={closeRef}
           className="icon-button"
           type="button"
           aria-label="Close parcel details"
