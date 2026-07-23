@@ -1,22 +1,13 @@
 import * as THREE from 'three'
 import { MapControls } from 'three/addons/controls/MapControls.js'
 import {
-  acceleratedRaycast,
-  computeBoundsTree,
-  disposeBoundsTree,
-} from 'three-mesh-bvh'
-import {
   CAMERA_LIMITS,
   clampCameraTarget,
   keyboardShortcutForKey,
 } from './camera-utils'
 import { COLORS } from './constants'
-import {
-  bestParcelMatch,
-  colorForRecord,
-  pointInGroup,
-  shardsForBounds,
-} from './map-utils'
+import { bestParcelMatch, pointInGroup, shardsForBounds } from './map-utils'
+import { ParcelLayer } from './ParcelLayer'
 import { MetroTileManager } from './tile-manager'
 import type {
   CityMapController,
@@ -27,10 +18,6 @@ import type {
   ParcelWorkerResponse,
   SceneStatus,
 } from './types'
-
-THREE.BufferGeometry.prototype.computeBoundsTree = computeBoundsTree
-THREE.BufferGeometry.prototype.disposeBoundsTree = disposeBoundsTree
-THREE.Mesh.prototype.raycast = acceleratedRaycast
 
 export interface NashvilleSceneCallbacks {
   onSelect: (group?: ParcelGroup, rid?: number) => void
@@ -55,9 +42,8 @@ export class NashvilleScene implements CityMapController {
   private readonly camera: THREE.PerspectiveCamera
   private readonly renderer: THREE.WebGLRenderer
   private readonly controls: MapControls
+  private readonly parcelLayer: ParcelLayer
   private previousFrame = performance.now()
-  private readonly parcelRoot = new THREE.Group()
-  private readonly selectionRoot = new THREE.Group()
   private readonly raycaster = new THREE.Raycaster() as THREE.Raycaster & {
     firstHitOnly: boolean
   }
@@ -75,17 +61,6 @@ export class NashvilleScene implements CityMapController {
   private selectedRid?: number
   private selectedGroup?: ParcelGroup
   private hoveredGroupId = -1
-  private groups: ParcelGroup[] = []
-  private topMesh?: THREE.Mesh<THREE.BufferGeometry, THREE.MeshBasicMaterial>
-  private sideMesh?: THREE.Mesh<
-    THREE.BufferGeometry,
-    THREE.MeshStandardMaterial
-  >
-  private edgeLines?: THREE.LineSegments
-  private triangleGroups: Uint32Array<ArrayBufferLike> = new Uint32Array()
-  private topVertexGroups: Uint32Array<ArrayBufferLike> = new Uint32Array()
-  private sideVertexGroups: Uint32Array<ArrayBufferLike> = new Uint32Array()
-  private selectedMesh?: THREE.Mesh
   private frame = 0
   private resizeObserver: ResizeObserver
   private dataTimer?: ReturnType<typeof setTimeout>
@@ -110,6 +85,7 @@ export class NashvilleScene implements CityMapController {
   ) {
     this.mode = mode
     this.callbacks = callbacks
+    this.parcelLayer = new ParcelLayer(manifest, mode)
     this.countyBounds = manifest.projection.bounds
     const width = Math.max(1, container.clientWidth)
     const height = Math.max(1, container.clientHeight)
@@ -160,7 +136,7 @@ export class NashvilleScene implements CityMapController {
     this.controls.target.copy(this.homeTarget)
     this.controls.update()
 
-    this.scene.add(this.parcelRoot, this.selectionRoot)
+    this.scene.add(this.parcelLayer.root)
     this.addEnvironment(countySize)
     void this.addOverview()
     this.tileManager = new MetroTileManager(
@@ -182,7 +158,7 @@ export class NashvilleScene implements CityMapController {
       this.callbacks.onStatus({
         phase: 'error',
         message: `Parcel worker failed: ${event.message}`,
-        visibleParcels: this.groups.length,
+        visibleParcels: this.parcelLayer.count,
         onlineTiles: this.tileAvailable,
       })
     }
@@ -190,7 +166,7 @@ export class NashvilleScene implements CityMapController {
       this.callbacks.onStatus({
         phase: 'error',
         message: 'Parcel worker returned an unreadable response.',
-        visibleParcels: this.groups.length,
+        visibleParcels: this.parcelLayer.count,
         onlineTiles: this.tileAvailable,
       })
     }
@@ -216,20 +192,18 @@ export class NashvilleScene implements CityMapController {
   setMode(mode: MapMode) {
     if (mode === this.mode) return
     this.mode = mode
-    this.updateParcelColors()
+    this.parcelLayer.setMode(mode)
   }
 
   setSelectedRid(rid?: number) {
     this.selectedRid = rid
     if (rid === undefined) {
       this.selectedGroup = undefined
-      this.clearSelectionMesh()
+      this.parcelLayer.clearSelection()
       this.callbacks.onAnchor(undefined)
       return
     }
-    const group = this.groups.find((candidate) =>
-      candidate.records.some((record) => record.rid === rid),
-    )
+    const group = this.parcelLayer.findByRid(rid)
     if (group) this.selectGroup(group, rid, false)
   }
 
@@ -294,8 +268,7 @@ export class NashvilleScene implements CityMapController {
     this.worker.terminate()
     this.controls.dispose()
     this.tileManager.dispose()
-    this.clearParcels()
-    this.clearSelectionMesh()
+    this.parcelLayer.clear()
     window.removeEventListener('keydown', this.handleKeyDown)
     window.removeEventListener('keyup', this.handleKeyUp)
     this.renderer.domElement.removeEventListener(
@@ -424,7 +397,7 @@ export class NashvilleScene implements CityMapController {
       this.callbacks.onStatus({
         phase: 'error',
         message: 'The 3D map lost its graphics context. Reload to restore it.',
-        visibleParcels: this.groups.length,
+        visibleParcels: this.parcelLayer.count,
         onlineTiles: this.tileAvailable,
       })
     })
@@ -511,15 +484,10 @@ export class NashvilleScene implements CityMapController {
   }
 
   private pickGroup() {
-    if (!this.topMesh) return undefined
+    if (!this.parcelLayer.count) return undefined
     this.raycaster.setFromCamera(this.pointer, this.camera)
-    const hits = this.raycaster.intersectObject(this.topMesh, false)
-    if (hits.length > 0) {
-      const hit = hits[0]
-      if (hit.faceIndex != null) {
-        return this.groups[this.triangleGroups[hit.faceIndex]]
-      }
-    }
+    const hitGroup = this.parcelLayer.hitGroup(this.raycaster)
+    if (hitGroup) return hitGroup
 
     // Some integrated-GPU drivers return no BVH hit for very large indexed
     // buffers. Retain fast BVH picking as the primary path, then use the
@@ -535,7 +503,7 @@ export class NashvilleScene implements CityMapController {
       origin[1] - groundHit.z,
     ]
     let best: ParcelGroup | undefined
-    for (const group of this.groups) {
+    for (const group of this.parcelLayer.groups) {
       if (!pointInGroup(point, group)) continue
       if (
         !best ||
@@ -559,7 +527,7 @@ export class NashvilleScene implements CityMapController {
     this.applyKeyboard(delta)
     this.clampCameraTarget()
     this.controls.update()
-    this.updateSelectionLift(delta)
+    this.parcelLayer.update(delta)
     this.updateAnchor()
     this.renderer.render(this.scene, this.camera)
   }
@@ -759,7 +727,7 @@ export class NashvilleScene implements CityMapController {
       message: `Loading ${shards.length} map ${
         shards.length === 1 ? 'cell' : 'cells'
       }`,
-      visibleParcels: this.groups.length,
+      visibleParcels: this.parcelLayer.count,
       onlineTiles: this.tileAvailable,
     })
     this.worker.postMessage({
@@ -776,7 +744,7 @@ export class NashvilleScene implements CityMapController {
       this.callbacks.onStatus({
         phase: 'loading-parcels',
         message: response.message,
-        visibleParcels: this.groups.length,
+        visibleParcels: this.parcelLayer.count,
         onlineTiles: this.tileAvailable,
       })
       return
@@ -785,15 +753,15 @@ export class NashvilleScene implements CityMapController {
       this.callbacks.onStatus({
         phase: 'error',
         message: response.message,
-        visibleParcels: this.groups.length,
+        visibleParcels: this.parcelLayer.count,
         onlineTiles: this.tileAvailable,
       })
       return
     }
-    this.installParcelGeometry(response)
+    this.parcelLayer.install(response)
     if (this.pendingSelection) {
       const pending = this.pendingSelection
-      const candidates = this.groups.filter((candidate) =>
+      const candidates = this.parcelLayer.groups.filter((candidate) =>
         pointInGroup(pending.point, candidate),
       )
       const match = bestParcelMatch(candidates, pending.hint)
@@ -805,174 +773,11 @@ export class NashvilleScene implements CityMapController {
     this.publishStatus()
   }
 
-  private installParcelGeometry(
-    response: Extract<ParcelWorkerResponse, { type: 'loaded' }>,
-  ) {
-    this.clearParcels()
-    this.groups = response.groups
-    this.triangleGroups = response.topTriangleGroups
-    this.topVertexGroups = response.topVertexGroups
-    this.sideVertexGroups = response.sideVertexGroups
-
-    const topGeometry = new THREE.BufferGeometry()
-    topGeometry.setAttribute(
-      'position',
-      new THREE.BufferAttribute(response.topPositions, 3),
-    )
-    topGeometry.setIndex(new THREE.BufferAttribute(response.topIndices, 1))
-    topGeometry.setAttribute(
-      'color',
-      new THREE.Float32BufferAttribute(
-        new Float32Array(response.topPositions.length),
-        3,
-      ),
-    )
-    topGeometry.computeVertexNormals()
-    topGeometry.computeBoundsTree()
-    const topMaterial = new THREE.MeshBasicMaterial({
-      vertexColors: true,
-      toneMapped: false,
-      polygonOffset: true,
-      polygonOffsetFactor: -1,
-    })
-    this.topMesh = new THREE.Mesh(topGeometry, topMaterial)
-    this.topMesh.castShadow = true
-    this.topMesh.receiveShadow = true
-    this.topMesh.name = 'Visible parcel tops'
-
-    const sideGeometry = new THREE.BufferGeometry()
-    sideGeometry.setAttribute(
-      'position',
-      new THREE.BufferAttribute(response.sidePositions, 3),
-    )
-    sideGeometry.setIndex(new THREE.BufferAttribute(response.sideIndices, 1))
-    sideGeometry.setAttribute(
-      'color',
-      new THREE.Float32BufferAttribute(
-        new Float32Array(response.sidePositions.length),
-        3,
-      ),
-    )
-    sideGeometry.computeVertexNormals()
-    this.sideMesh = new THREE.Mesh(
-      sideGeometry,
-      new THREE.MeshStandardMaterial({
-        vertexColors: true,
-        roughness: 0.95,
-      }),
-    )
-    this.sideMesh.castShadow = true
-
-    const edgeGeometry = new THREE.BufferGeometry()
-    edgeGeometry.setAttribute(
-      'position',
-      new THREE.BufferAttribute(response.edgePositions, 3),
-    )
-    this.edgeLines = new THREE.LineSegments(
-      edgeGeometry,
-      new THREE.LineBasicMaterial({
-        color: '#536a69',
-        transparent: true,
-        opacity: 0.62,
-      }),
-    )
-
-    this.parcelRoot.add(this.sideMesh, this.topMesh, this.edgeLines)
-    this.updateParcelColors()
-  }
-
-  private updateParcelColors() {
-    if (!this.topMesh || !this.sideMesh) return
-    const write = (
-      attribute: THREE.BufferAttribute,
-      vertexGroups: Uint32Array,
-      darken: number,
-    ) => {
-      const color = new THREE.Color()
-      for (let vertex = 0; vertex < vertexGroups.length; vertex += 1) {
-        const group = this.groups[vertexGroups[vertex]]
-        const value = colorForRecord(group.records[0], this.mode, this.manifest)
-        color.set(value).multiplyScalar(darken)
-        attribute.setXYZ(vertex, color.r, color.g, color.b)
-      }
-      attribute.needsUpdate = true
-    }
-    write(
-      this.topMesh.geometry.getAttribute('color') as THREE.BufferAttribute,
-      this.topVertexGroups,
-      1,
-    )
-    write(
-      this.sideMesh.geometry.getAttribute('color') as THREE.BufferAttribute,
-      this.sideVertexGroups,
-      0.72,
-    )
-  }
-
   private selectGroup(group: ParcelGroup, rid: number, publish: boolean) {
     this.selectedRid = rid
     this.selectedGroup = group
-    this.buildSelectionMesh(group)
+    this.parcelLayer.select(group)
     if (publish) this.callbacks.onSelect(group, rid)
-  }
-
-  private buildSelectionMesh(group: ParcelGroup) {
-    this.clearSelectionMesh()
-    if (!this.topMesh) return
-    const positions = this.topMesh.geometry.getAttribute(
-      'position',
-    ) as THREE.BufferAttribute
-    const index = this.topMesh.geometry.index
-    if (!index) return
-    const selectedPositions: number[] = []
-    for (
-      let triangle = 0;
-      triangle < this.triangleGroups.length;
-      triangle += 1
-    ) {
-      if (this.triangleGroups[triangle] !== group.id) continue
-      for (let corner = 0; corner < 3; corner += 1) {
-        const vertex = index.getX(triangle * 3 + corner)
-        selectedPositions.push(
-          positions.getX(vertex),
-          positions.getY(vertex) + 0.25,
-          positions.getZ(vertex),
-        )
-      }
-    }
-    const geometry = new THREE.BufferGeometry()
-    geometry.setAttribute(
-      'position',
-      new THREE.Float32BufferAttribute(selectedPositions, 3),
-    )
-    geometry.computeVertexNormals()
-    this.selectedMesh = new THREE.Mesh(
-      geometry,
-      new THREE.MeshStandardMaterial({
-        color: COLORS.gold,
-        emissive: '#6d4a00',
-        emissiveIntensity: 0.22,
-        roughness: 0.7,
-        transparent: true,
-        opacity: 0.98,
-        side: THREE.DoubleSide,
-      }),
-    )
-    this.selectedMesh.castShadow = true
-    this.selectedMesh.userData.targetLift = 6
-    this.selectedMesh.position.y = 0
-    this.selectionRoot.add(this.selectedMesh)
-  }
-
-  private updateSelectionLift(delta: number) {
-    if (!this.selectedMesh) return
-    const target = Number(this.selectedMesh.userData.targetLift ?? 0)
-    this.selectedMesh.position.y = THREE.MathUtils.damp(
-      this.selectedMesh.position.y,
-      target,
-      7,
-      delta,
-    )
   }
 
   private updateAnchor() {
@@ -981,8 +786,7 @@ export class NashvilleScene implements CityMapController {
       this.selectedGroup.center[0],
       this.selectedGroup.center[1],
     )
-    local.y =
-      this.selectedGroup.height + (this.selectedMesh?.position.y ?? 0) + 2
+    local.y = this.selectedGroup.height + this.parcelLayer.selectionLift + 2
     local.project(this.camera)
     const rect = this.renderer.domElement.getBoundingClientRect()
     const x = rect.left + ((local.x + 1) / 2) * rect.width
@@ -993,34 +797,7 @@ export class NashvilleScene implements CityMapController {
   }
 
   private clearParcels() {
-    for (const object of [this.topMesh, this.sideMesh, this.edgeLines]) {
-      if (!object) continue
-      this.parcelRoot.remove(object)
-      object.geometry.dispose()
-      const materials = Array.isArray(object.material)
-        ? object.material
-        : [object.material]
-      materials.forEach((material) => material.dispose())
-    }
-    this.topMesh = undefined
-    this.sideMesh = undefined
-    this.edgeLines = undefined
-    this.groups = []
-    this.triangleGroups = new Uint32Array()
-    this.topVertexGroups = new Uint32Array()
-    this.sideVertexGroups = new Uint32Array()
-    this.clearSelectionMesh()
-  }
-
-  private clearSelectionMesh() {
-    if (!this.selectedMesh) return
-    this.selectionRoot.remove(this.selectedMesh)
-    this.selectedMesh.geometry.dispose()
-    const materials = Array.isArray(this.selectedMesh.material)
-      ? this.selectedMesh.material
-      : [this.selectedMesh.material]
-    materials.forEach((material) => material.dispose())
-    this.selectedMesh = undefined
+    this.parcelLayer.clear()
   }
 
   private publishStatus() {
@@ -1029,16 +806,16 @@ export class NashvilleScene implements CityMapController {
       phase:
         distance > 7_500
           ? 'zoom-to-parcels'
-          : this.groups.length
+          : this.parcelLayer.count
             ? 'parcels-ready'
             : 'loading-parcels',
       message:
         distance > 7_500
           ? 'Move closer to reveal parcel boundaries'
-          : this.groups.length
-            ? `${this.groups.length.toLocaleString()} visible footprints`
+          : this.parcelLayer.count
+            ? `${this.parcelLayer.count.toLocaleString()} visible footprints`
             : 'Loading parcel fabric',
-      visibleParcels: this.groups.length,
+      visibleParcels: this.parcelLayer.count,
       onlineTiles: this.tileAvailable,
     })
   }
