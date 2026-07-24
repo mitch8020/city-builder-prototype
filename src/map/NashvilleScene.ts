@@ -1,7 +1,7 @@
 import * as THREE from 'three'
 import { CameraRig } from './CameraRig'
-import { keyboardShortcutForKey } from './camera-utils'
 import { COLORS } from './constants'
+import { MapInteractions } from './MapInteractions'
 import { bestParcelMatch, pointInGroup } from './map-utils'
 import { ParcelLayer } from './ParcelLayer'
 import { ParcelStream } from './ParcelStream'
@@ -29,6 +29,7 @@ export class NashvilleScene implements CityMapController {
   private readonly scene = new THREE.Scene()
   private readonly renderer: THREE.WebGLRenderer
   private readonly cameraRig: CameraRig
+  private readonly interactions: MapInteractions
   private readonly parcelLayer: ParcelLayer
   private readonly parcelStream: ParcelStream
   private previousFrame = performance.now()
@@ -36,7 +37,6 @@ export class NashvilleScene implements CityMapController {
     firstHitOnly: boolean
   }
   private readonly tileManager: MetroTileManager
-  private readonly pointer = new THREE.Vector2()
   private readonly groundPlane = new THREE.Plane(new THREE.Vector3(0, 1, 0), 0)
   private readonly groundHit = new THREE.Vector3()
   private readonly countyBounds: [number, number, number, number]
@@ -44,7 +44,6 @@ export class NashvilleScene implements CityMapController {
   private mode: MapMode
   private selectedRid?: number
   private selectedGroup?: ParcelGroup
-  private hoveredGroupId = -1
   private frame = 0
   private resizeObserver: ResizeObserver
   private dataTimer?: ReturnType<typeof setTimeout>
@@ -53,7 +52,6 @@ export class NashvilleScene implements CityMapController {
     point: [number, number]
     hint?: ParcelSelectionHint
   }
-  private pointerDown?: { x: number; y: number }
   private disposed = false
   private tileAvailable = navigator.onLine
 
@@ -125,7 +123,24 @@ export class NashvilleScene implements CityMapController {
     })
 
     this.raycaster.firstHitOnly = true
-    this.bindEvents(canvas)
+    this.interactions = new MapInteractions(canvas, this.cameraRig, {
+      pickGroup: (pointer) => this.pickGroup(pointer),
+      onSelect: (group) => {
+        if (group) {
+          this.selectGroup(group, group.records[0].rid, true)
+        } else {
+          this.callbacks.onSelect(undefined)
+        }
+      },
+      onHover: (group) => this.callbacks.onHover(group),
+      onHome: () => this.home(),
+      onEscape: () => this.callbacks.onEscape(),
+      onModeShortcut: (nextMode) => this.callbacks.onModeShortcut(nextMode),
+      onContextLost: () =>
+        this.publishError(
+          'The 3D map lost its graphics context. Reload to restore it.',
+        ),
+    })
     this.resizeObserver = new ResizeObserver(() => this.resize())
     this.resizeObserver.observe(container)
     this.callbacks.onStatus({
@@ -194,23 +209,10 @@ export class NashvilleScene implements CityMapController {
     clearTimeout(this.tileTimer)
     this.resizeObserver.disconnect()
     this.parcelStream.dispose()
+    this.interactions.dispose()
     this.cameraRig.dispose()
     this.tileManager.dispose()
     this.parcelLayer.clear()
-    window.removeEventListener('keydown', this.handleKeyDown)
-    window.removeEventListener('keyup', this.handleKeyUp)
-    this.renderer.domElement.removeEventListener(
-      'pointermove',
-      this.handlePointerMove,
-    )
-    this.renderer.domElement.removeEventListener(
-      'pointerdown',
-      this.handlePointerDown,
-    )
-    this.renderer.domElement.removeEventListener(
-      'pointerup',
-      this.handlePointerUp,
-    )
     this.renderer.dispose()
     this.renderer.domElement.remove()
   }
@@ -307,113 +309,9 @@ export class NashvilleScene implements CityMapController {
     }
   }
 
-  private bindEvents(canvas: HTMLCanvasElement) {
-    window.addEventListener('keydown', this.handleKeyDown)
-    window.addEventListener('keyup', this.handleKeyUp)
-    canvas.addEventListener('pointermove', this.handlePointerMove)
-    canvas.addEventListener('pointerdown', this.handlePointerDown)
-    canvas.addEventListener('pointerup', this.handlePointerUp)
-    canvas.addEventListener('pointerleave', () => {
-      this.cameraRig.setEdgePan(0, 0)
-      if (this.hoveredGroupId !== -1) {
-        this.hoveredGroupId = -1
-        this.callbacks.onHover(undefined)
-      }
-    })
-    canvas.addEventListener('webglcontextlost', (event) => {
-      event.preventDefault()
-      this.callbacks.onStatus({
-        phase: 'error',
-        message: 'The 3D map lost its graphics context. Reload to restore it.',
-        visibleParcels: this.parcelLayer.count,
-        onlineTiles: this.tileAvailable,
-      })
-    })
-  }
-
-  private readonly handleKeyDown = (event: KeyboardEvent) => {
-    const target = event.target as HTMLElement | null
-    if (
-      target?.matches('input, textarea, select') ||
-      target?.isContentEditable
-    ) {
-      return
-    }
-    const key = event.key.toLowerCase()
-    const shortcut = keyboardShortcutForKey(key)
-    if (shortcut?.type === 'home') {
-      event.preventDefault()
-      this.home()
-      return
-    }
-    if (shortcut?.type === 'escape') {
-      this.callbacks.onEscape()
-      return
-    }
-    if (shortcut?.type === 'mode') {
-      this.callbacks.onModeShortcut(shortcut.mode)
-      return
-    }
-    this.cameraRig.setKey(key, true)
-  }
-
-  private readonly handleKeyUp = (event: KeyboardEvent) => {
-    this.cameraRig.setKey(event.key.toLowerCase(), false)
-  }
-
-  private readonly handlePointerMove = (event: PointerEvent) => {
-    const rect = this.renderer.domElement.getBoundingClientRect()
-    this.pointer.x = ((event.clientX - rect.left) / rect.width) * 2 - 1
-    this.pointer.y = -((event.clientY - rect.top) / rect.height) * 2 + 1
-    const edge = 28
-    const edgePanX =
-      event.clientX - rect.left < edge
-        ? -1
-        : rect.right - event.clientX < edge
-          ? 1
-          : 0
-    const edgePanY =
-      event.clientY - rect.top < edge
-        ? 1
-        : rect.bottom - event.clientY < edge
-          ? -1
-          : 0
-    this.cameraRig.setEdgePan(edgePanX, edgePanY)
-    if (event.buttons === 0) this.pickHover()
-  }
-
-  private readonly handlePointerDown = (event: PointerEvent) => {
-    this.pointerDown = { x: event.clientX, y: event.clientY }
-  }
-
-  private readonly handlePointerUp = (event: PointerEvent) => {
-    if (!this.pointerDown) return
-    const distance = Math.hypot(
-      event.clientX - this.pointerDown.x,
-      event.clientY - this.pointerDown.y,
-    )
-    this.pointerDown = undefined
-    if (distance > 5) return
-    const group = this.pickGroup()
-    if (group) {
-      this.selectGroup(group, group.records[0].rid, true)
-    } else {
-      this.callbacks.onSelect(undefined)
-    }
-  }
-
-  private pickHover() {
-    const group = this.pickGroup()
-    const id = group?.id ?? -1
-    if (id === this.hoveredGroupId) return
-    this.hoveredGroupId = id
-    this.renderer.domElement.style.cursor = group ? 'pointer' : 'grab'
-    this.callbacks.onHover(group)
-  }
-
-  private pickGroup() {
+  private pickGroup(pointer: THREE.Vector2) {
     if (!this.parcelLayer.count) return undefined
-    this.raycaster.setFromCamera(this.pointer, this.cameraRig.camera)
+    this.raycaster.setFromCamera(pointer, this.cameraRig.camera)
     const hitGroup = this.parcelLayer.hitGroup(this.raycaster)
     if (hitGroup) return hitGroup
 
