@@ -2,8 +2,9 @@ import * as THREE from 'three'
 import { CameraRig } from './CameraRig'
 import { keyboardShortcutForKey } from './camera-utils'
 import { COLORS } from './constants'
-import { bestParcelMatch, pointInGroup, shardsForBounds } from './map-utils'
+import { bestParcelMatch, pointInGroup } from './map-utils'
 import { ParcelLayer } from './ParcelLayer'
+import { ParcelStream } from './ParcelStream'
 import { MetroTileManager } from './tile-manager'
 import type {
   CityMapController,
@@ -11,8 +12,8 @@ import type {
   ParcelGroup,
   ParcelManifestV1,
   ParcelSelectionHint,
-  ParcelWorkerResponse,
   SceneStatus,
+  WorkerLoadedResponse,
 } from './types'
 
 export interface NashvilleSceneCallbacks {
@@ -29,11 +30,11 @@ export class NashvilleScene implements CityMapController {
   private readonly renderer: THREE.WebGLRenderer
   private readonly cameraRig: CameraRig
   private readonly parcelLayer: ParcelLayer
+  private readonly parcelStream: ParcelStream
   private previousFrame = performance.now()
   private readonly raycaster = new THREE.Raycaster() as THREE.Raycaster & {
     firstHitOnly: boolean
   }
-  private readonly worker: Worker
   private readonly tileManager: MetroTileManager
   private readonly pointer = new THREE.Vector2()
   private readonly groundPlane = new THREE.Plane(new THREE.Vector3(0, 1, 0), 0)
@@ -48,8 +49,6 @@ export class NashvilleScene implements CityMapController {
   private resizeObserver: ResizeObserver
   private dataTimer?: ReturnType<typeof setTimeout>
   private tileTimer?: ReturnType<typeof setTimeout>
-  private activeShardKey = ''
-  private generation = 0
   private pendingSelection?: {
     point: [number, number]
     hint?: ParcelSelectionHint
@@ -119,27 +118,11 @@ export class NashvilleScene implements CityMapController {
     )
     this.scene.add(this.tileManager.group)
 
-    this.worker = new Worker(new URL('./parcel.worker.ts', import.meta.url), {
-      type: 'module',
+    this.parcelStream = new ParcelStream(manifest, {
+      onProgress: (message) => this.publishLoadingStatus(message),
+      onLoaded: (response) => this.installParcelResponse(response),
+      onError: (message) => this.publishError(message),
     })
-    this.worker.onmessage = (event: MessageEvent<ParcelWorkerResponse>) =>
-      this.handleWorkerMessage(event.data)
-    this.worker.onerror = () => {
-      this.callbacks.onStatus({
-        phase: 'error',
-        message: 'The parcel renderer stopped. Reload the map to restore it.',
-        visibleParcels: this.parcelLayer.count,
-        onlineTiles: this.tileAvailable,
-      })
-    }
-    this.worker.onmessageerror = () => {
-      this.callbacks.onStatus({
-        phase: 'error',
-        message: 'Parcel worker returned an unreadable response.',
-        visibleParcels: this.parcelLayer.count,
-        onlineTiles: this.tileAvailable,
-      })
-    }
 
     this.raycaster.firstHitOnly = true
     this.bindEvents(canvas)
@@ -210,7 +193,7 @@ export class NashvilleScene implements CityMapController {
     clearTimeout(this.dataTimer)
     clearTimeout(this.tileTimer)
     this.resizeObserver.disconnect()
-    this.worker.terminate()
+    this.parcelStream.dispose()
     this.cameraRig.dispose()
     this.tileManager.dispose()
     this.parcelLayer.clear()
@@ -537,13 +520,7 @@ export class NashvilleScene implements CityMapController {
   private updateParcelWindow() {
     const distance = this.cameraRig.distance
     if (distance > 7_500) {
-      if (this.activeShardKey) {
-        this.activeShardKey = ''
-        this.generation += 1
-        this.worker.postMessage({
-          type: 'cancel',
-          generation: this.generation,
-        })
+      if (this.parcelStream.cancel()) {
         this.clearParcels()
       }
       this.publishStatus()
@@ -551,51 +528,14 @@ export class NashvilleScene implements CityMapController {
     }
 
     const bounds = this.viewBounds()
-    const shards = shardsForBounds(this.manifest.shards, bounds)
-    const shardKey = shards
-      .map((shard) => shard.id)
-      .sort()
-      .join('|')
-    if (!shardKey || shardKey === this.activeShardKey) return
-    this.activeShardKey = shardKey
-    this.generation += 1
-    this.callbacks.onStatus({
-      phase: 'loading-parcels',
-      message: `Loading ${shards.length} map ${
-        shards.length === 1 ? 'cell' : 'cells'
-      }`,
-      visibleParcels: this.parcelLayer.count,
-      onlineTiles: this.tileAvailable,
-    })
-    this.worker.postMessage({
-      type: 'load',
-      generation: this.generation,
-      urls: shards.map((shard) => shard.url),
-      origin: this.manifest.projection.localOrigin,
-    })
+    const shardCount = this.parcelStream.load(bounds)
+    if (shardCount === undefined) return
+    this.publishLoadingStatus(
+      `Loading ${shardCount} map ${shardCount === 1 ? 'cell' : 'cells'}`,
+    )
   }
 
-  private handleWorkerMessage(response: ParcelWorkerResponse) {
-    if (response.generation !== this.generation) return
-    if (response.type === 'progress') {
-      this.callbacks.onStatus({
-        phase: 'loading-parcels',
-        message: response.message,
-        visibleParcels: this.parcelLayer.count,
-        onlineTiles: this.tileAvailable,
-      })
-      return
-    }
-    if (response.type === 'error') {
-      this.activeShardKey = ''
-      this.callbacks.onStatus({
-        phase: 'error',
-        message: 'Parcel data did not load. Move or zoom the map to retry.',
-        visibleParcels: this.parcelLayer.count,
-        onlineTiles: this.tileAvailable,
-      })
-      return
-    }
+  private installParcelResponse(response: WorkerLoadedResponse) {
     this.parcelLayer.install(response)
     if (this.pendingSelection) {
       const pending = this.pendingSelection
@@ -609,6 +549,24 @@ export class NashvilleScene implements CityMapController {
       this.setSelectedRid(this.selectedRid)
     }
     this.publishStatus()
+  }
+
+  private publishLoadingStatus(message: string) {
+    this.callbacks.onStatus({
+      phase: 'loading-parcels',
+      message,
+      visibleParcels: this.parcelLayer.count,
+      onlineTiles: this.tileAvailable,
+    })
+  }
+
+  private publishError(message: string) {
+    this.callbacks.onStatus({
+      phase: 'error',
+      message,
+      visibleParcels: this.parcelLayer.count,
+      onlineTiles: this.tileAvailable,
+    })
   }
 
   private selectGroup(group: ParcelGroup, rid: number, publish: boolean) {
