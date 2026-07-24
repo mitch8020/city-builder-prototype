@@ -115,4 +115,36 @@ describe('worker parcel geometry', () => {
     expect(groups[0].bounds).toEqual([0, 0, 22, 22])
     expect(output.topTriangleGroups.length).toBeGreaterThan(2)
   })
+
+  it('accepts open and degenerate rings without inventing vertices', () => {
+    const open: ParcelFeature = {
+      type: 'Feature',
+      properties: parcel(4, ''),
+      geometry: {
+        type: 'Polygon',
+        coordinates: [
+          [
+            [0, 0],
+            [2, 0],
+            [0, 2],
+          ],
+        ],
+      },
+    }
+    const degenerate: ParcelFeature = {
+      type: 'Feature',
+      properties: parcel(5, ''),
+      geometry: {
+        type: 'Polygon',
+        coordinates: [[[5, 5]]],
+      },
+    }
+
+    const output = buildParcelGeometry(
+      groupParcelFeatures([open, degenerate]),
+      [0, 0],
+    )
+    expect(output.topPositions.length).toBe(12)
+    expect(output.topIndices.length).toBe(3)
+  })
 })

@@ -176,7 +176,7 @@ function pointInRing(point: [number, number], ring: number[][]) {
     const [xj, yj] = ring[previous]
     const crosses =
       yi > point[1] !== yj > point[1] &&
-      point[0] < ((xj - xi) * (point[1] - yi)) / (yj - yi || 1e-12) + xi
+      point[0] < ((xj - xi) * (point[1] - yi)) / (yj - yi) + xi
     if (crosses) inside = !inside
   }
   return inside

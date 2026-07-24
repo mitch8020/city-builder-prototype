@@ -27,6 +27,7 @@ describe('Nashville search', () => {
       searchNashville('Music Row', { fetcher }),
     ).resolves.toMatchObject([{ label: 'Music Row', kind: 'landmark' }])
     expect(fetcher).not.toHaveBeenCalled()
+    await expect(searchNashville(' ')).resolves.toEqual([])
   })
 
   it('maps Metro parcel records and derives a geometry center', async () => {
@@ -133,5 +134,72 @@ describe('Nashville search', () => {
     await expect(searchNashville('100 Broadway', { fetcher })).rejects.toThrow(
       'Address search is unavailable',
     )
+  })
+
+  it('reports parcel transport failures separately', async () => {
+    const fetcher = vi.fn(
+      async () => new Response(undefined, { status: 503 }),
+    ) as unknown as typeof fetch
+
+    await expect(searchNashville('123456789', { fetcher })).rejects.toThrow(
+      'Parcel search is unavailable',
+    )
+  })
+
+  it('uses safe parcel fallbacks for sparse Metro records', async () => {
+    const fetcher = vi.fn(async () =>
+      jsonResponse({
+        features: [
+          {
+            properties: {},
+            geometry: { type: 'Polygon', coordinates: null },
+          },
+        ],
+      }),
+    ) as unknown as typeof fetch
+
+    await expect(searchNashville('123456789', { fetcher })).resolves.toEqual([
+      {
+        id: 'parcel-result',
+        label: 'Parcel',
+        detail: 'Parcel 123456789',
+        x: 0,
+        y: 0,
+        kind: 'parcel',
+        parcel: undefined,
+        parId: undefined,
+      },
+    ])
+  })
+
+  it('uses the global fetch default and address detail fallback', async () => {
+    const fetcher = vi.fn(async () =>
+      jsonResponse({
+        candidates: [
+          {
+            address: 'Nashville',
+            score: 70,
+            location: { x: 1, y: 2 },
+          },
+          {
+            address: 'No geometry',
+            score: 100,
+          },
+        ],
+      }),
+    )
+    vi.stubGlobal('fetch', fetcher)
+
+    await expect(searchNashville('Nashville address')).resolves.toEqual([
+      {
+        id: 'address-1-2',
+        label: 'Nashville',
+        detail: 'Nashville address · 70% match',
+        x: 1,
+        y: 2,
+        kind: 'address',
+      },
+    ])
+    vi.unstubAllGlobals()
   })
 })

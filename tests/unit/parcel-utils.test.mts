@@ -2,9 +2,11 @@ import { describe, expect, it } from 'vitest'
 import {
   baseCellKeys,
   cellBounds,
+  childCells,
   closeRing,
   geometryBounds,
   geometryCoordinateCount,
+  intersects,
   primaryZoning,
   projectCoordinate,
   projectGeometry,
@@ -30,6 +32,7 @@ describe('parcel preprocessing geometry', () => {
     ]
     expect(closeRing(open)).toEqual([...open, [0, 0]])
     expect(closeRing([...open, [0, 0]])).toHaveLength(4)
+    expect(closeRing([])).toEqual([])
   })
 
   it('preserves polygon holes and multipolygon parts through projection', () => {
@@ -65,6 +68,18 @@ describe('parcel preprocessing geometry', () => {
     expect(projected.coordinates[0][0]).toHaveLength(4)
     expect(geometryCoordinateCount(projected)).toBe(10)
     expect(geometryBounds(projected).every(Number.isFinite)).toBe(true)
+
+    const polygon = projectGeometry({
+      type: 'Polygon',
+      coordinates: [geometry.coordinates[0][0]],
+    })
+    expect(polygon.type).toBe('Polygon')
+    expect(geometryCoordinateCount(polygon)).toBe(4)
+    expect(geometryCoordinateCount(null)).toBe(0)
+    expect(projectGeometry(null)).toBeNull()
+    expect(() => projectGeometry({ type: 'Point', coordinates: [] })).toThrow(
+      'Unsupported parcel geometry type: Point',
+    )
   })
 
   it('assigns every intersected 2,048 meter base cell', () => {
@@ -80,9 +95,35 @@ describe('parcel preprocessing geometry', () => {
 
   it('calculates stable data helpers', () => {
     expect(quantiles([0, 10, 20, 30, 40])).toEqual([0, 10, 20, 30])
+    expect(quantiles([Number.NaN, -1])).toEqual([0, 0, 0, 0])
     expect(primaryZoning('R6; OV-UZO')).toBe('R6')
+    expect(primaryZoning(undefined)).toBe('')
+    expect(primaryZoning('  ')).toBe('')
     expect(sourceDateFromDbfHeader(Uint8Array.from([3, 126, 5, 12]))).toBe(
       '2026-05-12',
     )
+  })
+
+  it('rejects empty geometry bounds', () => {
+    expect(() =>
+      geometryBounds({ type: 'Polygon', coordinates: [[]] }),
+    ).toThrow('Geometry has no finite bounds')
+  })
+
+  it('covers every bounding-box direction and subdivides parent cells', () => {
+    expect(intersects([0, 0, 2, 2], [1, 1, 3, 3])).toBe(true)
+    expect(intersects([0, 0, 2, 2], [3, 0, 4, 1])).toBe(false)
+    expect(intersects([3, 0, 4, 1], [0, 0, 2, 2])).toBe(false)
+    expect(intersects([0, 0, 2, 2], [0, 3, 1, 4])).toBe(false)
+    expect(intersects([0, 3, 1, 4], [0, 0, 2, 2])).toBe(false)
+
+    const children = childCells([0, 0, 8, 8], 'parent')
+    expect(children).toEqual([
+      { id: 'parent-0', bounds: [0, 0, 4, 4] },
+      { id: 'parent-1', bounds: [4, 0, 8, 4] },
+      { id: 'parent-2', bounds: [0, 4, 4, 8] },
+      { id: 'parent-3', bounds: [4, 4, 8, 8] },
+    ])
+    expect(cellBounds('0-0', 512)[2] - cellBounds('0-0', 512)[0]).toBe(512)
   })
 })

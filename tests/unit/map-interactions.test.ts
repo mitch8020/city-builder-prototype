@@ -74,6 +74,9 @@ describe('MapInteractions', () => {
       new KeyboardEvent('keydown', { key: 'w', bubbles: true }),
     )
     document.body.dispatchEvent(
+      new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }),
+    )
+    document.body.dispatchEvent(
       new KeyboardEvent('keyup', { key: 'w', bubbles: true }),
     )
 
@@ -81,6 +84,7 @@ describe('MapInteractions', () => {
     expect(harness.callbacks.onModeShortcut).toHaveBeenCalledWith('landUse')
     expect(harness.camera.setKey).toHaveBeenNthCalledWith(1, 'w', true)
     expect(harness.camera.setKey).toHaveBeenNthCalledWith(2, 'w', false)
+    expect(harness.callbacks.onEscape).toHaveBeenCalledOnce()
 
     const input = document.createElement('input')
     document.body.append(input)
@@ -89,6 +93,16 @@ describe('MapInteractions', () => {
     )
     expect(harness.callbacks.onModeShortcut).toHaveBeenCalledOnce()
     input.remove()
+
+    const editable = document.createElement('div')
+    editable.contentEditable = 'true'
+    Object.defineProperty(editable, 'isContentEditable', { value: true })
+    document.body.append(editable)
+    editable.dispatchEvent(
+      new KeyboardEvent('keydown', { key: 'Backspace', bubbles: true }),
+    )
+    expect(harness.callbacks.onHome).toHaveBeenCalledOnce()
+    editable.remove()
   })
 
   it('owns hover, edge pan, click thresholds, and context loss', () => {
@@ -99,6 +113,18 @@ describe('MapInteractions', () => {
     expect(harness.camera.setEdgePan).toHaveBeenLastCalledWith(-1, 0)
     expect(harness.callbacks.onHover).toHaveBeenCalledWith(group)
     expect(harness.canvas.style.cursor).toBe('pointer')
+    harness.canvas.dispatchEvent(pointerEvent('pointermove', 10, 50))
+    expect(harness.callbacks.onHover).toHaveBeenCalledOnce()
+
+    harness.canvas.dispatchEvent(pointerEvent('pointermove', 195, 95, 1))
+    expect(harness.camera.setEdgePan).toHaveBeenLastCalledWith(1, -1)
+    expect(harness.callbacks.onHover).toHaveBeenCalledOnce()
+
+    harness.canvas.dispatchEvent(pointerEvent('pointermove', 100, 5, 1))
+    expect(harness.camera.setEdgePan).toHaveBeenLastCalledWith(0, 1)
+
+    harness.canvas.dispatchEvent(pointerEvent('pointermove', 100, 50))
+    expect(harness.camera.setEdgePan).toHaveBeenLastCalledWith(0, 0)
 
     harness.canvas.dispatchEvent(pointerEvent('pointerdown', 100, 50, 1))
     harness.canvas.dispatchEvent(pointerEvent('pointerup', 103, 53))
@@ -106,6 +132,9 @@ describe('MapInteractions', () => {
 
     harness.canvas.dispatchEvent(pointerEvent('pointerdown', 100, 50, 1))
     harness.canvas.dispatchEvent(pointerEvent('pointerup', 120, 70))
+    expect(harness.callbacks.onSelect).toHaveBeenCalledOnce()
+
+    harness.canvas.dispatchEvent(pointerEvent('pointerup', 100, 50))
     expect(harness.callbacks.onSelect).toHaveBeenCalledOnce()
 
     harness.canvas.dispatchEvent(new MouseEvent('pointerleave'))
@@ -116,6 +145,25 @@ describe('MapInteractions', () => {
     harness.canvas.dispatchEvent(contextLost)
     expect(contextLost.defaultPrevented).toBe(true)
     expect(harness.callbacks.onContextLost).toHaveBeenCalledOnce()
+
+    harness.canvas.dispatchEvent(new MouseEvent('pointerleave'))
+    expect(harness.callbacks.onHover).toHaveBeenCalledTimes(2)
+  })
+
+  it('publishes an empty hover and selection when no parcel is picked', () => {
+    const harness = createHarness()
+    activeInteractions.push(harness.interactions)
+
+    harness.canvas.dispatchEvent(pointerEvent('pointermove', 100, 50))
+    harness.callbacks.pickGroup.mockReturnValue(undefined)
+
+    harness.canvas.dispatchEvent(pointerEvent('pointermove', 100, 50))
+    expect(harness.canvas.style.cursor).toBe('grab')
+    expect(harness.callbacks.onHover).toHaveBeenLastCalledWith(undefined)
+
+    harness.canvas.dispatchEvent(pointerEvent('pointerdown', 100, 50, 1))
+    harness.canvas.dispatchEvent(pointerEvent('pointerup', 100, 50))
+    expect(harness.callbacks.onSelect).toHaveBeenCalledWith(undefined)
   })
 
   it('removes every listener when disposed', () => {
