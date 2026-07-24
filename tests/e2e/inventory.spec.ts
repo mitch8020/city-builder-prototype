@@ -188,7 +188,11 @@ test('missing WebGL2 gives the supported browser and Metro alternative', async (
 }) => {
   await page.addInitScript(() => {
     const getContext = HTMLCanvasElement.prototype.getContext
-    HTMLCanvasElement.prototype.getContext = function (type, ...args) {
+    HTMLCanvasElement.prototype.getContext = function (
+      this: HTMLCanvasElement,
+      type,
+      ...args
+    ) {
       if (type === 'webgl2') return null
       return getContext.call(this, type, ...args)
     } as typeof HTMLCanvasElement.prototype.getContext

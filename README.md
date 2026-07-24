@@ -74,6 +74,7 @@ not run while a search field or other control is focused.
 
 ```bash
 npm run lint
+npm run typecheck
 npm run check
 npm run data:audit
 npm test
@@ -89,13 +90,18 @@ search, modes, controls, failure states, and Metro service degradation.
 
 ## Architecture
 
-- TanStack Start owns routing, URL state, and the accessible HUD.
-- Direct Three.js owns the client-only perspective scene.
-- A Web Worker de-duplicates visible shards, groups matching condo footprints,
-  triangulates holes with Earcut, and transfers batched buffers.
-- `three-mesh-bvh` accelerates parcel hover and selection.
-- Metro's muted MapServer provides contextual raster tiles through a bounded
-  96-texture LRU cache.
+- TanStack Start owns routing and URL state. Focused React hooks own manifest
+  loading and the debounced Nashville search lifecycle, while HUD components
+  stay presentational.
+- `CityMap` is the React-to-Three.js adapter. `NashvilleScene` coordinates the
+  renderer, viewport, raycasting, selection, and status callbacks.
+- `MapInteractions` owns DOM input listeners and gesture state; `CameraRig`
+  owns camera controls, limits, navigation, and animation.
+- `ParcelStream` owns visible-shard worker requests, cancellation, generations,
+  and retry. The worker groups condo footprints and triangulates exact polygons;
+  `ParcelLayer` owns GPU buffers, BVH picking, colors, and selection rendering.
+- `MetroTileManager` owns contextual raster tiles through a bounded 96-texture
+  LRU cache.
 - Exact parcel shards load only at neighborhood scale; county startup uses the
   lightweight overview.
 

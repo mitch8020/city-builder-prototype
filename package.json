@@ -11,6 +11,7 @@
     "build": "vite build",
     "preview": "vite preview --port 20073",
     "lint": "eslint",
+    "typecheck": "tsc --noEmit",
     "format": "prettier --write . && eslint --fix",
     "check": "prettier --check .",
     "data:build": "node --max-old-space-size=4096 scripts/build-parcels.mjs",
