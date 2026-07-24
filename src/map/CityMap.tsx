@@ -43,6 +43,7 @@ export const CityMap = forwardRef<CityMapController, CityMapProps>(
     )
 
     useEffect(() => {
+      /* v8 ignore next -- React attaches the host ref before passive effects */
       if (!hostRef.current) return
 
       try {

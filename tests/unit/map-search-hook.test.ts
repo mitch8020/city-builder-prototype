@@ -67,4 +67,93 @@ describe('useMapSearch', () => {
       'Metro search is offline. Landmark jumps still work.',
     )
   })
+
+  it('owns local suggestions, open/close actions, and the slash shortcut', () => {
+    const onSelect = vi.fn()
+    const onError = vi.fn()
+    const search = vi.fn()
+    const { result: hook } = renderHook(() =>
+      useMapSearch({ onSelect, onError, search }),
+    )
+    const input = document.createElement('input')
+    hook.current.inputRef.current = input
+    document.body.append(input)
+
+    act(() => hook.current.changeQuery('d'))
+    expect(hook.current.results.length).toBeGreaterThan(0)
+    act(() => hook.current.closeSearch())
+    expect(hook.current.open).toBe(false)
+    act(() => hook.current.openSearch())
+    act(() => hook.current.setQuery(''))
+    act(() => hook.current.openSearch())
+    expect(hook.current.open).toBe(true)
+
+    act(() => {
+      document.body.dispatchEvent(
+        new KeyboardEvent('keydown', {
+          key: '/',
+          bubbles: true,
+          cancelable: true,
+        }),
+      )
+    })
+    expect(document.activeElement).toBe(input)
+
+    for (const target of [
+      document.createElement('input'),
+      document.createElement('textarea'),
+      document.createElement('select'),
+    ]) {
+      document.body.append(target)
+      target.dispatchEvent(
+        new KeyboardEvent('keydown', { key: '/', bubbles: true }),
+      )
+      target.remove()
+    }
+    act(() => {
+      document.body.dispatchEvent(
+        new KeyboardEvent('keydown', { key: 'x', bubbles: true }),
+      )
+    })
+    input.remove()
+  })
+
+  it('silently ignores aborted searches and aborts pending work on change', async () => {
+    vi.useFakeTimers()
+    const search = vi
+      .fn()
+      .mockRejectedValue(new DOMException('cancelled', 'AbortError'))
+    const onError = vi.fn()
+    const onSelect = vi.fn()
+    const { result: hook, unmount } = renderHook(() =>
+      useMapSearch({ onSelect, onError, search }),
+    )
+
+    act(() => hook.current.changeQuery('first query'))
+    act(() => hook.current.changeQuery('second query'))
+    await act(() => vi.advanceTimersByTimeAsync(260))
+    expect(onError).not.toHaveBeenCalled()
+    unmount()
+  })
+
+  it('does not let an aborted request clear a newer pending search', async () => {
+    vi.useFakeTimers()
+    let resolveSearch: ((value: SearchResult[]) => void) | undefined
+    const search = vi.fn(
+      () =>
+        new Promise<SearchResult[]>((resolve) => {
+          resolveSearch = resolve
+        }),
+    )
+    const onSelect = vi.fn()
+    const onError = vi.fn()
+    const { result: hook } = renderHook(() =>
+      useMapSearch({ onSelect, onError, search }),
+    )
+    act(() => hook.current.changeQuery('first query'))
+    await act(() => vi.advanceTimersByTimeAsync(260))
+    act(() => hook.current.changeQuery('second query'))
+    await act(async () => resolveSearch?.([result]))
+    expect(hook.current.searching).toBe(true)
+  })
 })

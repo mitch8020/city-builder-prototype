@@ -238,9 +238,7 @@ export class NashvilleScene implements CityMapController {
       '#8da5a0',
       '#c9c2b5',
     )
-    const materials = Array.isArray(grid.material)
-      ? grid.material
-      : [grid.material]
+    const materials = [grid.material].flat()
     materials.forEach((material) => {
       material.transparent = true
       material.opacity = 0.16
@@ -329,8 +327,9 @@ export class NashvilleScene implements CityMapController {
       origin[1] - groundHit.z,
     ]
     let best: ParcelGroup | undefined
-    for (const group of this.parcelLayer.groups) {
-      if (!pointInGroup(point, group)) continue
+    for (const group of this.parcelLayer.groups.filter((candidate) =>
+      pointInGroup(point, candidate),
+    )) {
       if (
         !best ||
         group.records.length > best.records.length ||

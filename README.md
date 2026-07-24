@@ -78,15 +78,16 @@ npm run typecheck
 npm run check
 npm run data:audit
 npm test
+npm run test:coverage
 npm run test:e2e
 npm run build
 ```
 
-Unit coverage includes projection, sharding, geometry holes and multipolygons,
-condominium grouping, camera limits, key mappings, tile math, legends,
-formatting, URL state, and the generated data manifest. Playwright builds and
-serves the production bundle at 1440×900, then covers the interaction shell,
-search, modes, controls, failure states, and Metro service degradation.
+`test:coverage` enforces 100% statement, branch, function, and line coverage for
+the hand-authored application source under `src` plus `scripts/parcel-utils.mjs`.
+The generated TanStack route tree is excluded. Playwright builds and serves the
+production bundle at 1440×900, then covers the interaction shell, search,
+modes, controls, failure states, and Metro service degradation.
 
 ## Architecture
 

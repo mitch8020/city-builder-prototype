@@ -192,15 +192,11 @@ function NashvilleApp() {
       .catch(() => setToast('That shared parcel could not be restored.'))
   }, [manifest, mapSearch.setQuery, search.parcel, search.parId])
 
-  const cycleUnit = (direction: number) => {
-    if (!selectedGroup || selectedRid === undefined) return
-    const current = selectedGroup.records.findIndex(
-      (record) => record.rid === selectedRid,
-    )
+  const cycleUnit = (group: ParcelGroup, rid: number, direction: number) => {
+    const current = group.records.findIndex((record) => record.rid === rid)
     const next =
-      (current + direction + selectedGroup.records.length) %
-      selectedGroup.records.length
-    const record = selectedGroup.records[next]
+      (current + direction + group.records.length) % group.records.length
+    const record = group.records[next]
     setSelectedRid(record.rid)
     void navigate({
       replace: true,
@@ -291,7 +287,9 @@ function NashvilleApp() {
             group={selectedGroup}
             selectedRid={selectedRid}
             onClose={() => handleSelect(undefined)}
-            onCycleUnit={cycleUnit}
+            onCycleUnit={(direction) =>
+              cycleUnit(selectedGroup, selectedRid, direction)
+            }
             onCopyLink={() => void copyLink()}
           />
         )}

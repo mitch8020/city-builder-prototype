@@ -40,4 +40,13 @@ describe('loadParcelManifest', () => {
       'The parcel manifest failed validation',
     )
   })
+
+  it('rejects unsuccessful manifest responses', async () => {
+    const fetcher = vi
+      .fn()
+      .mockResolvedValue(new Response(undefined, { status: 503 }))
+    await expect(loadParcelManifest({ fetcher })).rejects.toThrow(
+      'Manifest returned 503',
+    )
+  })
 })
