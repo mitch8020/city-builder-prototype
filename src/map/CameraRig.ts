@@ -16,7 +16,7 @@ interface CameraRigOptions {
   height: number
   countyBounds: [number, number, number, number]
   localOrigin: [number, number]
-  onViewChange: (delay?: number) => void
+  onViewChange: (delay?: number, settled?: boolean) => void
 }
 
 export class CameraRig {
@@ -233,7 +233,7 @@ export class CameraRig {
     )
     if (progress >= 1) {
       this.tween = undefined
-      this.options.onViewChange(0)
+      this.options.onViewChange(0, true)
     }
   }
 

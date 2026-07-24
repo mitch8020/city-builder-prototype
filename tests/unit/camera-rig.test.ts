@@ -94,7 +94,7 @@ describe('CameraRig', () => {
 
     clock.mockReturnValue(1_000)
     rig.update(0.1)
-    expect(onViewChange).toHaveBeenCalledWith(0)
+    expect(onViewChange).toHaveBeenCalledWith(0, true)
     expect((rig as unknown as { tween?: unknown }).tween).toBeUndefined()
 
     rig.home()

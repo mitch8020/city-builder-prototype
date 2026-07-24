@@ -48,9 +48,11 @@ export class NashvilleScene implements CityMapController {
   private resizeObserver: ResizeObserver
   private dataTimer?: ReturnType<typeof setTimeout>
   private tileTimer?: ReturnType<typeof setTimeout>
+  private settledUpdatePending = false
   private pendingSelection?: {
     point: [number, number]
     hint?: ParcelSelectionHint
+    destinationRequested: boolean
   }
   private disposed = false
   private tileAvailable = navigator.onLine
@@ -100,7 +102,7 @@ export class NashvilleScene implements CityMapController {
       height,
       countyBounds: this.countyBounds,
       localOrigin: manifest.projection.localOrigin,
-      onViewChange: (delay) => this.scheduleMapUpdate(delay),
+      onViewChange: (delay, settled) => this.scheduleMapUpdate(delay, settled),
     })
 
     this.scene.add(this.parcelLayer.root)
@@ -119,13 +121,18 @@ export class NashvilleScene implements CityMapController {
     this.parcelStream = new ParcelStream(manifest, {
       onProgress: (message) => this.publishLoadingStatus(message),
       onLoaded: (response) => this.installParcelResponse(response),
-      onError: (message) => this.publishError(message),
+      onError: (message) => {
+        if (this.pendingSelection?.destinationRequested)
+          this.pendingSelection = undefined
+        this.publishError(message)
+      },
     })
 
     this.raycaster.firstHitOnly = true
     this.interactions = new MapInteractions(canvas, this.cameraRig, {
       pickGroup: (pointer) => this.pickGroup(pointer),
       onSelect: (group) => {
+        this.pendingSelection = undefined
         if (group) {
           this.selectGroup(group, group.records[0].rid, true)
         } else {
@@ -164,6 +171,8 @@ export class NashvilleScene implements CityMapController {
   }
 
   setSelectedRid(rid?: number) {
+    this.settledUpdatePending = false
+    this.pendingSelection = undefined
     this.selectedRid = rid
     if (rid === undefined) {
       this.selectedGroup = undefined
@@ -177,6 +186,7 @@ export class NashvilleScene implements CityMapController {
 
   home() {
     this.cameraRig.home()
+    this.settledUpdatePending = false
     this.pendingSelection = undefined
   }
 
@@ -198,7 +208,13 @@ export class NashvilleScene implements CityMapController {
   }
 
   selectAt(x: number, y: number, hint?: ParcelSelectionHint) {
-    this.pendingSelection = { point: [x, y], hint }
+    this.settledUpdatePending = false
+    this.pendingSelection = {
+      point: [x, y],
+      hint,
+      destinationRequested: false,
+    }
+    if (this.selectParcelAt([x, y], hint)) this.pendingSelection = undefined
     this.flyTo(x, y, 1_400)
   }
 
@@ -354,10 +370,15 @@ export class NashvilleScene implements CityMapController {
     this.renderer.render(this.scene, this.cameraRig.camera)
   }
 
-  private scheduleMapUpdate(delay = 160) {
+  private scheduleMapUpdate(delay = 160, viewSettled = false) {
+    this.settledUpdatePending ||= viewSettled
     clearTimeout(this.dataTimer)
     clearTimeout(this.tileTimer)
-    this.dataTimer = setTimeout(() => this.updateParcelWindow(), delay)
+    this.dataTimer = setTimeout(() => {
+      const shouldSettle = this.settledUpdatePending
+      this.settledUpdatePending = false
+      this.updateParcelWindow(shouldSettle)
+    }, delay)
     this.tileTimer = setTimeout(() => this.updateTiles(), Math.min(delay, 90))
   }
 
@@ -414,7 +435,7 @@ export class NashvilleScene implements CityMapController {
     this.tileManager.update(bounds, metersPerPixel)
   }
 
-  private updateParcelWindow() {
+  private updateParcelWindow(viewSettled = false) {
     const distance = this.cameraRig.distance
     if (distance > 7_500) {
       if (this.parcelStream.cancel()) {
@@ -426,6 +447,11 @@ export class NashvilleScene implements CityMapController {
 
     const bounds = this.viewBounds()
     const shardCount = this.parcelStream.load(bounds)
+    if (viewSettled && this.pendingSelection) {
+      this.pendingSelection.destinationRequested = true
+      if (shardCount === undefined && !this.parcelStream.isLoading)
+        this.pendingSelection = undefined
+    }
     if (shardCount === undefined) return
     this.publishLoadingStatus(
       `Loading ${shardCount} map ${shardCount === 1 ? 'cell' : 'cells'}`,
@@ -436,16 +462,25 @@ export class NashvilleScene implements CityMapController {
     this.parcelLayer.install(response)
     if (this.pendingSelection) {
       const pending = this.pendingSelection
-      const candidates = this.parcelLayer.groups.filter((candidate) =>
-        pointInGroup(pending.point, candidate),
+      if (
+        this.selectParcelAt(pending.point, pending.hint) ||
+        pending.destinationRequested
       )
-      const match = bestParcelMatch(candidates, pending.hint)
-      if (match) this.selectGroup(match.group, match.rid, true)
-      this.pendingSelection = undefined
+        this.pendingSelection = undefined
     } else if (this.selectedRid !== undefined) {
       this.setSelectedRid(this.selectedRid)
     }
     this.publishStatus()
+  }
+
+  private selectParcelAt(point: [number, number], hint?: ParcelSelectionHint) {
+    const candidates = this.parcelLayer.groups.filter((candidate) =>
+      pointInGroup(point, candidate),
+    )
+    const match = bestParcelMatch(candidates, hint)
+    if (!match) return false
+    this.selectGroup(match.group, match.rid, true)
+    return true
   }
 
   private publishLoadingStatus(message: string) {

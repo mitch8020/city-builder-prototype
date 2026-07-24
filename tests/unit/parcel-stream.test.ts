@@ -107,6 +107,7 @@ describe('ParcelStream', () => {
     )
 
     expect(stream.load([0, 0, 9, 9])).toBe(1)
+    expect(stream.isLoading).toBe(true)
     expect(stream.load([0, 0, 9, 9])).toBeUndefined()
     expect(worker.requests).toEqual([
       {
@@ -132,6 +133,7 @@ describe('ParcelStream', () => {
 
     const response = loadedResponse(2)
     worker.emit(response)
+    expect(stream.isLoading).toBe(false)
     expect(onLoaded).toHaveBeenCalledWith(response)
     expect(onError).not.toHaveBeenCalled()
   })
@@ -151,20 +153,27 @@ describe('ParcelStream', () => {
       generation: 1,
       message: 'Internal worker detail',
     })
+    expect(stream.isLoading).toBe(false)
     expect(onError).toHaveBeenCalledWith(
       'Parcel data did not load. Move or zoom the map to retry.',
     )
     expect(stream.load([0, 0, 9, 9])).toBe(1)
+    expect(stream.isLoading).toBe(true)
 
     expect(stream.cancel()).toBe(true)
+    expect(stream.isLoading).toBe(false)
     expect(stream.cancel()).toBe(false)
     expect(worker.requests.at(-1)).toEqual({
       type: 'cancel',
       generation: 3,
     })
 
+    expect(stream.load([11, 0, 20, 10])).toBe(1)
     worker.onerror?.()
+    expect(stream.isLoading).toBe(false)
+    expect(stream.load([0, 0, 9, 9])).toBe(1)
     worker.onmessageerror?.()
+    expect(stream.isLoading).toBe(false)
     expect(onError).toHaveBeenNthCalledWith(
       2,
       'The parcel renderer stopped. Reload the map to restore it.',

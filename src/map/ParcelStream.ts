@@ -17,6 +17,7 @@ export interface ParcelStreamCallbacks {
 export class ParcelStream {
   private activeShardKey = ''
   private generation = 0
+  private loading = false
 
   constructor(
     private readonly manifest: ParcelManifestV1,
@@ -29,13 +30,19 @@ export class ParcelStream {
     this.worker.onmessage = (event: MessageEvent<ParcelWorkerResponse>) =>
       this.handleMessage(event.data)
     this.worker.onerror = () => {
+      this.loading = false
       this.callbacks.onError(
         'The parcel renderer stopped. Reload the map to restore it.',
       )
     }
     this.worker.onmessageerror = () => {
+      this.loading = false
       this.callbacks.onError('Parcel worker returned an unreadable response.')
     }
+  }
+
+  get isLoading() {
+    return this.loading
   }
 
   load(bounds: MapBounds) {
@@ -47,6 +54,7 @@ export class ParcelStream {
     if (!shardKey || shardKey === this.activeShardKey) return undefined
 
     this.activeShardKey = shardKey
+    this.loading = true
     this.generation += 1
     this.post({
       type: 'load',
@@ -61,6 +69,7 @@ export class ParcelStream {
     if (!this.activeShardKey) return false
 
     this.activeShardKey = ''
+    this.loading = false
     this.generation += 1
     this.post({ type: 'cancel', generation: this.generation })
     return true
@@ -82,11 +91,13 @@ export class ParcelStream {
     }
     if (response.type === 'error') {
       this.activeShardKey = ''
+      this.loading = false
       this.callbacks.onError(
         'Parcel data did not load. Move or zoom the map to retry.',
       )
       return
     }
+    this.loading = false
     this.callbacks.onLoaded(response)
   }
 }

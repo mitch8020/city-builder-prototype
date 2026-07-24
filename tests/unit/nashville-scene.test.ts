@@ -56,7 +56,9 @@ vi.mock('../../src/map/CameraRig', async () => {
       dispose = vi.fn()
       constructor(
         _canvas: HTMLCanvasElement,
-        readonly options: { onViewChange: (delay?: number) => void },
+        readonly options: {
+          onViewChange: (delay?: number, settled?: boolean) => void
+        },
       ) {
         this.camera.position.set(0, 1_000, 1_000)
         this.camera.lookAt(0, 0, 0)
@@ -100,6 +102,7 @@ vi.mock('../../src/map/ParcelLayer', async () => {
 
 vi.mock('../../src/map/ParcelStream', () => ({
   ParcelStream: class {
+    isLoading = false
     load = vi.fn()
     cancel = vi.fn()
     dispose = vi.fn()
@@ -218,7 +221,12 @@ interface Internals {
   disposed: boolean
   selectedGroup?: ParcelGroup
   selectedRid?: number
-  pendingSelection?: { point: [number, number]; hint?: { parId?: number } }
+  settledUpdatePending: boolean
+  pendingSelection?: {
+    point: [number, number]
+    hint?: { parId?: number }
+    destinationRequested?: boolean
+  }
   callbacks: ReturnType<typeof callbacks>
   raycaster: {
     setFromCamera: ReturnType<typeof vi.fn>
@@ -227,10 +235,10 @@ interface Internals {
   addOverview: () => Promise<void>
   pickGroup: (pointer: THREE.Vector2) => ParcelGroup | undefined
   animate: () => void
-  scheduleMapUpdate: (delay?: number) => void
+  scheduleMapUpdate: (delay?: number, viewSettled?: boolean) => void
   viewBounds: () => [number, number, number, number]
   updateTiles: () => void
-  updateParcelWindow: () => void
+  updateParcelWindow: (viewSettled?: boolean) => void
   installParcelResponse: (value: WorkerLoadedResponse) => void
   publishStatus: () => void
   updateAnchor: () => void
@@ -334,7 +342,9 @@ describe('NashvilleScene', () => {
       distance: number
       target: THREE.Vector3
       camera: THREE.PerspectiveCamera
-      options: { onViewChange: (delay?: number) => void }
+      options: {
+        onViewChange: (delay?: number, settled?: boolean) => void
+      }
       home: ReturnType<typeof vi.fn>
       zoomBy: ReturnType<typeof vi.fn>
       rotateToNorth: ReturnType<typeof vi.fn>
@@ -360,6 +370,7 @@ describe('NashvilleScene', () => {
     }
     const stream = doubles.streams[0] as {
       handlerCallbacks: Record<string, (value: unknown) => void>
+      isLoading: boolean
       load: ReturnType<typeof vi.fn>
       cancel: ReturnType<typeof vi.fn>
       dispose: ReturnType<typeof vi.fn>
@@ -491,11 +502,59 @@ describe('NashvilleScene', () => {
     internal.updateParcelWindow()
     internal.updateParcelWindow()
 
+    internal.pendingSelection = {
+      point: [50, 50],
+      destinationRequested: false,
+    }
+    stream.isLoading = false
+    stream.load.mockReturnValueOnce(undefined)
+    internal.updateParcelWindow(true)
+    expect(internal.pendingSelection).toBeUndefined()
+    internal.pendingSelection = {
+      point: [50, 50],
+      destinationRequested: false,
+    }
+    stream.isLoading = true
+    stream.load.mockReturnValueOnce(undefined)
+    internal.updateParcelWindow(true)
+    expect(internal.pendingSelection).toMatchObject({
+      destinationRequested: true,
+    })
+    internal.installParcelResponse(response)
+    expect(internal.pendingSelection).toBeUndefined()
+    internal.pendingSelection = {
+      point: [50, 50],
+      destinationRequested: true,
+    }
+    stream.handlerCallbacks.onError('Destination failed')
+    expect(internal.pendingSelection).toBeUndefined()
+    stream.isLoading = false
+
     internal.pendingSelection = { point: [2, 2], hint: { parId: 1 } }
     layer.groups = [group]
     internal.installParcelResponse(response)
-    internal.pendingSelection = { point: [50, 50] }
+    updated.onSelect.mockClear()
+    scene.selectAt(2, 2, { parId: 1 })
+    expect(internal.pendingSelection).toBeUndefined()
+    expect(updated.onSelect).toHaveBeenCalledWith(group, 1)
+    internal.pendingSelection = { point: [22, 22] }
+    interaction.handlerCallbacks.onSelect(group)
+    expect(internal.pendingSelection).toBeUndefined()
+    internal.pendingSelection = { point: [22, 22] }
+    interaction.handlerCallbacks.onSelect(undefined)
+    expect(internal.pendingSelection).toBeUndefined()
+    internal.pendingSelection = { point: [22, 22] }
+    scene.setSelectedRid(1)
+    expect(internal.pendingSelection).toBeUndefined()
+    internal.pendingSelection = { point: [22, 22] }
+    scene.setSelectedRid(undefined)
+    expect(internal.pendingSelection).toBeUndefined()
+    internal.pendingSelection = { point: [22, 22] }
     internal.installParcelResponse(response)
+    expect(internal.pendingSelection).toEqual({ point: [22, 22] })
+    internal.installParcelResponse({ ...response, groups: [outside] })
+    expect(internal.pendingSelection).toBeUndefined()
+    expect(updated.onSelect).toHaveBeenLastCalledWith(outside, 1)
     internal.pendingSelection = undefined
     internal.selectedRid = 1
     layer.findByRid.mockReturnValue(group)
@@ -542,8 +601,13 @@ describe('NashvilleScene', () => {
     internal.disposed = false
     internal.scheduleMapUpdate()
     vi.runAllTimers()
-    rig.options.onViewChange(0)
+    doubles.resize?.()
+    expect(internal.settledUpdatePending).toBe(false)
+    rig.options.onViewChange(0, true)
+    internal.scheduleMapUpdate()
+    expect(internal.settledUpdatePending).toBe(true)
     vi.runAllTimers()
+    expect(internal.settledUpdatePending).toBe(false)
     doubles.resize?.()
     vi.runAllTimers()
 
