@@ -26,17 +26,18 @@ import {
 import { MapSearch } from '../map/components/MapSearch'
 import { ParcelInspector } from '../map/components/ParcelInspector'
 import { LANDMARKS } from '../map/constants'
+import { useMapSearch } from '../map/hooks/useMapSearch'
+import { useParcelManifest } from '../map/hooks/useParcelManifest'
 import { groupPrimaryRecord } from '../map/map-utils'
-import { landmarkSuggestions, searchNashville } from '../map/nashville-search'
+import { searchNashville } from '../map/nashville-search'
 import type {
   CityMapController,
   MapMode,
   ParcelGroup,
-  ParcelManifestV1,
   SceneStatus,
   SearchResult,
 } from '../map/types'
-import { mapSearchSchema, parcelManifestSchema } from '../map/validation'
+import { mapSearchSchema } from '../map/validation'
 
 export const Route = createFileRoute('/')({
   validateSearch: mapSearchSchema,
@@ -54,12 +55,9 @@ function NashvilleApp() {
   const search = Route.useSearch()
   const navigate = useNavigate({ from: '/' })
   const mapRef = useRef<CityMapController | null>(null)
-  const searchInputRef = useRef<HTMLInputElement>(null)
-  const searchAbortRef = useRef<AbortController | undefined>(undefined)
   const shareResolvedRef = useRef(false)
   const anchorUpdateRef = useRef({ time: 0, x: 0, y: 0 })
-  const [manifest, setManifest] = useState<ParcelManifestV1>()
-  const [manifestError, setManifestError] = useState('')
+  const { manifest, error: manifestError } = useParcelManifest()
   const [selectedGroup, setSelectedGroup] = useState<ParcelGroup>()
   const [selectedRid, setSelectedRid] = useState<number>()
   const [hoveredGroup, setHoveredGroup] = useState<ParcelGroup>()
@@ -67,35 +65,18 @@ function NashvilleApp() {
   const [helpOpen, setHelpOpen] = useState(false)
   const [unsupported, setUnsupported] = useState(false)
   const [anchor, setAnchor] = useState<{ x: number; y: number }>()
-  const [query, setQuery] = useState('')
-  const [results, setResults] = useState<SearchResult[]>([])
-  const [searching, setSearching] = useState(false)
-  const [searchOpen, setSearchOpen] = useState(false)
   const [toast, setToast] = useState('')
-
-  useEffect(() => {
-    const controller = new AbortController()
-    fetch('/data/parcels/manifest.json', { signal: controller.signal })
-      .then((response) => {
-        if (!response.ok)
-          throw new Error(`Manifest returned ${response.status}`)
-        return response.json()
-      })
-      .then((data: unknown) => {
-        const parsed = parcelManifestSchema.parse(data)
-        if (parsed.source.recordCount !== 286_458) {
-          throw new Error('The parcel manifest failed validation')
-        }
-        setManifest(parsed)
-      })
-      .catch((error: unknown) => {
-        if (error instanceof DOMException && error.name === 'AbortError') return
-        setManifestError(
-          'The packaged parcel snapshot is unavailable or invalid.',
-        )
-      })
-    return () => controller.abort()
+  const selectSearchResult = useCallback((result: SearchResult) => {
+    mapRef.current?.selectAt(result.x, result.y, {
+      address: result.label,
+      parcel: result.parcel,
+      parId: result.parId,
+    })
   }, [])
+  const mapSearch = useMapSearch({
+    onSelect: selectSearchResult,
+    onError: setToast,
+  })
 
   useEffect(() => {
     if (!toast) return
@@ -166,63 +147,20 @@ function NashvilleApp() {
       setHelpOpen(false)
       return
     }
-    if (searchOpen) {
-      setSearchOpen(false)
+    if (mapSearch.open) {
+      mapSearch.closeSearch()
       return
     }
     if (selectedGroup) handleSelect(undefined)
-  }, [handleSelect, helpOpen, searchOpen, selectedGroup])
+  }, [
+    handleSelect,
+    helpOpen,
+    mapSearch.closeSearch,
+    mapSearch.open,
+    selectedGroup,
+  ])
 
   const handleUnsupported = useCallback(() => setUnsupported(true), [])
-
-  useEffect(() => {
-    searchAbortRef.current?.abort()
-    if (query.trim().length < 2) {
-      setResults(landmarkSuggestions(query))
-      setSearching(false)
-      return
-    }
-    setResults([])
-    setSearching(true)
-    const controller = new AbortController()
-    searchAbortRef.current = controller
-    const timer = setTimeout(() => {
-      searchNashville(query, { signal: controller.signal })
-        .then(setResults)
-        .catch((error: unknown) => {
-          if (error instanceof DOMException && error.name === 'AbortError')
-            return
-          setResults(landmarkSuggestions(query))
-          setToast('Metro search is offline. Landmark jumps still work.')
-        })
-        .finally(() => {
-          if (!controller.signal.aborted) setSearching(false)
-        })
-    }, 260)
-    return () => {
-      clearTimeout(timer)
-      controller.abort()
-    }
-  }, [query])
-
-  useEffect(() => {
-    const focusSearch = (event: KeyboardEvent) => {
-      const target = event.target as HTMLElement | null
-      if (
-        event.key !== '/' ||
-        target?.matches('input, textarea, select') ||
-        target?.isContentEditable
-      ) {
-        return
-      }
-      event.preventDefault()
-      setSearchOpen(true)
-      if (!query) setResults(landmarkSuggestions(query))
-      searchInputRef.current?.focus()
-    }
-    window.addEventListener('keydown', focusSearch)
-    return () => window.removeEventListener('keydown', focusSearch)
-  }, [query])
 
   useEffect(() => {
     if (
@@ -244,7 +182,7 @@ function NashvilleApp() {
         }
         const result =
           matches.find((match) => match.kind === 'parcel') || matches[0]
-        setQuery(result.label)
+        mapSearch.setQuery(result.label)
         mapRef.current?.selectAt(result.x, result.y, {
           address: result.label,
           parcel: result.parcel,
@@ -252,18 +190,7 @@ function NashvilleApp() {
         })
       })
       .catch(() => setToast('That shared parcel could not be restored.'))
-  }, [manifest, search.parcel, search.parId])
-
-  const selectResult = (result: SearchResult) => {
-    setQuery(result.label)
-    setSearching(false)
-    setSearchOpen(false)
-    mapRef.current?.selectAt(result.x, result.y, {
-      address: result.label,
-      parcel: result.parcel,
-      parId: result.parId,
-    })
-  }
+  }, [manifest, mapSearch.setQuery, search.parcel, search.parId])
 
   const cycleUnit = (direction: number) => {
     if (!selectedGroup || selectedRid === undefined) return
@@ -338,33 +265,20 @@ function NashvilleApp() {
           manifest={manifest}
           status={status}
           onOpenControls={() => {
-            setSearchOpen(false)
+            mapSearch.closeSearch()
             setHelpOpen(true)
           }}
           search={
             <MapSearch
-              query={query}
-              results={results}
-              searching={searching}
-              open={searchOpen}
-              inputRef={searchInputRef}
-              onQueryChange={(value) => {
-                setQuery(value)
-                setSearchOpen(true)
-                if (value.trim().length < 2) {
-                  setResults(landmarkSuggestions(value))
-                  setSearching(false)
-                } else {
-                  setResults([])
-                  setSearching(true)
-                }
-              }}
-              onOpen={() => {
-                setSearchOpen(true)
-                if (!query) setResults(landmarkSuggestions(query))
-              }}
-              onClose={() => setSearchOpen(false)}
-              onSelect={selectResult}
+              query={mapSearch.query}
+              results={mapSearch.results}
+              searching={mapSearch.searching}
+              open={mapSearch.open}
+              inputRef={mapSearch.inputRef}
+              onQueryChange={mapSearch.changeQuery}
+              onOpen={mapSearch.openSearch}
+              onClose={mapSearch.closeSearch}
+              onSelect={mapSearch.selectResult}
             />
           }
         />
