@@ -112,7 +112,7 @@ export function MapTopbar({
           }`}
         >
           <span />
-          {status.onlineTiles ? 'Metro context' : 'Local map'}
+          {status.onlineTiles ? 'Google map' : 'Local map'}
         </span>
         <button
           className="round-button"
@@ -188,9 +188,17 @@ export function HoverCard({
 export function MapFooter({ status }: { status: SceneStatus }) {
   return (
     <div className="map-footer">
-      <p>
-        <strong>Metro GIS</strong> · Nashville & Davidson County
-      </p>
+      <div className="map-attributions">
+        {status.basemapCopyright && (
+          <div className="google-attribution">
+            <img src="/google-maps-attribution.svg" alt="Google Maps" />
+            <span>{status.basemapCopyright}</span>
+          </div>
+        )}
+        <p className="metro-attribution">
+          <strong>Metro GIS</strong> · Parcel overlay
+        </p>
+      </div>
       <p className={`map-status map-status--${status.phase}`}>
         <span />
         {status.message}

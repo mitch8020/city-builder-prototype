@@ -10,33 +10,58 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ApiGoogleMapAttributionRouteImport } from './routes/api/google-map/attribution'
+import { Route as ApiGoogleMapTilesZoomXYRouteImport } from './routes/api/google-map/tiles/$zoom/$x/$y'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiGoogleMapAttributionRoute = ApiGoogleMapAttributionRouteImport.update({
+  id: '/api/google-map/attribution',
+  path: '/api/google-map/attribution',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiGoogleMapTilesZoomXYRoute = ApiGoogleMapTilesZoomXYRouteImport.update({
+  id: '/api/google-map/tiles/$zoom/$x/$y',
+  path: '/api/google-map/tiles/$zoom/$x/$y',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/api/google-map/attribution': typeof ApiGoogleMapAttributionRoute
+  '/api/google-map/tiles/$zoom/$x/$y': typeof ApiGoogleMapTilesZoomXYRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/api/google-map/attribution': typeof ApiGoogleMapAttributionRoute
+  '/api/google-map/tiles/$zoom/$x/$y': typeof ApiGoogleMapTilesZoomXYRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/api/google-map/attribution': typeof ApiGoogleMapAttributionRoute
+  '/api/google-map/tiles/$zoom/$x/$y': typeof ApiGoogleMapTilesZoomXYRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    '/' | '/api/google-map/attribution' | '/api/google-map/tiles/$zoom/$x/$y'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to: '/' | '/api/google-map/attribution' | '/api/google-map/tiles/$zoom/$x/$y'
+  id:
+    | '__root__'
+    | '/'
+    | '/api/google-map/attribution'
+    | '/api/google-map/tiles/$zoom/$x/$y'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  ApiGoogleMapAttributionRoute: typeof ApiGoogleMapAttributionRoute
+  ApiGoogleMapTilesZoomXYRoute: typeof ApiGoogleMapTilesZoomXYRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +73,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/google-map/attribution': {
+      id: '/api/google-map/attribution'
+      path: '/api/google-map/attribution'
+      fullPath: '/api/google-map/attribution'
+      preLoaderRoute: typeof ApiGoogleMapAttributionRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/google-map/tiles/$zoom/$x/$y': {
+      id: '/api/google-map/tiles/$zoom/$x/$y'
+      path: '/api/google-map/tiles/$zoom/$x/$y'
+      fullPath: '/api/google-map/tiles/$zoom/$x/$y'
+      preLoaderRoute: typeof ApiGoogleMapTilesZoomXYRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  ApiGoogleMapAttributionRoute: ApiGoogleMapAttributionRoute,
+  ApiGoogleMapTilesZoomXYRoute: ApiGoogleMapTilesZoomXYRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

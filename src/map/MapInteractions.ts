@@ -20,7 +20,7 @@ export interface MapInteractionCallbacks {
 export class MapInteractions {
   private readonly pointer = new THREE.Vector2()
   private pointerDown?: { x: number; y: number }
-  private hoveredGroupId = -1
+  private hoveredRecordId = -1
 
   constructor(
     private readonly canvas: HTMLCanvasElement,
@@ -114,8 +114,8 @@ export class MapInteractions {
 
   private readonly handlePointerLeave = () => {
     this.camera.setEdgePan(0, 0)
-    if (this.hoveredGroupId === -1) return
-    this.hoveredGroupId = -1
+    if (this.hoveredRecordId === -1) return
+    this.hoveredRecordId = -1
     this.callbacks.onHover(undefined)
   }
 
@@ -126,9 +126,9 @@ export class MapInteractions {
 
   private pickHover() {
     const group = this.callbacks.pickGroup(this.pointer)
-    const id = group?.id ?? -1
-    if (id === this.hoveredGroupId) return
-    this.hoveredGroupId = id
+    const recordId = group?.records[0]?.rid ?? -1
+    if (recordId === this.hoveredRecordId) return
+    this.hoveredRecordId = recordId
     this.canvas.style.cursor = group ? 'pointer' : 'grab'
     this.callbacks.onHover(group)
   }

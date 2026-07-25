@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest'
 import {
   buildParcelGeometry,
   groupParcelFeatures,
+  groupsOwnedByBounds,
 } from '../../src/map/parcel-geometry'
 import type { ParcelFeature, ParcelRecord } from '../../src/map/types'
 
@@ -55,6 +56,52 @@ describe('worker parcel geometry', () => {
     expect(groups[0].records.map(({ rid }) => rid)).toEqual([1, 2])
   })
 
+  it('assigns a cross-cell parcel to one canonical rendering cell', () => {
+    const groups = groupParcelFeatures([
+      {
+        type: 'Feature',
+        properties: parcel(1, '1'),
+        geometry: {
+          type: 'Polygon',
+          coordinates: [
+            [
+              [8, 2],
+              [12, 2],
+              [12, 8],
+              [8, 8],
+              [8, 2],
+            ],
+          ],
+        },
+      },
+    ])
+
+    expect(groupsOwnedByBounds(groups, [0, 0, 10, 10], [0, 0, 20, 10])).toEqual(
+      [],
+    )
+    expect(
+      groupsOwnedByBounds(groups, [10, 0, 20, 10], [0, 0, 20, 10]),
+    ).toMatchObject([{ id: 0, records: [{ rid: 1 }] }])
+
+    const atCountyMaximum = {
+      ...groups[0],
+      center: [20, 10] as [number, number],
+    }
+    expect(
+      groupsOwnedByBounds(
+        [
+          { ...groups[0], center: [-1, 5] },
+          { ...groups[0], center: [5, -1] },
+          { ...groups[0], center: [21, 5] },
+          { ...groups[0], center: [15, 11] },
+          atCountyMaximum,
+        ],
+        [10, 0, 20, 10],
+        [0, 0, 20, 10],
+      ),
+    ).toMatchObject([{ id: 0, center: [20, 10] }])
+  })
+
   it('triangulates holes without filling their area', () => {
     const [group] = groupParcelFeatures([
       {
@@ -88,6 +135,16 @@ describe('worker parcel geometry', () => {
     const cz = output.topPositions[c * 3 + 2]
     const normalY = (bz - az) * (cx - ax) - (bx - ax) * (cz - az)
     expect(normalY).toBeGreaterThan(0)
+    expect(output.sideNormals).toHaveLength(output.sidePositions.length)
+    for (let index = 0; index < output.sideNormals.length; index += 3) {
+      expect(
+        Math.hypot(
+          output.sideNormals[index],
+          output.sideNormals[index + 1],
+          output.sideNormals[index + 2],
+        ),
+      ).toBeCloseTo(1)
+    }
   })
 
   it('includes each multipolygon part in one logical parcel group', () => {

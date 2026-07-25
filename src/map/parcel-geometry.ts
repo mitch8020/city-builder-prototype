@@ -65,6 +65,24 @@ export function groupParcelFeatures(features: ParcelFeature[]) {
   return [...byGeometry.values()]
 }
 
+export function groupsOwnedByBounds(
+  groups: ParcelGroup[],
+  bounds: [number, number, number, number],
+  countyBounds: [number, number, number, number],
+) {
+  const ownsMaximumX = bounds[2] >= countyBounds[2]
+  const ownsMaximumY = bounds[3] >= countyBounds[3]
+  return groups
+    .filter(
+      ({ center }) =>
+        center[0] >= bounds[0] &&
+        (center[0] < bounds[2] || (ownsMaximumX && center[0] <= bounds[2])) &&
+        center[1] >= bounds[1] &&
+        (center[1] < bounds[3] || (ownsMaximumY && center[1] <= bounds[3])),
+    )
+    .map((group, id) => ({ ...group, id }))
+}
+
 export function buildParcelGeometry(
   groups: ParcelGroup[],
   origin: [number, number],
@@ -76,7 +94,9 @@ export function buildParcelGeometry(
   const sidePositions: number[] = []
   const sideIndices: number[] = []
   const sideVertexGroups: number[] = []
+  const sideNormals: number[] = []
   const edgePositions: number[] = []
+  const edgeVertexGroups: number[] = []
 
   for (const group of groups) {
     const polygons =
@@ -123,6 +143,9 @@ export function buildParcelGeometry(
           const bx = next[0] - origin[0]
           const bz = -(next[1] - origin[1])
           const sideOffset = sidePositions.length / 3
+          const length = Math.hypot(bx - ax, bz - az) || 1
+          const normalX = -(bz - az) / length
+          const normalZ = (bx - ax) / length
 
           sidePositions.push(
             ax,
@@ -139,6 +162,20 @@ export function buildParcelGeometry(
             az,
           )
           sideVertexGroups.push(group.id, group.id, group.id, group.id)
+          sideNormals.push(
+            normalX,
+            0,
+            normalZ,
+            normalX,
+            0,
+            normalZ,
+            normalX,
+            0,
+            normalZ,
+            normalX,
+            0,
+            normalZ,
+          )
           sideIndices.push(
             sideOffset,
             sideOffset + 1,
@@ -155,6 +192,7 @@ export function buildParcelGeometry(
             group.height + 0.12,
             bz,
           )
+          edgeVertexGroups.push(group.id, group.id)
         }
       }
     }
@@ -168,7 +206,9 @@ export function buildParcelGeometry(
     sidePositions: Float32Array.from(sidePositions),
     sideIndices: Uint32Array.from(sideIndices),
     sideVertexGroups: Uint32Array.from(sideVertexGroups),
+    sideNormals: Float32Array.from(sideNormals),
     edgePositions: Float32Array.from(edgePositions),
+    edgeVertexGroups: Uint32Array.from(edgeVertexGroups),
     groups,
   }
 }

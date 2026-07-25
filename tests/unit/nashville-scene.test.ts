@@ -83,7 +83,11 @@ vi.mock('../../src/map/ParcelLayer', async () => {
       clearSelection = vi.fn()
       select = vi.fn()
       hitGroup = vi.fn()
-      install = vi.fn((response: WorkerLoadedResponse) => {
+      groupsAtPoint = vi.fn(() => this.groups)
+      setVisible = vi.fn()
+      setMotionActive = vi.fn()
+      evict = vi.fn()
+      install = vi.fn((_shardId: string, response: WorkerLoadedResponse) => {
         this.groups = response.groups
       })
       update = vi.fn()
@@ -134,13 +138,16 @@ vi.mock('../../src/map/MapInteractions', () => ({
 vi.mock('../../src/map/tile-manager', async () => {
   const Three = await vi.importActual<typeof THREE>('three')
   return {
-    MetroTileManager: class {
+    GoogleTileManager: class {
       group = new Three.Group()
       update = vi.fn()
       dispose = vi.fn()
       constructor(
         _origin: [number, number],
-        readonly availability: (available: boolean) => void,
+        readonly state: (value: {
+          available: boolean
+          copyright?: string
+        }) => void,
       ) {
         doubles.tiles.push(this)
       }
@@ -186,6 +193,7 @@ const group = {
 const response = {
   type: 'loaded',
   generation: 1,
+  shardId: 'test',
   logicalRecordCount: 1,
   groups: [group],
   topPositions: new Float32Array(),
@@ -195,7 +203,9 @@ const response = {
   sidePositions: new Float32Array(),
   sideIndices: new Uint32Array(),
   sideVertexGroups: new Uint32Array(),
+  sideNormals: new Float32Array(),
   edgePositions: new Float32Array(),
+  edgeVertexGroups: new Uint32Array(),
 } as WorkerLoadedResponse
 
 const manifest = {
@@ -227,6 +237,11 @@ interface Internals {
     hint?: { parId?: number }
     destinationRequested?: boolean
   }
+  previousViewSample?: {
+    center: [number, number]
+    sampledAt: number
+  }
+  viewVelocity: [number, number]
   callbacks: ReturnType<typeof callbacks>
   raycaster: {
     setFromCamera: ReturnType<typeof vi.fn>
@@ -363,7 +378,11 @@ describe('NashvilleScene', () => {
       clearSelection: ReturnType<typeof vi.fn>
       select: ReturnType<typeof vi.fn>
       hitGroup: ReturnType<typeof vi.fn>
+      groupsAtPoint: ReturnType<typeof vi.fn>
       install: ReturnType<typeof vi.fn>
+      setVisible: ReturnType<typeof vi.fn>
+      setMotionActive: ReturnType<typeof vi.fn>
+      evict: ReturnType<typeof vi.fn>
       update: ReturnType<typeof vi.fn>
       clear: ReturnType<typeof vi.fn>
       count: number
@@ -380,7 +399,7 @@ describe('NashvilleScene', () => {
       dispose: ReturnType<typeof vi.fn>
     }
     const tiles = doubles.tiles[0] as {
-      availability: (available: boolean) => void
+      state: (value: { available: boolean; copyright?: string }) => void
       update: ReturnType<typeof vi.fn>
       dispose: ReturnType<typeof vi.fn>
     }
@@ -414,11 +433,29 @@ describe('NashvilleScene', () => {
     scene.selectAt(10, 20, { parId: 1 })
     expect(rig.flyTo).toHaveBeenCalled()
 
-    tiles.availability(navigator.onLine)
-    tiles.availability(!navigator.onLine)
+    tiles.state({ available: true, copyright: 'Map data ©2026 Google' })
+    tiles.state({ available: true, copyright: 'Map data ©2026 Google' })
+    tiles.state({ available: false })
     stream.handlerCallbacks.onProgress('Loading')
     stream.handlerCallbacks.onError('Broken')
     stream.handlerCallbacks.onLoaded(response)
+    stream.handlerCallbacks.onVisibleShards(new Set(['test']))
+    stream.handlerCallbacks.onEvict('test')
+    stream.handlerCallbacks.onCoverage({
+      viewportCells: 1,
+      readyViewportCells: 0,
+      targetCells: 2,
+      readyTargetCells: 1,
+      viewportReady: false,
+    })
+    stream.handlerCallbacks.onProgress('Generating visible parcels')
+    stream.handlerCallbacks.onCoverage({
+      viewportCells: 1,
+      readyViewportCells: 1,
+      targetCells: 2,
+      readyTargetCells: 2,
+      viewportReady: true,
+    })
     interaction.handlerCallbacks.onHover(group)
     interaction.handlerCallbacks.onEscape()
     interaction.handlerCallbacks.onModeShortcut('zoning')
@@ -501,6 +538,14 @@ describe('NashvilleScene', () => {
     internal.updateParcelWindow()
     internal.updateParcelWindow()
     internal.updateParcelWindow()
+    internal.previousViewSample = {
+      center: [-1_000, -1_000],
+      sampledAt: performance.now() - 100,
+    }
+    stream.load.mockReturnValueOnce(undefined).mockReturnValueOnce(undefined)
+    internal.updateParcelWindow()
+    vi.advanceTimersByTime(220)
+    expect(internal.viewVelocity).toEqual([0, 0])
 
     internal.pendingSelection = {
       point: [50, 50],
@@ -520,6 +565,7 @@ describe('NashvilleScene', () => {
     expect(internal.pendingSelection).toMatchObject({
       destinationRequested: true,
     })
+    stream.isLoading = false
     internal.installParcelResponse(response)
     expect(internal.pendingSelection).toBeUndefined()
     internal.pendingSelection = {
@@ -559,12 +605,38 @@ describe('NashvilleScene', () => {
     internal.selectedRid = 1
     layer.findByRid.mockReturnValue(group)
     internal.installParcelResponse(response)
+    internal.selectedGroup = group
+    internal.installParcelResponse(response)
     internal.selectedRid = undefined
     internal.installParcelResponse(response)
 
     rig.distance = 8_000
     internal.publishStatus()
     rig.distance = 1_000
+    stream.handlerCallbacks.onCoverage({
+      viewportCells: 0,
+      readyViewportCells: 0,
+      targetCells: 0,
+      readyTargetCells: 0,
+      viewportReady: true,
+    })
+    internal.publishStatus()
+    stream.handlerCallbacks.onCoverage({
+      viewportCells: 2,
+      readyViewportCells: 1,
+      targetCells: 3,
+      readyTargetCells: 2,
+      viewportReady: false,
+    })
+    layer.groups = []
+    internal.publishStatus()
+    stream.handlerCallbacks.onCoverage({
+      viewportCells: 1,
+      readyViewportCells: 1,
+      targetCells: 2,
+      readyTargetCells: 2,
+      viewportReady: true,
+    })
     layer.groups = [group]
     internal.publishStatus()
     layer.groups = []
@@ -603,6 +675,11 @@ describe('NashvilleScene', () => {
     vi.runAllTimers()
     doubles.resize?.()
     expect(internal.settledUpdatePending).toBe(false)
+    rig.options.onViewChange()
+    rig.options.onViewChange()
+    expect(layer.setMotionActive).toHaveBeenCalledWith(true)
+    vi.advanceTimersByTime(140)
+    expect(layer.setMotionActive).toHaveBeenCalledWith(false)
     rig.options.onViewChange(0, true)
     internal.scheduleMapUpdate()
     expect(internal.settledUpdatePending).toBe(true)

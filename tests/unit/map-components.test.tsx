@@ -83,6 +83,7 @@ const onlineStatus: SceneStatus = {
   message: 'Ready',
   visibleParcels: 2,
   onlineTiles: true,
+  basemapCopyright: 'Map data ©2026 Google',
 }
 
 afterEach(cleanup)
@@ -113,6 +114,11 @@ describe('map chrome and controls', () => {
       </>,
     )
     expect(view.container.textContent).toContain('May 12, 2026')
+    expect(view.container.textContent).toContain('Google map')
+    expect(view.getByAltText('Google Maps').getAttribute('src')).toBe(
+      '/google-maps-attribution.svg',
+    )
+    expect(view.container.textContent).toContain('Map data ©2026 Google')
     fireEvent.click(view.getByText(/Try loading/))
     fireEvent.click(view.getByLabelText('Open map controls'))
     fireEvent.click(view.getByText(/Parcel fabric appears/))

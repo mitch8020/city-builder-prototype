@@ -42,13 +42,15 @@ export const MODE_DETAILS: Record<
   },
 }
 
-export const METRO_BASEMAP =
-  'https://maps.nashville.gov/arcgis/rest/services/Basemaps/NashvilleBasemapMuted/MapServer'
 export const METRO_GEOCODER =
   'https://maps.nashville.gov/arcgis/rest/services/Locators/LocNashComp/GeocodeServer/findAddressCandidates'
 export const METRO_PARCELS =
   'https://maps.nashville.gov/arcgis/rest/services/Cadastral/Parcels/MapServer/0/query'
 export const METRO_VIEWER = 'https://maps.nashville.gov/ParcelViewer/'
+
+export const GOOGLE_MAP_SERVICE_BOUNDS = [
+  -9_725_878.63, 4_261_186.32, -9_595_423.38, 4_391_588.41,
+] as const
 
 export const LANDMARKS: SearchResult[] = [
   {

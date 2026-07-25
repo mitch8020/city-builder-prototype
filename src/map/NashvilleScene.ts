@@ -5,7 +5,8 @@ import { MapInteractions } from './MapInteractions'
 import { bestParcelMatch, pointInGroup } from './map-utils'
 import { ParcelLayer } from './ParcelLayer'
 import { ParcelStream } from './ParcelStream'
-import { MetroTileManager } from './tile-manager'
+import type { ParcelCoverage } from './ParcelStream'
+import { GoogleTileManager } from './tile-manager'
 import type {
   CityMapController,
   MapMode,
@@ -36,7 +37,7 @@ export class NashvilleScene implements CityMapController {
   private readonly raycaster = new THREE.Raycaster() as THREE.Raycaster & {
     firstHitOnly: boolean
   }
-  private readonly tileManager: MetroTileManager
+  private readonly tileManager: GoogleTileManager
   private readonly groundPlane = new THREE.Plane(new THREE.Vector3(0, 1, 0), 0)
   private readonly groundHit = new THREE.Vector3()
   private readonly countyBounds: [number, number, number, number]
@@ -48,14 +49,34 @@ export class NashvilleScene implements CityMapController {
   private resizeObserver: ResizeObserver
   private dataTimer?: ReturnType<typeof setTimeout>
   private tileTimer?: ReturnType<typeof setTimeout>
+  private velocityTimer?: ReturnType<typeof setTimeout>
+  private motionTimer?: ReturnType<typeof setTimeout>
+  private dataTimerDueAt = Infinity
+  private tileTimerDueAt = Infinity
   private settledUpdatePending = false
+  private previousViewSample?: {
+    center: [number, number]
+    sampledAt: number
+  }
+  private viewVelocity: [number, number] = [0, 0]
+  private parcelCoverage: ParcelCoverage = {
+    viewportCells: 0,
+    readyViewportCells: 0,
+    targetCells: 0,
+    readyTargetCells: 0,
+    viewportReady: true,
+  }
+  private lastStatusKey = ''
   private pendingSelection?: {
     point: [number, number]
     hint?: ParcelSelectionHint
     destinationRequested: boolean
   }
   private disposed = false
-  private tileAvailable = navigator.onLine
+  private tileAvailable = false
+  private basemapCopyright?: string
+  private motionActive = false
+  private cameraMotionActive = false
 
   constructor(
     private readonly container: HTMLDivElement,
@@ -83,7 +104,7 @@ export class NashvilleScene implements CityMapController {
       antialias: true,
     })
     this.renderer.setSize(width, height, false)
-    this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.75))
+    this.renderer.setPixelRatio(this.settledPixelRatio)
     this.renderer.outputColorSpace = THREE.SRGBColorSpace
     this.renderer.toneMapping = THREE.ACESFilmicToneMapping
     this.renderer.toneMappingExposure = 0.92
@@ -102,17 +123,23 @@ export class NashvilleScene implements CityMapController {
       height,
       countyBounds: this.countyBounds,
       localOrigin: manifest.projection.localOrigin,
-      onViewChange: (delay, settled) => this.scheduleMapUpdate(delay, settled),
+      onViewChange: (delay, settled) => this.handleViewChange(delay, settled),
     })
 
     this.scene.add(this.parcelLayer.root)
     this.addEnvironment(countySize)
     void this.addOverview()
-    this.tileManager = new MetroTileManager(
+    this.tileManager = new GoogleTileManager(
       manifest.projection.localOrigin,
-      (available) => {
-        if (this.tileAvailable === available) return
+      ({ available, copyright }) => {
+        if (
+          this.tileAvailable === available &&
+          this.basemapCopyright === copyright
+        ) {
+          return
+        }
         this.tileAvailable = available
+        this.basemapCopyright = copyright
         this.publishStatus()
       },
     )
@@ -121,6 +148,17 @@ export class NashvilleScene implements CityMapController {
     this.parcelStream = new ParcelStream(manifest, {
       onProgress: (message) => this.publishLoadingStatus(message),
       onLoaded: (response) => this.installParcelResponse(response),
+      onVisibleShards: (shardIds) => {
+        this.parcelLayer.setVisible(shardIds)
+        this.resolveStreamSelection()
+        this.publishStatus()
+      },
+      onEvict: (shardId) => this.parcelLayer.evict(shardId),
+      onCoverage: (coverage) => {
+        this.parcelCoverage = coverage
+        this.updateMotionMode()
+        this.publishStatus()
+      },
       onError: (message) => {
         if (this.pendingSelection?.destinationRequested)
           this.pendingSelection = undefined
@@ -150,11 +188,12 @@ export class NashvilleScene implements CityMapController {
     })
     this.resizeObserver = new ResizeObserver(() => this.resize())
     this.resizeObserver.observe(container)
-    this.callbacks.onStatus({
+    this.emitStatus({
       phase: 'overview',
       message: 'County view ready',
       visibleParcels: 0,
       onlineTiles: this.tileAvailable,
+      basemapCopyright: this.basemapCopyright,
     })
     this.scheduleMapUpdate(0)
     this.animate()
@@ -223,6 +262,8 @@ export class NashvilleScene implements CityMapController {
     cancelAnimationFrame(this.frame)
     clearTimeout(this.dataTimer)
     clearTimeout(this.tileTimer)
+    clearTimeout(this.velocityTimer)
+    clearTimeout(this.motionTimer)
     this.resizeObserver.disconnect()
     this.parcelStream.dispose()
     this.interactions.dispose()
@@ -343,9 +384,9 @@ export class NashvilleScene implements CityMapController {
       origin[1] - groundHit.z,
     ]
     let best: ParcelGroup | undefined
-    for (const group of this.parcelLayer.groups.filter((candidate) =>
-      pointInGroup(point, candidate),
-    )) {
+    for (const group of this.parcelLayer
+      .groupsAtPoint(point)
+      .filter((candidate) => pointInGroup(point, candidate))) {
       if (
         !best ||
         group.records.length > best.records.length ||
@@ -365,21 +406,71 @@ export class NashvilleScene implements CityMapController {
     const delta = Math.min((now - this.previousFrame) / 1000, 0.05)
     this.previousFrame = now
     this.cameraRig.update(delta)
-    this.parcelLayer.update(delta)
+    this.parcelLayer.update(delta, now / 1_000)
     this.updateAnchor()
     this.renderer.render(this.scene, this.cameraRig.camera)
   }
 
-  private scheduleMapUpdate(delay = 160, viewSettled = false) {
+  private get settledPixelRatio() {
+    return Math.min(window.devicePixelRatio, 1.75)
+  }
+
+  private handleViewChange(delay?: number, settled = false) {
+    this.cameraMotionActive = true
+    this.updateMotionMode()
+    clearTimeout(this.motionTimer)
+    this.motionTimer = setTimeout(
+      () => {
+        this.motionTimer = undefined
+        this.cameraMotionActive = false
+        this.updateMotionMode()
+      },
+      settled ? 60 : 140,
+    )
+    this.scheduleMapUpdate(delay, settled)
+  }
+
+  private updateMotionMode() {
+    this.setMotionActive(
+      this.cameraMotionActive || !this.parcelCoverage.viewportReady,
+    )
+  }
+
+  private setMotionActive(active: boolean) {
+    if (active === this.motionActive) return
+    this.motionActive = active
+    this.parcelLayer.setMotionActive(active)
+    this.renderer.setPixelRatio(active ? 0.45 : this.settledPixelRatio)
+  }
+
+  private scheduleMapUpdate(delay = 48, viewSettled = false) {
     this.settledUpdatePending ||= viewSettled
-    clearTimeout(this.dataTimer)
-    clearTimeout(this.tileTimer)
-    this.dataTimer = setTimeout(() => {
-      const shouldSettle = this.settledUpdatePending
-      this.settledUpdatePending = false
-      this.updateParcelWindow(shouldSettle)
-    }, delay)
-    this.tileTimer = setTimeout(() => this.updateTiles(), Math.min(delay, 90))
+    const now = performance.now()
+    const dataDelay = Math.max(0, Math.min(delay, 48))
+    const dataDueAt = now + dataDelay
+    if (!this.dataTimer || dataDueAt < this.dataTimerDueAt) {
+      clearTimeout(this.dataTimer)
+      this.dataTimerDueAt = dataDueAt
+      this.dataTimer = setTimeout(() => {
+        this.dataTimer = undefined
+        this.dataTimerDueAt = Infinity
+        const shouldSettle = this.settledUpdatePending
+        this.settledUpdatePending = false
+        this.updateParcelWindow(shouldSettle)
+      }, dataDelay)
+    }
+
+    const tileDelay = Math.max(0, Math.min(delay, 90))
+    const tileDueAt = now + tileDelay
+    if (!this.tileTimer || tileDueAt < this.tileTimerDueAt) {
+      clearTimeout(this.tileTimer)
+      this.tileTimerDueAt = tileDueAt
+      this.tileTimer = setTimeout(() => {
+        this.tileTimer = undefined
+        this.tileTimerDueAt = Infinity
+        this.updateTiles()
+      }, tileDelay)
+    }
   }
 
   private viewBounds() {
@@ -438,15 +529,50 @@ export class NashvilleScene implements CityMapController {
   private updateParcelWindow(viewSettled = false) {
     const distance = this.cameraRig.distance
     if (distance > 7_500) {
-      if (this.parcelStream.cancel()) {
-        this.clearParcels()
-      }
+      this.parcelStream.cancel()
+      clearTimeout(this.velocityTimer)
+      this.velocityTimer = undefined
+      this.previousViewSample = undefined
+      this.viewVelocity = [0, 0]
       this.publishStatus()
       return
     }
 
     const bounds = this.viewBounds()
-    const shardCount = this.parcelStream.load(bounds)
+    const now = performance.now()
+    const center: [number, number] = [
+      (bounds[0] + bounds[2]) / 2,
+      (bounds[1] + bounds[3]) / 2,
+    ]
+    if (this.previousViewSample) {
+      const elapsed = Math.max(
+        (now - this.previousViewSample.sampledAt) / 1_000,
+        0.016,
+      )
+      const instant: [number, number] = [
+        (center[0] - this.previousViewSample.center[0]) / elapsed,
+        (center[1] - this.previousViewSample.center[1]) / elapsed,
+      ]
+      this.viewVelocity = [
+        THREE.MathUtils.lerp(this.viewVelocity[0], instant[0], 0.42),
+        THREE.MathUtils.lerp(this.viewVelocity[1], instant[1], 0.42),
+      ]
+    }
+    if (viewSettled) this.viewVelocity = [0, 0]
+    this.previousViewSample = { center, sampledAt: now }
+    const shardCount = this.parcelStream.load(
+      bounds,
+      this.viewVelocity,
+      Boolean(this.pendingSelection),
+    )
+    clearTimeout(this.velocityTimer)
+    if (!viewSettled && Math.hypot(...this.viewVelocity) > 100) {
+      this.velocityTimer = setTimeout(() => {
+        this.velocityTimer = undefined
+        this.viewVelocity = [0, 0]
+        this.updateParcelWindow()
+      }, 220)
+    }
     if (viewSettled && this.pendingSelection) {
       this.pendingSelection.destinationRequested = true
       if (shardCount === undefined && !this.parcelStream.isLoading)
@@ -454,29 +580,38 @@ export class NashvilleScene implements CityMapController {
     }
     if (shardCount === undefined) return
     this.publishLoadingStatus(
-      `Loading ${shardCount} map ${shardCount === 1 ? 'cell' : 'cells'}`,
+      `Generating parcel fabric across ${shardCount} nearby ${
+        shardCount === 1 ? 'cell' : 'cells'
+      }`,
     )
   }
 
   private installParcelResponse(response: WorkerLoadedResponse) {
-    this.parcelLayer.install(response)
+    this.parcelLayer.install(response.shardId, response)
+    this.resolveStreamSelection()
+    this.publishStatus()
+  }
+
+  private resolveStreamSelection() {
     if (this.pendingSelection) {
       const pending = this.pendingSelection
       if (
         this.selectParcelAt(pending.point, pending.hint) ||
-        pending.destinationRequested
-      )
+        (pending.destinationRequested && !this.parcelStream.isLoading)
+      ) {
         this.pendingSelection = undefined
+      }
     } else if (this.selectedRid !== undefined) {
-      this.setSelectedRid(this.selectedRid)
+      const group = this.parcelLayer.findByRid(this.selectedRid)
+      if (group && group !== this.selectedGroup)
+        this.selectGroup(group, this.selectedRid, false)
     }
-    this.publishStatus()
   }
 
   private selectParcelAt(point: [number, number], hint?: ParcelSelectionHint) {
-    const candidates = this.parcelLayer.groups.filter((candidate) =>
-      pointInGroup(point, candidate),
-    )
+    const candidates = this.parcelLayer
+      .groupsAtPoint(point)
+      .filter((candidate) => pointInGroup(point, candidate))
     const match = bestParcelMatch(candidates, hint)
     if (!match) return false
     this.selectGroup(match.group, match.rid, true)
@@ -484,20 +619,29 @@ export class NashvilleScene implements CityMapController {
   }
 
   private publishLoadingStatus(message: string) {
-    this.callbacks.onStatus({
+    if (
+      this.parcelCoverage.viewportReady &&
+      (this.parcelLayer.count || this.parcelCoverage.viewportCells === 0)
+    ) {
+      this.publishStatus()
+      return
+    }
+    this.emitStatus({
       phase: 'loading-parcels',
       message,
       visibleParcels: this.parcelLayer.count,
       onlineTiles: this.tileAvailable,
+      basemapCopyright: this.basemapCopyright,
     })
   }
 
   private publishError(message: string) {
-    this.callbacks.onStatus({
+    this.emitStatus({
       phase: 'error',
       message,
       visibleParcels: this.parcelLayer.count,
       onlineTiles: this.tileAvailable,
+      basemapCopyright: this.basemapCopyright,
     })
   }
 
@@ -524,28 +668,40 @@ export class NashvilleScene implements CityMapController {
     }
   }
 
-  private clearParcels() {
-    this.parcelLayer.clear()
-  }
-
   private publishStatus() {
     const distance = this.cameraRig.distance
-    this.callbacks.onStatus({
+    const countyEdge =
+      distance <= 7_500 && this.parcelCoverage.viewportCells === 0
+    const ready =
+      distance <= 7_500 &&
+      this.parcelCoverage.viewportReady &&
+      (this.parcelLayer.count > 0 || countyEdge)
+    this.emitStatus({
       phase:
         distance > 7_500
           ? 'zoom-to-parcels'
-          : this.parcelLayer.count
+          : ready
             ? 'parcels-ready'
             : 'loading-parcels',
       message:
         distance > 7_500
           ? 'Move closer to reveal parcel boundaries'
-          : this.parcelLayer.count
-            ? `${this.parcelLayer.count.toLocaleString()} visible footprints`
-            : 'Loading parcel fabric',
+          : countyEdge
+            ? 'Davidson County boundary'
+            : ready
+              ? `${this.parcelLayer.count.toLocaleString()} visible footprints`
+              : `Generating nearby parcels ${this.parcelCoverage.readyViewportCells} of ${this.parcelCoverage.viewportCells} cells`,
       visibleParcels: this.parcelLayer.count,
       onlineTiles: this.tileAvailable,
+      basemapCopyright: this.basemapCopyright,
     })
+  }
+
+  private emitStatus(status: SceneStatus) {
+    const key = JSON.stringify(status)
+    if (key === this.lastStatusKey) return
+    this.lastStatusKey = key
+    this.callbacks.onStatus(status)
   }
 
   private absoluteToLocal(x: number, y: number) {

@@ -52,12 +52,17 @@ async function loadWorker() {
   return scope
 }
 
-function request(generation: number, urls = ['/one.fgb']): ParcelWorkerRequest {
+function request(
+  generation: number,
+  url = '/one.fgb',
+  id = 'one',
+): ParcelWorkerRequest {
   return {
     type: 'load',
     generation,
-    urls,
+    shard: { id, url, bounds: [0, 0, 10, 10] },
     origin: [0, 0],
+    countyBounds: [0, 0, 10, 10],
   }
 }
 
@@ -87,17 +92,18 @@ describe('parcel worker', () => {
     const scope = await loadWorker()
 
     await scope.onmessage!({
-      data: request(1, ['/one.fgb', '/two.fgb']),
+      data: request(1),
     } as MessageEvent<ParcelWorkerRequest>)
 
     const messages = scope.postMessage.mock.calls.map(([message]) => message)
-    expect(messages.filter(({ type }) => type === 'progress')).toHaveLength(3)
+    expect(messages.filter(({ type }) => type === 'progress')).toHaveLength(1)
     expect(messages.at(-1)).toMatchObject({
       type: 'loaded',
       generation: 1,
-      logicalRecordCount: 2,
+      shardId: 'one',
+      logicalRecordCount: 1,
     })
-    expect(scope.postMessage.mock.calls.at(-1)?.[1].transfer).toHaveLength(8)
+    expect(scope.postMessage.mock.calls.at(-1)?.[1].transfer).toHaveLength(10)
   })
 
   it('cancels current work and ignores stale successful generations', async () => {
@@ -122,7 +128,7 @@ describe('parcel worker', () => {
       data: request(1),
     } as MessageEvent<ParcelWorkerRequest>)
     const second = scope.onmessage!({
-      data: request(2, ['/two.fgb']),
+      data: request(2, '/two.fgb', 'two'),
     } as MessageEvent<ParcelWorkerRequest>)
     releaseFirst!(new Response(Uint8Array.from([1])))
     await Promise.all([first, second])
@@ -173,6 +179,7 @@ describe('parcel worker', () => {
     expect(scope.postMessage).toHaveBeenLastCalledWith({
       type: 'error',
       generation: 1,
+      shardId: 'one',
       message,
     })
   })

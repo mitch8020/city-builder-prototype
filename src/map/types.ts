@@ -93,6 +93,7 @@ export interface SceneStatus {
   message: string
   visibleParcels: number
   onlineTiles: boolean
+  basemapCopyright?: string
 }
 
 export interface SearchResult {
@@ -115,8 +116,9 @@ export interface ParcelSelectionHint {
 export interface WorkerLoadRequest {
   type: 'load'
   generation: number
-  urls: string[]
+  shard: Pick<ParcelShard, 'id' | 'url' | 'bounds'>
   origin: [number, number]
+  countyBounds: [number, number, number, number]
 }
 
 export interface WorkerCancelRequest {
@@ -134,28 +136,31 @@ export interface WorkerGeometryPayload {
   sidePositions: Float32Array
   sideIndices: Uint32Array
   sideVertexGroups: Uint32Array
+  sideNormals: Float32Array
   edgePositions: Float32Array
+  edgeVertexGroups: Uint32Array
   groups: ParcelGroup[]
 }
 
 export interface WorkerLoadedResponse extends WorkerGeometryPayload {
   type: 'loaded'
   generation: number
+  shardId: string
   logicalRecordCount: number
 }
 
 export interface WorkerErrorResponse {
   type: 'error'
   generation: number
+  shardId: string
   message: string
 }
 
 export interface WorkerProgressResponse {
   type: 'progress'
   generation: number
+  shardId: string
   message: string
-  loaded: number
-  total: number
 }
 
 export type ParcelWorkerResponse =
