@@ -89,8 +89,14 @@ test('uses Google Maps as the attributed background without requesting the Metro
   await page.getByLabel('Reset county view').click()
   await expect(page.getByText('Google map')).toBeVisible()
 
+  const refreshedAttribution = page.waitForResponse((response) =>
+    response.url().includes('/api/google-map/attribution?'),
+  )
   await page.setViewportSize({ width: 960, height: 621 })
-  const attributionBox = await page.locator('.google-attribution').boundingBox()
+  await refreshedAttribution
+  const attribution = page.locator('.google-attribution')
+  await expect(attribution).toBeVisible()
+  const attributionBox = await attribution.boundingBox()
   const modeDockBox = await page
     .getByRole('navigation', { name: 'Parcel data maps' })
     .boundingBox()
