@@ -102,17 +102,21 @@ modes, controls, failure states, and Metro service degradation.
   loading and the debounced Nashville search lifecycle, while HUD components
   stay presentational.
 - `CityMap` is the React-to-Three.js adapter. `NashvilleScene` coordinates the
-  renderer, viewport, raycasting, selection, and status callbacks.
+  renderer, viewport geometry, raycasting, selection, and status callbacks.
 - `MapInteractions` owns DOM input listeners and gesture state; `CameraRig`
   owns camera controls, limits, navigation, and animation.
-- `ParcelStream` owns visible-shard worker requests, cancellation, generations,
-  and retry. The worker groups condo footprints and triangulates exact polygons;
-  `ParcelLayer` owns GPU buffers, BVH picking, colors, and selection rendering.
+  `MapViewportScheduler` coalesces parcel/tile updates and samples view velocity.
+- `ParcelLoadPlanner` is the pure predictive prefetch and queue-priority policy.
+  `ParcelStream` owns worker execution, cancellation, generations, retry, cache,
+  visibility, and coverage. The worker groups condo footprints and triangulates
+  exact polygons; `ParcelLayer` owns GPU buffers, BVH picking, colors, and
+  selection rendering.
 - `GoogleTileManager` owns Google roadmap tiles through a bounded 96-texture
   LRU cache and shows them only with Google’s current viewport attribution.
-- Narrow TanStack server routes create and refresh the Google tile session,
-  validate every tile against the Davidson County service envelope, and keep
-  `GOOGLE_MAPS_API_KEY` out of the browser bundle.
+- Narrow TanStack routes use a stable server facade over separate request
+  validation, session/upstream transport, and local HTTP adapters.
+  `web-mercator.ts` supplies the shared browser/server projection math, and the
+  server-only gateway keeps `GOOGLE_MAPS_API_KEY` out of the browser bundle.
 - Exact parcel shards load only at neighborhood scale; county startup uses the
   lightweight overview.
 
