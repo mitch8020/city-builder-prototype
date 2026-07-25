@@ -2,6 +2,8 @@ import * as THREE from 'three'
 import { CameraRig } from './CameraRig'
 import { COLORS } from './constants'
 import { MapInteractions } from './MapInteractions'
+import { MapViewportScheduler } from './MapViewportScheduler'
+import type { MapBounds, MapVelocity } from './MapViewportScheduler'
 import { bestParcelMatch, pointInGroup } from './map-utils'
 import { ParcelLayer } from './ParcelLayer'
 import { ParcelStream } from './ParcelStream'
@@ -31,6 +33,7 @@ export class NashvilleScene implements CityMapController {
   private readonly renderer: THREE.WebGLRenderer
   private readonly cameraRig: CameraRig
   private readonly interactions: MapInteractions
+  private readonly viewportScheduler: MapViewportScheduler
   private readonly parcelLayer: ParcelLayer
   private readonly parcelStream: ParcelStream
   private previousFrame = performance.now()
@@ -47,18 +50,7 @@ export class NashvilleScene implements CityMapController {
   private selectedGroup?: ParcelGroup
   private frame = 0
   private resizeObserver: ResizeObserver
-  private dataTimer?: ReturnType<typeof setTimeout>
-  private tileTimer?: ReturnType<typeof setTimeout>
-  private velocityTimer?: ReturnType<typeof setTimeout>
   private motionTimer?: ReturnType<typeof setTimeout>
-  private dataTimerDueAt = Infinity
-  private tileTimerDueAt = Infinity
-  private settledUpdatePending = false
-  private previousViewSample?: {
-    center: [number, number]
-    sampledAt: number
-  }
-  private viewVelocity: [number, number] = [0, 0]
   private parcelCoverage: ParcelCoverage = {
     viewportCells: 0,
     readyViewportCells: 0,
@@ -165,6 +157,12 @@ export class NashvilleScene implements CityMapController {
         this.publishError(message)
       },
     })
+    this.viewportScheduler = new MapViewportScheduler({
+      readBounds: () => this.viewBounds(),
+      onParcelUpdate: ({ bounds, velocity, settled }) =>
+        this.updateParcelWindow(bounds, velocity, settled),
+      onTileUpdate: (bounds) => this.updateTiles(bounds),
+    })
 
     this.raycaster.firstHitOnly = true
     this.interactions = new MapInteractions(canvas, this.cameraRig, {
@@ -195,7 +193,7 @@ export class NashvilleScene implements CityMapController {
       onlineTiles: this.tileAvailable,
       basemapCopyright: this.basemapCopyright,
     })
-    this.scheduleMapUpdate(0)
+    this.viewportScheduler.schedule(0)
     this.animate()
   }
 
@@ -210,7 +208,7 @@ export class NashvilleScene implements CityMapController {
   }
 
   setSelectedRid(rid?: number) {
-    this.settledUpdatePending = false
+    this.viewportScheduler.cancelPendingSettle()
     this.pendingSelection = undefined
     this.selectedRid = rid
     if (rid === undefined) {
@@ -225,7 +223,7 @@ export class NashvilleScene implements CityMapController {
 
   home() {
     this.cameraRig.home()
-    this.settledUpdatePending = false
+    this.viewportScheduler.cancelPendingSettle()
     this.pendingSelection = undefined
   }
 
@@ -247,7 +245,7 @@ export class NashvilleScene implements CityMapController {
   }
 
   selectAt(x: number, y: number, hint?: ParcelSelectionHint) {
-    this.settledUpdatePending = false
+    this.viewportScheduler.cancelPendingSettle()
     this.pendingSelection = {
       point: [x, y],
       hint,
@@ -260,11 +258,9 @@ export class NashvilleScene implements CityMapController {
   dispose() {
     this.disposed = true
     cancelAnimationFrame(this.frame)
-    clearTimeout(this.dataTimer)
-    clearTimeout(this.tileTimer)
-    clearTimeout(this.velocityTimer)
     clearTimeout(this.motionTimer)
     this.resizeObserver.disconnect()
+    this.viewportScheduler.dispose()
     this.parcelStream.dispose()
     this.interactions.dispose()
     this.cameraRig.dispose()
@@ -427,7 +423,7 @@ export class NashvilleScene implements CityMapController {
       },
       settled ? 60 : 140,
     )
-    this.scheduleMapUpdate(delay, settled)
+    this.viewportScheduler.schedule(delay, settled)
   }
 
   private updateMotionMode() {
@@ -441,36 +437,6 @@ export class NashvilleScene implements CityMapController {
     this.motionActive = active
     this.parcelLayer.setMotionActive(active)
     this.renderer.setPixelRatio(active ? 0.45 : this.settledPixelRatio)
-  }
-
-  private scheduleMapUpdate(delay = 48, viewSettled = false) {
-    this.settledUpdatePending ||= viewSettled
-    const now = performance.now()
-    const dataDelay = Math.max(0, Math.min(delay, 48))
-    const dataDueAt = now + dataDelay
-    if (!this.dataTimer || dataDueAt < this.dataTimerDueAt) {
-      clearTimeout(this.dataTimer)
-      this.dataTimerDueAt = dataDueAt
-      this.dataTimer = setTimeout(() => {
-        this.dataTimer = undefined
-        this.dataTimerDueAt = Infinity
-        const shouldSettle = this.settledUpdatePending
-        this.settledUpdatePending = false
-        this.updateParcelWindow(shouldSettle)
-      }, dataDelay)
-    }
-
-    const tileDelay = Math.max(0, Math.min(delay, 90))
-    const tileDueAt = now + tileDelay
-    if (!this.tileTimer || tileDueAt < this.tileTimerDueAt) {
-      clearTimeout(this.tileTimer)
-      this.tileTimerDueAt = tileDueAt
-      this.tileTimer = setTimeout(() => {
-        this.tileTimer = undefined
-        this.tileTimerDueAt = Infinity
-        this.updateTiles()
-      }, tileDelay)
-    }
   }
 
   private viewBounds() {
@@ -518,72 +484,42 @@ export class NashvilleScene implements CityMapController {
     ] as [number, number, number, number]
   }
 
-  private updateTiles() {
-    const bounds = this.viewBounds()
+  private updateTiles(bounds: MapBounds) {
     const metersPerPixel =
       Math.max(bounds[2] - bounds[0], bounds[3] - bounds[1]) /
       Math.max(this.container.clientWidth, this.container.clientHeight)
     this.tileManager.update(bounds, metersPerPixel)
   }
 
-  private updateParcelWindow(viewSettled = false) {
+  private updateParcelWindow(
+    bounds: MapBounds,
+    velocity: MapVelocity,
+    viewSettled = false,
+  ) {
     const distance = this.cameraRig.distance
     if (distance > 7_500) {
       this.parcelStream.cancel()
-      clearTimeout(this.velocityTimer)
-      this.velocityTimer = undefined
-      this.previousViewSample = undefined
-      this.viewVelocity = [0, 0]
       this.publishStatus()
-      return
+      return false
     }
 
-    const bounds = this.viewBounds()
-    const now = performance.now()
-    const center: [number, number] = [
-      (bounds[0] + bounds[2]) / 2,
-      (bounds[1] + bounds[3]) / 2,
-    ]
-    if (this.previousViewSample) {
-      const elapsed = Math.max(
-        (now - this.previousViewSample.sampledAt) / 1_000,
-        0.016,
-      )
-      const instant: [number, number] = [
-        (center[0] - this.previousViewSample.center[0]) / elapsed,
-        (center[1] - this.previousViewSample.center[1]) / elapsed,
-      ]
-      this.viewVelocity = [
-        THREE.MathUtils.lerp(this.viewVelocity[0], instant[0], 0.42),
-        THREE.MathUtils.lerp(this.viewVelocity[1], instant[1], 0.42),
-      ]
-    }
-    if (viewSettled) this.viewVelocity = [0, 0]
-    this.previousViewSample = { center, sampledAt: now }
     const shardCount = this.parcelStream.load(
       bounds,
-      this.viewVelocity,
+      velocity,
       Boolean(this.pendingSelection),
     )
-    clearTimeout(this.velocityTimer)
-    if (!viewSettled && Math.hypot(...this.viewVelocity) > 100) {
-      this.velocityTimer = setTimeout(() => {
-        this.velocityTimer = undefined
-        this.viewVelocity = [0, 0]
-        this.updateParcelWindow()
-      }, 220)
-    }
     if (viewSettled && this.pendingSelection) {
       this.pendingSelection.destinationRequested = true
       if (shardCount === undefined && !this.parcelStream.isLoading)
         this.pendingSelection = undefined
     }
-    if (shardCount === undefined) return
+    if (shardCount === undefined) return true
     this.publishLoadingStatus(
       `Generating parcel fabric across ${shardCount} nearby ${
         shardCount === 1 ? 'cell' : 'cells'
       }`,
     )
+    return true
   }
 
   private installParcelResponse(response: WorkerLoadedResponse) {
@@ -717,6 +653,6 @@ export class NashvilleScene implements CityMapController {
     const height = Math.max(1, this.container.clientHeight)
     this.cameraRig.resize(width, height)
     this.renderer.setSize(width, height, false)
-    this.scheduleMapUpdate(0)
+    this.viewportScheduler.schedule(0)
   }
 }

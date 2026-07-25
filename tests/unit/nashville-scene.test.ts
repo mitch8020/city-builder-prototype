@@ -231,18 +231,15 @@ interface Internals {
   disposed: boolean
   selectedGroup?: ParcelGroup
   selectedRid?: number
-  settledUpdatePending: boolean
   pendingSelection?: {
     point: [number, number]
     hint?: { parId?: number }
     destinationRequested?: boolean
   }
-  previousViewSample?: {
-    center: [number, number]
-    sampledAt: number
-  }
-  viewVelocity: [number, number]
   callbacks: ReturnType<typeof callbacks>
+  viewportScheduler: {
+    schedule: (delay?: number, settled?: boolean) => void
+  }
   raycaster: {
     setFromCamera: ReturnType<typeof vi.fn>
     ray: { intersectPlane: ReturnType<typeof vi.fn> }
@@ -250,10 +247,13 @@ interface Internals {
   addOverview: () => Promise<void>
   pickGroup: (pointer: THREE.Vector2) => ParcelGroup | undefined
   animate: () => void
-  scheduleMapUpdate: (delay?: number, viewSettled?: boolean) => void
   viewBounds: () => [number, number, number, number]
-  updateTiles: () => void
-  updateParcelWindow: (viewSettled?: boolean) => void
+  updateTiles: (bounds: [number, number, number, number]) => void
+  updateParcelWindow: (
+    bounds: [number, number, number, number],
+    velocity: [number, number],
+    viewSettled?: boolean,
+  ) => boolean
   installParcelResponse: (value: WorkerLoadedResponse) => void
   publishStatus: () => void
   updateAnchor: () => void
@@ -523,29 +523,22 @@ describe('NashvilleScene', () => {
     expect(internal.viewBounds()).toHaveLength(4)
     internal.raycaster.ray.intersectPlane.mockReturnValue(null)
     expect(internal.viewBounds()).toHaveLength(4)
-    internal.updateTiles()
+    const visibleBounds = internal.viewBounds()
+    internal.updateTiles(visibleBounds)
     expect(tiles.update).toHaveBeenCalled()
 
     rig.distance = 8_000
     stream.cancel.mockReturnValueOnce(false).mockReturnValueOnce(true)
-    internal.updateParcelWindow()
-    internal.updateParcelWindow()
+    internal.updateParcelWindow(visibleBounds, [0, 0])
+    internal.updateParcelWindow(visibleBounds, [0, 0])
     rig.distance = 1_000
     stream.load
       .mockReturnValueOnce(undefined)
       .mockReturnValueOnce(1)
       .mockReturnValueOnce(2)
-    internal.updateParcelWindow()
-    internal.updateParcelWindow()
-    internal.updateParcelWindow()
-    internal.previousViewSample = {
-      center: [-1_000, -1_000],
-      sampledAt: performance.now() - 100,
-    }
-    stream.load.mockReturnValueOnce(undefined).mockReturnValueOnce(undefined)
-    internal.updateParcelWindow()
-    vi.advanceTimersByTime(220)
-    expect(internal.viewVelocity).toEqual([0, 0])
+    internal.updateParcelWindow(visibleBounds, [0, 0])
+    internal.updateParcelWindow(visibleBounds, [100, 0])
+    internal.updateParcelWindow(visibleBounds, [0, 0])
 
     internal.pendingSelection = {
       point: [50, 50],
@@ -553,7 +546,7 @@ describe('NashvilleScene', () => {
     }
     stream.isLoading = false
     stream.load.mockReturnValueOnce(undefined)
-    internal.updateParcelWindow(true)
+    internal.updateParcelWindow(visibleBounds, [0, 0], true)
     expect(internal.pendingSelection).toBeUndefined()
     internal.pendingSelection = {
       point: [50, 50],
@@ -561,7 +554,7 @@ describe('NashvilleScene', () => {
     }
     stream.isLoading = true
     stream.load.mockReturnValueOnce(undefined)
-    internal.updateParcelWindow(true)
+    internal.updateParcelWindow(visibleBounds, [0, 0], true)
     expect(internal.pendingSelection).toMatchObject({
       destinationRequested: true,
     })
@@ -671,20 +664,16 @@ describe('NashvilleScene', () => {
     internal.disposed = true
     internal.animate()
     internal.disposed = false
-    internal.scheduleMapUpdate()
+    internal.viewportScheduler.schedule()
     vi.runAllTimers()
     doubles.resize?.()
-    expect(internal.settledUpdatePending).toBe(false)
     rig.options.onViewChange()
     rig.options.onViewChange()
     expect(layer.setMotionActive).toHaveBeenCalledWith(true)
     vi.advanceTimersByTime(140)
     expect(layer.setMotionActive).toHaveBeenCalledWith(false)
     rig.options.onViewChange(0, true)
-    internal.scheduleMapUpdate()
-    expect(internal.settledUpdatePending).toBe(true)
     vi.runAllTimers()
-    expect(internal.settledUpdatePending).toBe(false)
     doubles.resize?.()
     vi.runAllTimers()
 
