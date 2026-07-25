@@ -5,14 +5,14 @@ import {
   clampCameraTarget,
   keyboardShortcutForKey,
 } from '../../src/map/camera-utils'
+import { GoogleTileManager } from '../../src/map/tile-manager'
+import type { GoogleBasemapState } from '../../src/map/tile-manager'
 import {
-  GoogleTileManager,
   mercatorTileBounds,
   mercatorTileCoordinate,
   mercatorToLngLat,
   zoomForResolution,
-} from '../../src/map/tile-manager'
-import type { GoogleBasemapState } from '../../src/map/tile-manager'
+} from '../../src/map/web-mercator'
 
 interface TileManagerInternals {
   cache: Map<

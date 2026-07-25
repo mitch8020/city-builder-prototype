@@ -1,5 +1,6 @@
 import '@tanstack/react-start/server-only'
 import { GOOGLE_MAP_SERVICE_BOUNDS } from './constants'
+import { mercatorTileBounds, mercatorToLngLat } from './web-mercator'
 
 export { GOOGLE_MAP_SERVICE_BOUNDS } from './constants'
 
@@ -7,9 +8,6 @@ const GOOGLE_SESSION_ENDPOINT = 'https://tile.googleapis.com/v1/createSession'
 const GOOGLE_TILE_ENDPOINT = 'https://tile.googleapis.com/v1/2dtiles'
 const GOOGLE_VIEWPORT_ENDPOINT = 'https://tile.googleapis.com/tile/v1/viewport'
 
-const WORLD_HALF = 20_037_508.342789244
-const WORLD_SIZE = WORLD_HALF * 2
-const EARTH_RADIUS = WORLD_HALF / Math.PI
 const MIN_ZOOM = 8
 const MAX_ZOOM = 18
 const SESSION_REFRESH_SKEW_MS = 60_000
@@ -373,22 +371,6 @@ function validateAndClipViewport(viewport: GoogleViewport): GoogleViewport {
     )
   }
   return clipped
-}
-
-function mercatorTileBounds(x: number, y: number, zoom: number) {
-  const tileSize = WORLD_SIZE / 2 ** zoom
-  const minX = -WORLD_HALF + x * tileSize
-  const maxX = minX + tileSize
-  const maxY = WORLD_HALF - y * tileSize
-  const minY = maxY - tileSize
-  return [minX, minY, maxX, maxY] as const
-}
-
-function mercatorToLngLat(x: number, y: number) {
-  return [
-    (x / WORLD_HALF) * 180,
-    (Math.atan(Math.sinh(y / EARTH_RADIUS)) * 180) / Math.PI,
-  ] as const
 }
 
 function boundsIntersect(
