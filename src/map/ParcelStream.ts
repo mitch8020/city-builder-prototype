@@ -1,4 +1,8 @@
-import { intersectsBounds, shardsForBounds } from './map-utils'
+import {
+  createParcelLoadPlan,
+  prioritizeParcelShards,
+} from './ParcelLoadPlanner'
+import type { MapBounds, MapVelocity } from './ParcelLoadPlanner'
 import type {
   ParcelManifestV1,
   ParcelShard,
@@ -7,13 +11,7 @@ import type {
   WorkerLoadedResponse,
 } from './types'
 
-type MapBounds = [number, number, number, number]
-type MapVelocity = [number, number]
-
 const WORKER_COUNT = 4
-const PREFETCH_MARGIN_CELLS = 1
-const LOOKAHEAD_SECONDS = 2.25
-const MAX_LOOKAHEAD_CELLS = 6
 const MAX_IDLE_CELLS = 16
 const MAX_ATTEMPTS = 3
 
@@ -52,10 +50,6 @@ function defaultWorkerFactory() {
   return new Worker(new URL('./parcel.worker.ts', import.meta.url), {
     type: 'module',
   })
-}
-
-function centerOf(bounds: MapBounds) {
-  return [(bounds[0] + bounds[2]) / 2, (bounds[1] + bounds[3]) / 2] as const
 }
 
 export class ParcelStream {
@@ -99,20 +93,15 @@ export class ParcelStream {
   ) {
     if (this.disposed) return undefined
 
-    const viewportShards = shardsForBounds(this.manifest.shards, bounds)
-    const targetBounds = this.prefetchBounds(bounds, velocity)
-    const targetShards = shardsForBounds(this.manifest.shards, targetBounds)
-    const nextShardKey = targetShards
-      .map((shard) => shard.id)
-      .sort()
-      .join('|')
-    const changed = nextShardKey !== this.activeShardKey
-    const scaleStep = this.manifest.projection.baseCellSizeMeters / 8
-    const nextFailureKey = `${nextShardKey}#${Math.round(
-      (bounds[2] - bounds[0]) / scaleStep,
-    )}x${Math.round((bounds[3] - bounds[1]) / scaleStep)}`
+    const {
+      viewportShards,
+      targetShards,
+      shardKey,
+      failureKey: nextFailureKey,
+    } = createParcelLoadPlan(this.manifest, bounds, velocity)
+    const changed = shardKey !== this.activeShardKey
     const previousViewport = this.viewport
-    this.activeShardKey = nextShardKey
+    this.activeShardKey = shardKey
     this.activeFailureKey = nextFailureKey
     this.viewport = new Set(viewportShards.map((shard) => shard.id))
     this.wanted = new Map(targetShards.map((shard) => [shard.id, shard]))
@@ -209,27 +198,6 @@ export class ParcelStream {
     this.attachWorker(slot)
   }
 
-  private prefetchBounds(bounds: MapBounds, velocity: MapVelocity): MapBounds {
-    const cellSize = this.manifest.projection.baseCellSizeMeters
-    const margin = cellSize * PREFETCH_MARGIN_CELLS
-    const maxLookahead = cellSize * MAX_LOOKAHEAD_CELLS
-    const lookaheadX = Math.max(
-      -maxLookahead,
-      Math.min(maxLookahead, velocity[0] * LOOKAHEAD_SECONDS),
-    )
-    const lookaheadY = Math.max(
-      -maxLookahead,
-      Math.min(maxLookahead, velocity[1] * LOOKAHEAD_SECONDS),
-    )
-
-    return [
-      bounds[0] - margin + Math.min(0, lookaheadX),
-      bounds[1] - margin + Math.min(0, lookaheadY),
-      bounds[2] + margin + Math.max(0, lookaheadX),
-      bounds[3] + margin + Math.max(0, lookaheadY),
-    ]
-  }
-
   private cancelSlot(slot: WorkerSlot) {
     if (!slot.job) return
     slot.worker.postMessage({
@@ -251,35 +219,16 @@ export class ParcelStream {
     const active = new Set(
       this.slots.flatMap((slot) => (slot.job ? [slot.job.shard.id] : [])),
     )
-    const viewCenter = centerOf(bounds)
-    const predictedCenter: readonly [number, number] = [
-      viewCenter[0] + velocity[0] * LOOKAHEAD_SECONDS,
-      viewCenter[1] + velocity[1] * LOOKAHEAD_SECONDS,
-    ]
-    this.queue = [...this.wanted.values()]
-      .filter(
+    this.queue = prioritizeParcelShards(
+      [...this.wanted.values()].filter(
         (shard) =>
           !this.loaded.has(shard.id) &&
           !active.has(shard.id) &&
           (this.attempts.get(shard.id) ?? 0) < MAX_ATTEMPTS,
-      )
-      .sort((a, b) => {
-        const aVisible = intersectsBounds(a.bounds, bounds) ? 0 : 1
-        const bVisible = intersectsBounds(b.bounds, bounds) ? 0 : 1
-        if (aVisible !== bVisible) return aVisible - bVisible
-        const aCenter = centerOf(a.bounds)
-        const bCenter = centerOf(b.bounds)
-        return (
-          Math.hypot(
-            aCenter[0] - predictedCenter[0],
-            aCenter[1] - predictedCenter[1],
-          ) -
-          Math.hypot(
-            bCenter[0] - predictedCenter[0],
-            bCenter[1] - predictedCenter[1],
-          )
-        )
-      })
+      ),
+      bounds,
+      velocity,
+    )
   }
 
   private preemptSpeculativeJobs() {

@@ -1,4 +1,8 @@
 import { describe, expect, it, vi } from 'vitest'
+import {
+  createParcelLoadPlan,
+  prioritizeParcelShards,
+} from '../../src/map/ParcelLoadPlanner'
 import { ParcelStream } from '../../src/map/ParcelStream'
 import type {
   ParcelManifestV1,
@@ -131,6 +135,50 @@ function loadRequest(worker: FakeWorker) {
   if (!request) throw new Error('Expected a worker load request')
   return request
 }
+
+describe('parcel load planning', () => {
+  const forward = {
+    id: 'forward',
+    bounds: [60, 0, 70, 10],
+    featureCount: 1,
+    byteLength: 10,
+    url: '/forward.fgb',
+  } satisfies ParcelManifestV1['shards'][number]
+  const behind = {
+    id: 'behind',
+    bounds: [-30, 0, -20, 10],
+    featureCount: 1,
+    byteLength: 10,
+    url: '/behind.fgb',
+  } satisfies ParcelManifestV1['shards'][number]
+
+  it('builds bounded lookahead and failure scopes from one pure plan', () => {
+    const plan = createParcelLoadPlan(
+      { ...manifest, shards: [...manifest.shards, forward, behind] },
+      [0, 0, 9, 9],
+      [1_000, 0],
+    )
+
+    expect(plan.viewportShards.map((shard) => shard.id)).toEqual(['west'])
+    expect(plan.targetShards.map((shard) => shard.id)).toEqual([
+      'west',
+      'east',
+      'forward',
+    ])
+    expect(plan.shardKey).toBe('east|forward|west')
+    expect(plan.failureKey).toBe('east|forward|west#7x7')
+  })
+
+  it('prioritizes visible shards before velocity-aligned prefetch work', () => {
+    expect(
+      prioritizeParcelShards(
+        [manifest.shards[1], forward, manifest.shards[0]],
+        [0, 0, 9, 9],
+        [30, 0],
+      ).map((shard) => shard.id),
+    ).toEqual(['west', 'forward', 'east'])
+  })
+})
 
 describe('ParcelStream', () => {
   it('loads viewport cells incrementally and keeps prefetched cells alive', () => {
