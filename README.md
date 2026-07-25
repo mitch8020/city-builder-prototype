@@ -16,6 +16,13 @@ npm install
 npm run dev
 ```
 
+Create an ignored `.env` file with a Google Maps Platform key that has the Map
+Tiles API enabled:
+
+```dotenv
+GOOGLE_MAPS_API_KEY=your-server-side-key
+```
+
 Open `http://localhost:20073` in a current desktop version of Chrome or Edge.
 WebGL2, a mouse, and a keyboard are required.
 
@@ -101,10 +108,15 @@ modes, controls, failure states, and Metro service degradation.
 - `ParcelStream` owns visible-shard worker requests, cancellation, generations,
   and retry. The worker groups condo footprints and triangulates exact polygons;
   `ParcelLayer` owns GPU buffers, BVH picking, colors, and selection rendering.
-- `MetroTileManager` owns contextual raster tiles through a bounded 96-texture
-  LRU cache.
+- `GoogleTileManager` owns Google roadmap tiles through a bounded 96-texture
+  LRU cache and shows them only with Google’s current viewport attribution.
+- Narrow TanStack server routes create and refresh the Google tile session,
+  validate every tile against the Davidson County service envelope, and keep
+  `GOOGLE_MAPS_API_KEY` out of the browser bundle.
 - Exact parcel shards load only at neighborhood scale; county startup uses the
   lightweight overview.
 
-Netlify can use the existing configuration. The connected Git host must fetch
-Git LFS objects before building.
+Netlify can use the existing configuration. Set `GOOGLE_MAPS_API_KEY` in the
+hosting environment, restrict it to the Map Tiles API, and configure an
+appropriate quota cap and billing alert. The connected Git host must fetch Git
+LFS objects before building.

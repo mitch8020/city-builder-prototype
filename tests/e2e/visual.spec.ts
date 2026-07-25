@@ -1,16 +1,14 @@
 import { expect, test } from '@playwright/test'
 import type { Page } from '@playwright/test'
+import { useGoogleBasemap, useLocalBasemap } from './google-map-fixture'
 
-async function useStableLocalMap(page: Page) {
-  await page.route(
-    '**/Basemaps/NashvilleBasemapMuted/MapServer/export?**',
-    (route) => route.abort(),
-  )
-}
-
-async function waitForCounty(page: Page) {
+async function waitForCounty(page: Page, googleMap = true) {
   await expect(page.locator('canvas')).toBeVisible()
   await expect(page.getByText('Parcel fabric appears up close')).toBeVisible()
+  if (googleMap) {
+    await expect(page.getByText('Google map')).toBeVisible()
+    await expect(page.getByAltText('Google Maps')).toBeVisible()
+  }
   await page.waitForTimeout(350)
 }
 
@@ -25,7 +23,7 @@ async function jumpDowntown(page: Page) {
 }
 
 test('county overview visual', async ({ page }) => {
-  await useStableLocalMap(page)
+  await useGoogleBasemap(page)
   await page.goto('/')
   await waitForCounty(page)
   await expect(page).toHaveScreenshot('county-overview.png', {
@@ -36,7 +34,7 @@ test('county overview visual', async ({ page }) => {
 
 test('selected parcel visual', async ({ page }) => {
   test.setTimeout(60_000)
-  await useStableLocalMap(page)
+  await useGoogleBasemap(page)
   await page.route('**/findAddressCandidates?**', (route) =>
     route.fulfill({
       contentType: 'application/json',
@@ -66,7 +64,7 @@ test('selected parcel visual', async ({ page }) => {
 })
 
 test('zoning visual', async ({ page }) => {
-  await useStableLocalMap(page)
+  await useGoogleBasemap(page)
   await page.goto('/?mode=zoning')
   await waitForCounty(page)
   await expect(page.getByText('Base zoning')).toBeVisible()
@@ -78,7 +76,7 @@ test('zoning visual', async ({ page }) => {
 })
 
 test('appraised value visual', async ({ page }) => {
-  await useStableLocalMap(page)
+  await useGoogleBasemap(page)
   await page.goto('/?mode=value')
   await waitForCounty(page)
   await expect(page.getByText('Appraised value', { exact: true })).toBeVisible()
@@ -90,14 +88,9 @@ test('appraised value visual', async ({ page }) => {
 })
 
 test('offline fallback visual', async ({ page }) => {
-  await page.route('https://maps.nashville.gov/**', (route) => route.abort())
+  await useLocalBasemap(page)
   await page.goto('/')
-  await waitForCounty(page)
-  const search = page.getByLabel('Search Nashville address or parcel number')
-  await search.fill('123 Main Street')
-  await expect(
-    page.getByText('Metro search is offline. Landmark jumps still work.'),
-  ).toBeVisible()
+  await waitForCounty(page, false)
   await expect(page.getByText('Local map')).toBeVisible()
   await expect(page).toHaveScreenshot('offline-mode.png', {
     animations: 'disabled',

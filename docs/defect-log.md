@@ -1,6 +1,6 @@
 # Production-readiness defect log
 
-Date: July 23, 2026
+Date: July 24, 2026
 
 All reproduction evidence was collected against a locally built production
 bundle or the repository's baseline verification commands. No production system
@@ -39,14 +39,21 @@ action can consume it.
 Status: clean local application pass.
 
 - `npm run lint`: passed.
+- `npm run typecheck`: passed.
 - `npm run check`: passed after final formatting.
 - `npm run data:audit`: passed all 570 shards, 286,458 unique records,
   305,913 shard references, and 130.8 MiB of FlatGeobuf.
-- `npm test`: 7 files passed, 29 tests passed.
-- `npm run test:e2e`: production build passed, then 20 browser tests passed in
-  one run. The 20 include 9 risk-inventory journeys, 6 existing interaction
-  journeys, and 5 unchanged visual baselines.
+- `npm run test:coverage`: 23 files and 103 tests passed with 100% statements,
+  branches, functions, and lines.
+- `npm run test:e2e`: production build passed, then 21 browser tests passed in
+  one run. The 21 include 9 risk-inventory journeys, 7 interaction/provider
+  journeys, and 5 refreshed visual baselines.
 - `npm run build`: client and SSR production bundles passed.
+- A real-key production preview passed at county and downtown scales. Google
+  roadmap tiles, current attribution, parcel geometry, modes, camera controls,
+  county reset, and selection stayed aligned with zero console warnings or
+  errors; all observed Google gateway requests succeeded and no
+  `NashvilleBasemapMuted` request occurred.
 - Compiled-client scan found no TanStack developer-tool shell markers.
 
 ## Handoff notes

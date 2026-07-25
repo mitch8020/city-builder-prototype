@@ -1,14 +1,13 @@
 import { expect, test } from '@playwright/test'
 import type { Page } from '@playwright/test'
+import { useLocalBasemap } from './google-map-fixture'
+
+test.beforeEach(async ({ page }) => {
+  await useLocalBasemap(page)
+})
 
 async function waitForMap(page: Page) {
   await expect(page.locator('canvas')).toBeVisible()
-}
-
-async function useLocalBasemap(page: Page) {
-  await page.route('**/Basemaps/NashvilleBasemapMuted/**', (route) =>
-    route.abort(),
-  )
 }
 
 async function mockCondoSearch(page: Page) {
