@@ -302,6 +302,34 @@ describe('search and parcel details', () => {
 
     view.rerender(
       <MapSearch
+        query="test"
+        results={[results[0]]}
+        searching
+        open
+        inputRef={inputRef}
+        {...actions}
+      />,
+    )
+    expect(
+      view.getByText('Searching Nashville', { selector: '.search-heading' }),
+    ).not.toBeNull()
+
+    view.rerender(
+      <MapSearch
+        query="test"
+        results={[results[0]]}
+        searching={false}
+        open
+        inputRef={inputRef}
+        {...actions}
+      />,
+    )
+    expect(
+      view.getByText('1 match', { selector: '.search-heading' }),
+    ).not.toBeNull()
+
+    view.rerender(
+      <MapSearch
         query=""
         results={[]}
         searching
