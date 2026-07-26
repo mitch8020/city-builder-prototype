@@ -5,7 +5,10 @@ export default defineConfig({
   timeout: 30_000,
   expect: { timeout: 8_000 },
   fullyParallel: false,
-  workers: 3,
+  // Keep readiness and visual journeys in one Chromium process so the
+  // frame-budget gate measures the app, not contention from parallel WebGL
+  // renderers on the same workstation.
+  workers: 1,
   use: {
     baseURL: 'http://127.0.0.1:20073',
     viewport: { width: 1440, height: 900 },

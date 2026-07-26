@@ -1,4 +1,5 @@
 import proj4 from 'proj4'
+import { relative, resolve, sep } from 'node:path'
 
 export const SOURCE_CRS = 'EPSG:2274'
 export const WEB_CRS = 'EPSG:3857'
@@ -10,6 +11,30 @@ proj4.defs(
   SOURCE_CRS,
   '+proj=lcc +lat_0=34.33333333333334 +lon_0=-86 +lat_1=35.25 +lat_2=36.416666666666664 +x_0=600000 +y_0=0 +datum=NAD83 +units=us-ft +no_defs +type=crs',
 )
+
+export function resolvePublicAsset(publicDirectory, publicUrl) {
+  if (typeof publicUrl !== 'string') {
+    throw new Error('Public asset URL must be a rooted local path')
+  }
+  if (
+    !publicUrl.startsWith('/') ||
+    publicUrl.startsWith('//') ||
+    publicUrl.includes('\\')
+  ) {
+    throw new Error('Public asset URL must be a rooted local path')
+  }
+
+  const path = resolve(publicDirectory, `.${publicUrl}`)
+  const relativePath = relative(publicDirectory, path)
+  if (
+    !relativePath ||
+    relativePath === '..' ||
+    relativePath.startsWith(`..${sep}`)
+  ) {
+    throw new Error('Public asset URL resolves outside public')
+  }
+  return path
+}
 
 export function projectCoordinate(coordinate) {
   const projected = proj4(SOURCE_CRS, WEB_CRS, coordinate)

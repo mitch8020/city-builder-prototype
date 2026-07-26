@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest'
+import { resolve } from 'node:path'
 import {
   baseCellKeys,
   cellBounds,
@@ -11,6 +12,7 @@ import {
   projectCoordinate,
   projectGeometry,
   quantiles,
+  resolvePublicAsset,
   sourceDateFromDbfHeader,
 } from '../../scripts/parcel-utils.mjs'
 
@@ -102,6 +104,32 @@ describe('parcel preprocessing geometry', () => {
     expect(sourceDateFromDbfHeader(Uint8Array.from([3, 126, 5, 12]))).toBe(
       '2026-05-12',
     )
+  })
+
+  it('resolves only rooted local assets contained by the public directory', () => {
+    const publicDirectory = resolve('public')
+    expect(
+      resolvePublicAsset(
+        publicDirectory,
+        '/data/parcels/2026-05-12/cells/1.fgb',
+      ),
+    ).toBe(resolve(publicDirectory, 'data/parcels/2026-05-12/cells/1.fgb'))
+
+    for (const invalid of [
+      null,
+      'data/parcels/1.fgb',
+      '//remote-host/1.fgb',
+      '/data\\parcels\\1.fgb',
+    ]) {
+      expect(() => resolvePublicAsset(publicDirectory, invalid)).toThrow(
+        'Public asset URL must be a rooted local path',
+      )
+    }
+    for (const outside of ['/', '/..', '/../public-other/1.fgb']) {
+      expect(() => resolvePublicAsset(publicDirectory, outside)).toThrow(
+        'Public asset URL resolves outside public',
+      )
+    }
   })
 
   it('rejects empty geometry bounds', () => {

@@ -2,6 +2,7 @@ import { readFile } from 'node:fs/promises'
 import { dirname, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { geojson as flatgeobuf } from 'flatgeobuf'
+import { resolvePublicAsset } from './parcel-utils.mjs'
 
 const SCRIPT_DIRECTORY = dirname(fileURLToPath(import.meta.url))
 const PROJECT_DIRECTORY = resolve(SCRIPT_DIRECTORY, '..')
@@ -48,11 +49,7 @@ async function main() {
   let bytes = 0
 
   for (const [index, shard] of manifest.shards.entries()) {
-    const path = resolve(PUBLIC_DIRECTORY, `.${shard.url}`)
-    assert(
-      path.startsWith(PUBLIC_DIRECTORY),
-      `Shard ${shard.id} resolves outside public`,
-    )
+    const path = resolvePublicAsset(PUBLIC_DIRECTORY, shard.url)
 
     const encoded = await readFile(path)
     assert(
