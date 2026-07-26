@@ -4,7 +4,7 @@ import { COLORS } from './constants'
 import { MapInteractions } from './MapInteractions'
 import { MapViewportScheduler } from './MapViewportScheduler'
 import type { MapBounds, MapVelocity } from './MapViewportScheduler'
-import { bestParcelMatch, pointInGroup } from './map-utils'
+import { bestParcelMatch, groupAnchor, pointInGroup } from './map-utils'
 import { ParcelLayer } from './ParcelLayer'
 import { ParcelStream } from './ParcelStream'
 import type { ParcelCoverage } from './ParcelStream'
@@ -590,10 +590,8 @@ export class NashvilleScene implements CityMapController {
 
   private updateAnchor() {
     if (!this.selectedGroup) return
-    const local = this.absoluteToLocal(
-      this.selectedGroup.center[0],
-      this.selectedGroup.center[1],
-    )
+    const anchor = groupAnchor(this.selectedGroup)
+    const local = this.absoluteToLocal(anchor[0], anchor[1])
     local.y = this.selectedGroup.height + this.parcelLayer.selectionLift + 2
     local.project(this.cameraRig.camera)
     const rect = this.renderer.domElement.getBoundingClientRect()

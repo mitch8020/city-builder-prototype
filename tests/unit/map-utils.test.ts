@@ -5,6 +5,7 @@ import {
   displayValue,
   formatAcres,
   formatCurrency,
+  groupAnchor,
   groupPrimaryRecord,
   intersectsBounds,
   legendForMode,
@@ -108,6 +109,29 @@ describe('map presentation helpers', () => {
     expect(tooltipDetail(record, 'zoning')).toBe('Zoning: R6')
     expect(tooltipDetail(record, 'value')).toBe('Appraised value: $300,000')
     expect(tooltipDetail(record, 'overview')).toBe('Parcel · Not available')
+  })
+
+  it('anchors fitted massing at its roof center', () => {
+    const center: [number, number] = [5, 5]
+    const group = {
+      center,
+      massing: {
+        footprint: [
+          [20, 20],
+          [60, 20],
+          [60, 50],
+          [20, 50],
+        ],
+      },
+    } as ParcelGroup
+
+    expect(groupAnchor(group)).toEqual([40, 35])
+    expect(
+      groupAnchor({
+        ...group,
+        massing: { ...group.massing, footprint: undefined },
+      }),
+    ).toBe(center)
   })
 
   it('finds visible shards by bounding box', () => {

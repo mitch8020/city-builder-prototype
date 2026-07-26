@@ -543,11 +543,11 @@ export function buildParcelGeometry(
       }
       topIndices.push(
         topOffset,
-        topOffset + 2,
         topOffset + 1,
-        topOffset,
-        topOffset + 3,
         topOffset + 2,
+        topOffset,
+        topOffset + 2,
+        topOffset + 3,
       )
       topTriangleGroups.push(group.id, group.id)
       addSideRing(footprint, PARCEL_SLAB_HEIGHT, group.height, group.id)

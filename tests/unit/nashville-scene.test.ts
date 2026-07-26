@@ -160,6 +160,13 @@ const group = {
   bounds: [0, 0, 10, 10],
   center: [5, 5],
   height: 2,
+  massing: {
+    kind: 'none',
+    height: 2,
+    footprintScale: 0,
+    maximumWidth: 0,
+    maximumDepth: 0,
+  },
   records: [
     {
       rid: 1,
@@ -257,6 +264,7 @@ interface Internals {
   installParcelResponse: (value: WorkerLoadedResponse) => void
   publishStatus: () => void
   updateAnchor: () => void
+  absoluteToLocal: (x: number, y: number) => THREE.Vector3
   resize: () => void
 }
 
@@ -637,8 +645,25 @@ describe('NashvilleScene', () => {
 
     internal.selectedGroup = undefined
     internal.updateAnchor()
-    internal.selectedGroup = group
+    internal.selectedGroup = {
+      ...group,
+      height: 12,
+      massing: {
+        kind: 'industrial',
+        height: 12,
+        footprintScale: 0.74,
+        maximumWidth: 120,
+        maximumDepth: 96,
+        footprint: [
+          [20, 20],
+          [60, 20],
+          [60, 50],
+          [20, 50],
+        ],
+      },
+    }
     layer.selectionLift = 1
+    const absoluteToLocal = vi.spyOn(internal, 'absoluteToLocal')
     const renderer = doubles.renderers[0] as {
       domElement: HTMLCanvasElement
       render: ReturnType<typeof vi.fn>
@@ -651,6 +676,7 @@ describe('NashvilleScene', () => {
       height: 100,
     } as DOMRect)
     internal.updateAnchor()
+    expect(absoluteToLocal).toHaveBeenLastCalledWith(40, 35)
     vi.spyOn(renderer.domElement, 'getBoundingClientRect').mockReturnValue({
       left: 0,
       top: 0,

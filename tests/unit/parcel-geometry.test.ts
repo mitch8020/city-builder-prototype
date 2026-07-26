@@ -68,6 +68,23 @@ function rectangularFeature(
   }
 }
 
+function triangleNormalY(
+  positions: Float32Array,
+  indices: Uint32Array,
+  index: number,
+) {
+  const a = indices[index] * 3
+  const b = indices[index + 1] * 3
+  const c = indices[index + 2] * 3
+  const ax = positions[a]
+  const az = positions[a + 2]
+  const bx = positions[b]
+  const bz = positions[b + 2]
+  const cx = positions[c]
+  const cz = positions[c + 2]
+  return (bz - az) * (cx - ax) - (bx - ax) * (cz - az)
+}
+
 describe('worker parcel geometry', () => {
   it('renders one footprint while retaining every logical condo unit', () => {
     const features = [1, 2].map((rid): ParcelFeature => ({
@@ -150,15 +167,9 @@ describe('worker parcel geometry', () => {
     }
     expect(area).toBeCloseTo(84)
     expect(output.topTriangleGroups.every((id) => id === group.id)).toBe(true)
-    const [a, b, c] = output.topIndices
-    const ax = output.topPositions[a * 3]
-    const az = output.topPositions[a * 3 + 2]
-    const bx = output.topPositions[b * 3]
-    const bz = output.topPositions[b * 3 + 2]
-    const cx = output.topPositions[c * 3]
-    const cz = output.topPositions[c * 3 + 2]
-    const normalY = (bz - az) * (cx - ax) - (bx - ax) * (cz - az)
-    expect(normalY).toBeGreaterThan(0)
+    expect(
+      triangleNormalY(output.topPositions, output.topIndices, 0),
+    ).toBeGreaterThan(0)
     expect(output.sideNormals).toHaveLength(output.sidePositions.length)
     for (let index = 0; index < output.sideNormals.length; index += 3) {
       expect(
@@ -201,6 +212,15 @@ describe('worker parcel geometry', () => {
     expect(output.topTriangleGroups).toEqual(
       new Uint32Array([group.id, group.id, group.id, group.id]),
     )
+    for (
+      let index = output.parcelTopIndexCount;
+      index < output.topIndices.length;
+      index += 3
+    ) {
+      expect(
+        triangleNormalY(output.topPositions, output.topIndices, index),
+      ).toBeGreaterThan(0)
+    }
     expect(output.sideVertexGroups).toHaveLength(32)
     expect(output.edgeVertexGroups).toHaveLength(16)
   })

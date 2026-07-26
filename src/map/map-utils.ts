@@ -107,6 +107,16 @@ export function groupPrimaryRecord(group: ParcelGroup, selectedRid?: number) {
   )
 }
 
+export function groupAnchor(group: ParcelGroup): [number, number] {
+  const footprint = group.massing.footprint
+  if (!footprint?.length) return group.center
+  const total = footprint.reduce(
+    ([x, y], [pointX, pointY]) => [x + pointX, y + pointY],
+    [0, 0],
+  )
+  return [total[0] / footprint.length, total[1] / footprint.length]
+}
+
 export function legendForMode(mode: MapMode, manifest: ParcelManifestV1) {
   if (mode === 'value') {
     const cuts = manifest.statistics.appraisalQuantiles
