@@ -38,6 +38,9 @@ describe('MapViewportScheduler', () => {
     expect(tileUpdates).toEqual([bounds])
 
     scheduler.dispose()
+    ;(
+      scheduler as unknown as { runParcelUpdate: (settled: boolean) => void }
+    ).runParcelUpdate(true)
     scheduler.schedule(0, true)
     vi.runAllTimers()
     expect(parcelUpdates).toHaveLength(1)

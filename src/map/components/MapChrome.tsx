@@ -150,7 +150,8 @@ export function LegendPanel({
       </div>
       <p className="height-note">
         <LayersIcon />
-        Parcel lift is illustrative, not building height.
+        Building forms are illustrative, based on parcel land use and available
+        floor data.
       </p>
     </aside>
   )

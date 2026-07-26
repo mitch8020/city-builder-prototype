@@ -62,14 +62,6 @@ export function colorForRecord(
   return '#d9d4c8'
 }
 
-export function parcelHeight(record: ParcelRecord) {
-  if (record.improvementAppraisal <= 0) return 1.1
-  return Math.min(
-    8.5,
-    1.5 + Math.max(0, Math.log10(record.improvementAppraisal + 1) - 4) * 2.2,
-  )
-}
-
 export function formatCurrency(value: number) {
   if (!Number.isFinite(value) || value < 0) return 'Not available'
   return new Intl.NumberFormat('en-US', {

@@ -44,6 +44,13 @@ const parcelGroup = vi.hoisted<ParcelGroup>(() => ({
   bounds: [0, 0, 1, 1],
   center: [0.5, 0.5],
   height: 2,
+  massing: {
+    kind: 'condominium',
+    height: 2,
+    footprintScale: 0.56,
+    maximumWidth: 72,
+    maximumDepth: 60,
+  },
   records: [
     {
       rid: 1,

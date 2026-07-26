@@ -119,6 +119,9 @@ describe('map chrome and controls', () => {
       '/google-maps-attribution.svg',
     )
     expect(view.container.textContent).toContain('Map data ©2026 Google')
+    expect(view.container.textContent).toContain(
+      'Building forms are illustrative, based on parcel land use and available floor data.',
+    )
     fireEvent.click(view.getByText(/Try loading/))
     fireEvent.click(view.getByLabelText('Open map controls'))
     fireEvent.click(view.getByText(/Parcel fabric appears/))

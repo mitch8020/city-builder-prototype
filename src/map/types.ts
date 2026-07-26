@@ -73,11 +73,33 @@ export interface ParcelManifestV1 {
   }
 }
 
+export type ParcelMassingKind =
+  | 'none'
+  | 'residential'
+  | 'condominium'
+  | 'commercial'
+  | 'industrial'
+  | 'civic'
+  | 'event'
+  | 'tower'
+  | 'utility'
+  | 'generic'
+
+export interface ParcelMassing {
+  kind: ParcelMassingKind
+  height: number
+  footprintScale: number
+  maximumWidth: number
+  maximumDepth: number
+  footprint?: [number, number][]
+}
+
 export interface ParcelGroup {
   id: number
   bounds: [number, number, number, number]
   center: [number, number]
   height: number
+  massing: ParcelMassing
   records: ParcelRecord[]
   geometry: Polygon | MultiPolygon
 }
@@ -129,6 +151,7 @@ export interface WorkerCancelRequest {
 export type ParcelWorkerRequest = WorkerLoadRequest | WorkerCancelRequest
 
 export interface WorkerGeometryPayload {
+  parcelTopIndexCount: number
   topPositions: Float32Array
   topIndices: Uint32Array
   topVertexGroups: Uint32Array

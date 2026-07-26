@@ -29,6 +29,13 @@ const group: ParcelGroup = {
   bounds: [0, 0, 10, 10],
   center: [5, 5],
   height: 3,
+  massing: {
+    kind: 'generic',
+    height: 3,
+    footprintScale: 0.55,
+    maximumWidth: 72,
+    maximumDepth: 60,
+  },
   records: [record],
   geometry: {
     type: 'Polygon',
@@ -61,6 +68,7 @@ const response: WorkerLoadedResponse = {
   shardId: 'a',
   logicalRecordCount: 1,
   groups: [group],
+  parcelTopIndexCount: 3,
   topPositions: new Float32Array([0, 0, 0, 0, 0, -10, 10, 0, 0]),
   topIndices: new Uint32Array([0, 2, 1]),
   topVertexGroups: new Uint32Array([0, 0, 0]),
@@ -103,11 +111,16 @@ describe('ParcelLayer', () => {
     }
     const chunk = internal.chunks.get('a')!
     expect(chunk.topMesh.geometry.hasAttribute('parcelDelay')).toBe(true)
+    expect(chunk.topMesh.geometry.drawRange.count).toBe(3)
     expect(chunk.sideMesh.visible).toBe(false)
     expect(chunk.edgeLines.visible).toBe(false)
     layer.setMotionActive(false)
+    expect(chunk.topMesh.geometry.drawRange.count).toBe(Infinity)
     expect(chunk.sideMesh.visible).toBe(true)
     expect(chunk.edgeLines.visible).toBe(true)
+    layer.setMotionActive(true)
+    expect(chunk.topMesh.geometry.drawRange.count).toBe(3)
+    layer.setMotionActive(false)
     layer.setMode('landUse')
     const shader = {
       uniforms: {},

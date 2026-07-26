@@ -92,6 +92,7 @@ const loadedResponse = (
   shardId,
   logicalRecordCount: 0,
   groups: [],
+  parcelTopIndexCount: 0,
   topPositions: new Float32Array(),
   topIndices: new Uint32Array(),
   topVertexGroups: new Uint32Array(),

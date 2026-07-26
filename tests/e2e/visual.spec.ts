@@ -75,6 +75,20 @@ test('zoning visual', async ({ page }) => {
   })
 })
 
+test('land-use massing visual', async ({ page }) => {
+  await useGoogleBasemap(page)
+  await page.goto('/?mode=landUse')
+  await waitForCounty(page)
+  await expect(
+    page.getByRole('complementary').getByText('Land use', { exact: true }),
+  ).toBeVisible()
+  await jumpDowntown(page)
+  await expect(page).toHaveScreenshot('land-use-massing.png', {
+    animations: 'disabled',
+    maxDiffPixelRatio: 0.015,
+  })
+})
+
 test('appraised value visual', async ({ page }) => {
   await useGoogleBasemap(page)
   await page.goto('/?mode=value')

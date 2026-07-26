@@ -4,6 +4,7 @@ import {
   groupParcelFeatures,
   groupsOwnedByBounds,
 } from '../../src/map/parcel-geometry'
+import { PARCEL_SLAB_HEIGHT } from '../../src/map/parcel-massing'
 import type { ParcelFeature, ParcelRecord } from '../../src/map/types'
 
 const geometry: ParcelFeature['geometry'] = {
@@ -41,6 +42,29 @@ function parcel(rid: number, floor: string): ParcelRecord {
     landAppraisal: 10_000,
     improvementAppraisal: 100_000 * rid,
     totalAppraisal: 110_000 * rid,
+  }
+}
+
+function rectangularFeature(
+  properties: ParcelRecord,
+  width = 20,
+  depth = 16,
+): ParcelFeature {
+  return {
+    type: 'Feature',
+    properties,
+    geometry: {
+      type: 'Polygon',
+      coordinates: [
+        [
+          [0, 0],
+          [width, 0],
+          [width, depth],
+          [0, depth],
+          [0, 0],
+        ],
+      ],
+    },
   }
 }
 
@@ -147,6 +171,75 @@ describe('worker parcel geometry', () => {
     }
   })
 
+  it('adds fitted land-use massing to the exact selectable parcel slab', () => {
+    const residential = {
+      ...parcel(10, ''),
+      featureType: 'Lot',
+      landUseCode: '011',
+      landUse: 'SINGLE FAMILY',
+      improvementAppraisal: 0,
+    }
+    const [group] = groupParcelFeatures([
+      rectangularFeature(residential, 20, 16),
+    ])
+
+    expect(group.massing.kind).toBe('residential')
+    expect(group.massing.footprint).toHaveLength(4)
+    expect(group.height).toBe(5)
+
+    const output = buildParcelGeometry([group], [0, 0])
+    const topHeights = [
+      ...new Set(
+        Array.from(output.topPositions).filter((_, index) => index % 3 === 1),
+      ),
+    ]
+    expect(topHeights).toHaveLength(2)
+    expect(topHeights[0]).toBeCloseTo(PARCEL_SLAB_HEIGHT)
+    expect(topHeights[1]).toBeCloseTo(group.height)
+    expect(output.topIndices).toHaveLength(12)
+    expect(output.parcelTopIndexCount).toBe(6)
+    expect(output.topTriangleGroups).toEqual(
+      new Uint32Array([group.id, group.id, group.id, group.id]),
+    )
+    expect(output.sideVertexGroups).toHaveLength(32)
+    expect(output.edgeVertexGroups).toHaveLength(16)
+  })
+
+  it('uses broad event boxes and slender tower boxes', () => {
+    const shape = (landUseCode: string, featureType = 'Lot', floor = '') =>
+      groupParcelFeatures([
+        rectangularFeature(
+          {
+            ...parcel(11, floor),
+            featureType,
+            landUseCode,
+            improvementAppraisal: 0,
+          },
+          300,
+          200,
+        ),
+      ])[0]
+    const event = shape('069')
+    const tower = shape('015', 'Multistory Cond', '60')
+    const eventFootprint = event.massing.footprint!
+    const towerFootprint = tower.massing.footprint!
+    const footprintArea = (footprint: [number, number][]) =>
+      Math.abs(
+        footprint.reduce((area, point, index) => {
+          const next = footprint[(index + 1) % footprint.length]
+          return area + point[0] * next[1] - next[0] * point[1]
+        }, 0) / 2,
+      )
+
+    expect(event.massing.kind).toBe('event')
+    expect(event.height).toBe(18)
+    expect(tower.massing.kind).toBe('tower')
+    expect(tower.height).toBe(84)
+    expect(footprintArea(eventFootprint)).toBeGreaterThan(
+      footprintArea(towerFootprint),
+    )
+  })
+
   it('includes each multipolygon part in one logical parcel group', () => {
     const multi: ParcelFeature = {
       type: 'Feature',
@@ -171,6 +264,46 @@ describe('worker parcel geometry', () => {
     const output = buildParcelGeometry(groups, [0, 0])
     expect(groups[0].bounds).toEqual([0, 0, 22, 22])
     expect(output.topTriangleGroups.length).toBeGreaterThan(2)
+  })
+
+  it('places one mass on the largest multipolygon component', () => {
+    const feature = rectangularFeature({
+      ...parcel(12, ''),
+      featureType: 'Lot',
+      landUseCode: '064',
+      improvementAppraisal: 0,
+    })
+    feature.geometry = {
+      type: 'MultiPolygon',
+      coordinates: [
+        [
+          [
+            [0, 0],
+            [4, 0],
+            [4, 4],
+            [0, 4],
+            [0, 0],
+          ],
+        ],
+        [
+          [
+            [20, 20],
+            [60, 20],
+            [60, 50],
+            [20, 50],
+            [20, 20],
+          ],
+        ],
+      ],
+    }
+    const [group] = groupParcelFeatures([feature])
+
+    expect(group.massing.kind).toBe('industrial')
+    expect(
+      group.massing.footprint!.every(
+        ([x, y]) => x >= 20 && x <= 60 && y >= 20 && y <= 50,
+      ),
+    ).toBe(true)
   })
 
   it('accepts open and degenerate rings without inventing vertices', () => {
@@ -203,5 +336,91 @@ describe('worker parcel geometry', () => {
     )
     expect(output.topPositions.length).toBe(12)
     expect(output.topIndices.length).toBe(3)
+    expect(output.groups[1]).toMatchObject({
+      height: PARCEL_SLAB_HEIGHT,
+      massing: { kind: 'none' },
+    })
+  })
+
+  it('falls back to a slab for empty geometry', () => {
+    const empty: ParcelFeature = {
+      type: 'Feature',
+      properties: parcel(6, ''),
+      geometry: { type: 'MultiPolygon', coordinates: [] },
+    }
+    const [group] = groupParcelFeatures([empty])
+    const output = buildParcelGeometry([group], [0, 0])
+
+    expect(group).toMatchObject({
+      height: PARCEL_SLAB_HEIGHT,
+      massing: { kind: 'none' },
+    })
+    expect(output.topPositions).toHaveLength(0)
+  })
+
+  it('skips massing for slab-only uses and collinear footprints', () => {
+    const slabOnly = rectangularFeature({
+      ...parcel(20, ''),
+      featureType: 'Lot',
+      landUseCode: '010',
+      improvementAppraisal: 0,
+    })
+    const collinear: ParcelFeature = {
+      type: 'Feature',
+      properties: {
+        ...parcel(21, ''),
+        featureType: 'Lot',
+        landUseCode: '064',
+        improvementAppraisal: 0,
+      },
+      geometry: {
+        type: 'Polygon',
+        coordinates: [
+          [
+            [0, 0],
+            [5, 0],
+            [10, 0],
+            [0, 0],
+          ],
+        ],
+      },
+    }
+
+    expect(groupParcelFeatures([slabOnly, collinear])).toMatchObject([
+      { height: PARCEL_SLAB_HEIGHT, massing: { kind: 'none' } },
+      { height: PARCEL_SLAB_HEIGHT, massing: { kind: 'none' } },
+    ])
+  })
+
+  it('abandons massing that cannot fit after every shrink attempt', () => {
+    const narrowL: ParcelFeature = {
+      type: 'Feature',
+      properties: {
+        ...parcel(7, ''),
+        featureType: 'Lot',
+        landUseCode: '064',
+        improvementAppraisal: 0,
+      },
+      geometry: {
+        type: 'Polygon',
+        coordinates: [
+          [
+            [0, 0],
+            [100, 0],
+            [100, 1],
+            [1, 1],
+            [1, 100],
+            [0, 100],
+            [0, 0],
+          ],
+        ],
+      },
+    }
+    const [group] = groupParcelFeatures([narrowL])
+
+    expect(group).toMatchObject({
+      height: PARCEL_SLAB_HEIGHT,
+      massing: { kind: 'none' },
+    })
   })
 })

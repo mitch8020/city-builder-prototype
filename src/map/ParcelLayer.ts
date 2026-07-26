@@ -21,6 +21,7 @@ interface ParcelChunk {
   edgeLines: THREE.LineSegments
   triangleGroups: Uint32Array<ArrayBufferLike>
   topVertexGroups: Uint32Array<ArrayBufferLike>
+  parcelTopIndexCount: number
 }
 
 export class ParcelLayer {
@@ -73,6 +74,10 @@ export class ParcelLayer {
     if (active === this.motionActive) return
     this.motionActive = active
     for (const chunk of this.chunks.values()) {
+      chunk.topMesh.geometry.setDrawRange(
+        0,
+        active ? chunk.parcelTopIndexCount : Infinity,
+      )
       chunk.sideMesh.visible = !active
       chunk.edgeLines.visible = !active
     }
@@ -126,6 +131,11 @@ export class ParcelLayer {
     root.name = `Parcel cell ${shardId}`
     root.visible = false
     const revealOrigin = this.revealClock.value
+    const groupDelays = Float32Array.from(response.groups, ({ center }) => {
+      const value =
+        Math.sin(center[0] * 0.000_127 + center[1] * 0.000_311) * 43_758.5453
+      return (value - Math.floor(value)) * 0.5
+    })
 
     const topGeometry = new THREE.BufferGeometry()
     topGeometry.setAttribute(
@@ -142,7 +152,7 @@ export class ParcelLayer {
     )
     topGeometry.setAttribute(
       'parcelDelay',
-      this.revealDelays(response.topVertexGroups, response.groups),
+      this.revealDelays(response.topVertexGroups, groupDelays),
     )
     const topMaterial = new THREE.MeshBasicMaterial({
       vertexColors: true,
@@ -153,6 +163,10 @@ export class ParcelLayer {
     this.addProceduralReveal(topMaterial, revealOrigin)
     const topMesh = new THREE.Mesh(topGeometry, topMaterial)
     topMesh.name = `Parcel tops ${shardId}`
+    topGeometry.setDrawRange(
+      0,
+      this.motionActive ? response.parcelTopIndexCount : Infinity,
+    )
 
     const sideGeometry = new THREE.BufferGeometry()
     sideGeometry.setAttribute(
@@ -162,7 +176,7 @@ export class ParcelLayer {
     sideGeometry.setIndex(new THREE.BufferAttribute(response.sideIndices, 1))
     sideGeometry.setAttribute(
       'parcelDelay',
-      this.revealDelays(response.sideVertexGroups, response.groups),
+      this.revealDelays(response.sideVertexGroups, groupDelays),
     )
     sideGeometry.setAttribute(
       'normal',
@@ -182,7 +196,7 @@ export class ParcelLayer {
     )
     edgeGeometry.setAttribute(
       'parcelDelay',
-      this.revealDelays(response.edgeVertexGroups, response.groups),
+      this.revealDelays(response.edgeVertexGroups, groupDelays),
     )
     const edgeMaterial = new THREE.LineBasicMaterial({
       color: '#536a69',
@@ -205,6 +219,7 @@ export class ParcelLayer {
       edgeLines,
       triangleGroups: response.topTriangleGroups,
       topVertexGroups: response.topVertexGroups,
+      parcelTopIndexCount: response.parcelTopIndexCount,
     }
     for (const group of chunk.groups) this.groupChunks.set(group, chunk)
     this.meshChunks.set(topMesh, chunk)
@@ -371,13 +386,8 @@ export class ParcelLayer {
 
   private revealDelays(
     vertexGroups: Uint32Array<ArrayBufferLike>,
-    groups: ParcelGroup[],
+    groupDelays: Float32Array,
   ) {
-    const groupDelays = groups.map(({ center }) => {
-      const value =
-        Math.sin(center[0] * 0.000_127 + center[1] * 0.000_311) * 43_758.5453
-      return (value - Math.floor(value)) * 0.5
-    })
     return new THREE.BufferAttribute(
       Float32Array.from(vertexGroups, (groupId) => groupDelays[groupId]),
       1,

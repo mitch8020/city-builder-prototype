@@ -9,7 +9,6 @@ import {
   intersectsBounds,
   legendForMode,
   normalizeAddressRoot,
-  parcelHeight,
   pointInGroup,
   shardsForBounds,
   tooltipDetail,
@@ -109,11 +108,6 @@ describe('map presentation helpers', () => {
     expect(tooltipDetail(record, 'zoning')).toBe('Zoning: R6')
     expect(tooltipDetail(record, 'value')).toBe('Appraised value: $300,000')
     expect(tooltipDetail(record, 'overview')).toBe('Parcel · Not available')
-    expect(parcelHeight({ ...record, improvementAppraisal: 0 })).toBe(1.1)
-    expect(parcelHeight(record)).toBeGreaterThan(1.5)
-    expect(
-      parcelHeight({ ...record, improvementAppraisal: Number.MAX_VALUE }),
-    ).toBe(8.5)
   })
 
   it('finds visible shards by bounding box', () => {
