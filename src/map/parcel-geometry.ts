@@ -4,6 +4,7 @@ import type { ParcelFeature, ParcelGroup, WorkerGeometryPayload } from './types'
 
 const MINIMUM_MASSING_EDGE = 2
 const MASSING_FIT_ATTEMPTS = 8
+const SEGMENT_EPSILON = 1e-7
 
 function ringWithoutClosingPoint(ring: number[][]) {
   if (ring.length < 2) return ring
@@ -71,6 +72,105 @@ function pointInPolygon(point: [number, number], polygon: number[][][]) {
     pointInRing(point, polygon[0]) &&
     !polygon.slice(1).some((hole) => pointInRing(point, hole))
   )
+}
+
+function crossProduct(
+  start: [number, number],
+  end: [number, number],
+  point: [number, number],
+) {
+  return (
+    (end[0] - start[0]) * (point[1] - start[1]) -
+    (end[1] - start[1]) * (point[0] - start[0])
+  )
+}
+
+function pointOnSegment(
+  point: [number, number],
+  start: [number, number],
+  end: [number, number],
+) {
+  const outsideDistance = Math.max(
+    0,
+    Math.min(start[0], end[0]) - point[0],
+    point[0] - Math.max(start[0], end[0]),
+    Math.min(start[1], end[1]) - point[1],
+    point[1] - Math.max(start[1], end[1]),
+  )
+  return (
+    Math.max(outsideDistance, Math.abs(crossProduct(start, end, point))) <=
+    SEGMENT_EPSILON
+  )
+}
+
+function segmentsIntersect(
+  firstStart: [number, number],
+  firstEnd: [number, number],
+  secondStart: [number, number],
+  secondEnd: [number, number],
+) {
+  const firstSideStart = crossProduct(firstStart, firstEnd, secondStart)
+  const firstSideEnd = crossProduct(firstStart, firstEnd, secondEnd)
+  const secondSideStart = crossProduct(secondStart, secondEnd, firstStart)
+  const secondSideEnd = crossProduct(secondStart, secondEnd, firstEnd)
+  if (
+    ((firstSideStart > SEGMENT_EPSILON && firstSideEnd < -SEGMENT_EPSILON) ||
+      (firstSideStart < -SEGMENT_EPSILON && firstSideEnd > SEGMENT_EPSILON)) &&
+    ((secondSideStart > SEGMENT_EPSILON && secondSideEnd < -SEGMENT_EPSILON) ||
+      (secondSideStart < -SEGMENT_EPSILON && secondSideEnd > SEGMENT_EPSILON))
+  ) {
+    return true
+  }
+  return (
+    pointOnSegment(secondStart, firstStart, firstEnd) ||
+    pointOnSegment(secondEnd, firstStart, firstEnd) ||
+    pointOnSegment(firstStart, secondStart, secondEnd) ||
+    pointOnSegment(firstEnd, secondStart, secondEnd)
+  )
+}
+
+function ringIntersectsFootprint(
+  ring: number[][],
+  footprint: [number, number][],
+) {
+  const openRing = ringWithoutClosingPoint(ring) as [number, number][]
+  for (let ringIndex = 0; ringIndex < openRing.length; ringIndex += 1) {
+    const ringStart = openRing[ringIndex]
+    const ringEnd = openRing[(ringIndex + 1) % openRing.length]
+    for (
+      let footprintIndex = 0;
+      footprintIndex < footprint.length;
+      footprintIndex += 1
+    ) {
+      if (
+        segmentsIntersect(
+          ringStart,
+          ringEnd,
+          footprint[footprintIndex],
+          footprint[(footprintIndex + 1) % footprint.length],
+        )
+      ) {
+        return true
+      }
+    }
+  }
+  return false
+}
+
+function footprintFitsPolygon(
+  polygon: number[][][],
+  footprint: [number, number][],
+) {
+  if (polygon.some((ring) => ringIntersectsFootprint(ring, footprint))) {
+    return false
+  }
+  return !polygon
+    .slice(1)
+    .some((hole) =>
+      ringWithoutClosingPoint(hole).some((point) =>
+        pointInRing(point as [number, number], footprint),
+      ),
+    )
 }
 
 function largestPolygon(geometry: ParcelFeature['geometry']) {
@@ -182,7 +282,8 @@ function fittedMassingCorners(
     const next = corners[(index + 1) % corners.length]
     samples.push([(current[0] + next[0]) / 2, (current[1] + next[1]) / 2])
   }
-  return samples.every((point) => pointInPolygon(point, polygon))
+  return samples.every((point) => pointInPolygon(point, polygon)) &&
+    footprintFitsPolygon(polygon, corners)
     ? corners
     : undefined
 }

@@ -240,6 +240,55 @@ describe('worker parcel geometry', () => {
     )
   })
 
+  it('shrinks massing away from polygon holes and narrow concavities', () => {
+    const properties = {
+      ...parcel(30, ''),
+      featureType: 'Lot',
+      landUseCode: '064',
+      improvementAppraisal: 0,
+    }
+    const feature = (coordinates: number[][][]): ParcelFeature => ({
+      type: 'Feature',
+      properties,
+      geometry: { type: 'Polygon', coordinates },
+    })
+    const outer = [
+      [0, 0],
+      [100, 0],
+      [100, 100],
+      [0, 100],
+      [0, 0],
+    ]
+    const hole = [
+      [30, 30],
+      [34, 30],
+      [34, 34],
+      [30, 34],
+      [30, 30],
+    ]
+    const concave = [
+      [0, 0],
+      [30, 0],
+      [30, 40],
+      [34, 40],
+      [34, 0],
+      [100, 0],
+      [100, 100],
+      [0, 100],
+      [0, 0],
+    ]
+
+    const [aroundHole] = groupParcelFeatures([feature([outer, hole])])
+    const [aroundNotch] = groupParcelFeatures([feature([concave])])
+    for (const group of [aroundHole, aroundNotch]) {
+      expect(group.massing.kind).toBe('industrial')
+      expect(group.massing.footprint).toHaveLength(4)
+      expect(
+        Math.min(...group.massing.footprint!.map(([x]) => x)),
+      ).toBeGreaterThanOrEqual(34)
+    }
+  })
+
   it('includes each multipolygon part in one logical parcel group', () => {
     const multi: ParcelFeature = {
       type: 'Feature',
