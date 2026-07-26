@@ -91,7 +91,7 @@ describe('Nashville search', () => {
     expect(new URL(requestedUrl).searchParams.get('where')).toBe('ParID=479400')
   })
 
-  it('filters low-confidence Metro address candidates', async () => {
+  it('filters, deduplicates, and humanizes Metro address candidates', async () => {
     const fetcher = vi.fn(async (input: RequestInfo | URL) => {
       expect(String(input).startsWith(METRO_GEOCODER)).toBe(true)
       return jsonResponse({
@@ -100,6 +100,12 @@ describe('Nashville search', () => {
             address: '100 Broadway, Nashville, Tennessee',
             score: 91.4,
             location: { x: -100, y: 200 },
+            attributes: { Addr_type: 'StreetAddress' },
+          },
+          {
+            address: '100 BROADWAY NASHVILLE TENNESSEE',
+            score: 90,
+            location: { x: -101, y: 201 },
             attributes: { Addr_type: 'StreetAddress' },
           },
           {
@@ -117,7 +123,7 @@ describe('Nashville search', () => {
         {
           id: 'address--100-200',
           label: '100 Broadway, Nashville, Tennessee',
-          detail: 'StreetAddress · 91% match',
+          detail: 'Street address · 91% match',
           x: -100,
           y: 200,
           kind: 'address',
@@ -169,6 +175,34 @@ describe('Nashville search', () => {
         parcel: undefined,
         parId: undefined,
       },
+    ])
+  })
+
+  it('formats alternate Metro address types for people', async () => {
+    const fetcher = vi.fn(async () =>
+      jsonResponse({
+        candidates: [
+          {
+            address: 'Broadway',
+            score: 88,
+            location: { x: 1, y: 2 },
+            attributes: { Addr_type: 'Street_Name' },
+          },
+          {
+            address: 'Nashville',
+            score: 85,
+            location: { x: 3, y: 4 },
+            attributes: { Addr_type: ' ' },
+          },
+        ],
+      }),
+    ) as unknown as typeof fetch
+
+    await expect(
+      searchNashville('Broadway area', { fetcher }),
+    ).resolves.toEqual([
+      expect.objectContaining({ detail: 'Street name · 88% match' }),
+      expect.objectContaining({ detail: 'Nashville address · 85% match' }),
     ])
   })
 

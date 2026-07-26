@@ -115,6 +115,7 @@ async function searchAddresses(
   if (!response.ok) throw new Error('Address search is unavailable')
 
   const data = geocoderResponseSchema.parse(await response.json())
+  const seenAddresses = new Set<string>()
   return data.candidates
     .filter(
       (
@@ -123,14 +124,36 @@ async function searchAddresses(
         location: { x: number; y: number }
       } => candidate.score >= MIN_ADDRESS_SCORE && Boolean(candidate.location),
     )
-    .map((candidate) => ({
-      id: `address-${candidate.location.x}-${candidate.location.y}`,
-      label: candidate.address,
-      detail: `${candidate.attributes?.Addr_type || 'Nashville address'} · ${Math.round(candidate.score)}% match`,
-      x: candidate.location.x,
-      y: candidate.location.y,
-      kind: 'address' as const,
-    }))
+    .flatMap((candidate) => {
+      const addressKey = candidate.address
+        .toLocaleLowerCase('en-US')
+        .replaceAll(/[^a-z0-9]/g, '')
+      if (seenAddresses.has(addressKey)) return []
+      seenAddresses.add(addressKey)
+
+      return [
+        {
+          id: `address-${candidate.location.x}-${candidate.location.y}`,
+          label: candidate.address,
+          detail: `${formatAddressType(candidate.attributes?.Addr_type)} · ${Math.round(candidate.score)}% match`,
+          x: candidate.location.x,
+          y: candidate.location.y,
+          kind: 'address' as const,
+        },
+      ]
+    })
+}
+
+function formatAddressType(value?: string) {
+  if (!value) return 'Nashville address'
+  const words = value
+    .replaceAll(/([a-z])([A-Z])/g, '$1 $2')
+    .replaceAll(/[_-]+/g, ' ')
+    .trim()
+    .toLocaleLowerCase('en-US')
+  return words
+    ? `${words[0].toUpperCase()}${words.slice(1)}`
+    : 'Nashville address'
 }
 
 function geometryCenter(coordinatesValue: unknown) {

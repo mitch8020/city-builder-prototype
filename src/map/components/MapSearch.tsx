@@ -84,8 +84,12 @@ export function MapSearch({
       {searching && <span className="search-spinner" aria-label="Searching" />}
       {open && (
         <div className="search-results">
-          <p className="search-heading">
-            {query ? 'Matches' : 'Nashville landmarks'}
+          <p className="search-heading" aria-live="polite">
+            {query
+              ? searching
+                ? 'Searching Nashville'
+                : `${results.length} ${results.length === 1 ? 'match' : 'matches'}`
+              : 'Nashville landmarks'}
           </p>
           <div
             id="search-results-listbox"

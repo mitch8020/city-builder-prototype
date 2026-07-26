@@ -8,6 +8,7 @@ import type {
   SceneStatus,
 } from '../types'
 import {
+  AlertIcon,
   ArrowIcon,
   BrandMark,
   CheckIcon,
@@ -223,10 +224,19 @@ export function ZoomInvitation({ onActivate }: { onActivate: () => void }) {
   )
 }
 
-export function MapToast({ message }: { message: string }) {
+export function MapToast({
+  message,
+  tone = 'success',
+}: {
+  message: string
+  tone?: 'success' | 'error'
+}) {
   return (
-    <div className="toast" role="status">
-      <CheckIcon /> {message}
+    <div
+      className={`toast toast--${tone}`}
+      role={tone === 'error' ? 'alert' : 'status'}
+    >
+      {tone === 'error' ? <AlertIcon /> : <CheckIcon />} {message}
     </div>
   )
 }

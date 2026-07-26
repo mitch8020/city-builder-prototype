@@ -105,6 +105,49 @@ test('search owns focus, keyboard navigation, dismissal, and pending results', a
   await expect(search).toHaveAttribute('aria-expanded', 'false')
 })
 
+test('search removes duplicate destinations and translates Metro service labels', async ({
+  page,
+}) => {
+  await page.route('**/findAddressCandidates?**', (route) =>
+    route.fulfill({
+      contentType: 'application/json',
+      body: JSON.stringify({
+        candidates: [
+          {
+            address: '600 CHURCH ST, 37219',
+            location: { x: -9_660_091, y: 4_323_845 },
+            score: 100,
+            attributes: { Addr_type: 'StreetAddress' },
+          },
+          {
+            address: '600 CHURCH ST 37219',
+            location: { x: -9_660_092, y: 4_323_846 },
+            score: 99,
+            attributes: { Addr_type: 'StreetAddress' },
+          },
+          {
+            address: '600 CHURCH ST E, 37027',
+            location: { x: -9_648_000, y: 4_315_000 },
+            score: 91,
+            attributes: { Addr_type: 'StreetAddress' },
+          },
+        ],
+      }),
+    }),
+  )
+  await page.goto('/')
+  await waitForMap(page)
+
+  const search = page.getByRole('combobox', {
+    name: 'Search Nashville address or parcel number',
+  })
+  await search.fill('600 CHURCH ST')
+  await expect(page.getByText('2 matches', { exact: true })).toBeVisible()
+  await expect(page.getByRole('option')).toHaveCount(2)
+  await expect(page.getByText('Street address · 100% match')).toBeVisible()
+  await expect(page.getByText('StreetAddress', { exact: false })).toHaveCount(0)
+})
+
 test('controls modal traps focus, blocks map shortcuts, and restores focus', async ({
   page,
 }) => {
@@ -255,7 +298,7 @@ test('clipboard denial is recoverable and does not raise a page error', async ({
   await expect(metro).toHaveAttribute('rel', 'noreferrer')
   await page.getByRole('button', { name: 'Copy map link' }).click()
   await expect(
-    page.getByRole('status').filter({
+    page.getByRole('alert').filter({
       hasText: 'Could not copy the link. Copy it from the address bar.',
     }),
   ).toBeVisible()

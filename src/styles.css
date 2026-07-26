@@ -1176,6 +1176,14 @@ kbd {
   color: var(--gold);
 }
 
+.toast--error {
+  background: #8f4338;
+}
+
+.toast--error svg {
+  color: #ffe4b5;
+}
+
 .map-loading {
   position: fixed;
   inset: 0;

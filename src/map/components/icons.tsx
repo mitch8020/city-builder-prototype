@@ -175,6 +175,13 @@ export const CheckIcon = () => (
   </Icon>
 )
 
+export const AlertIcon = () => (
+  <Icon>
+    <path d="M12 3 2.8 20h18.4Z" />
+    <path d="M12 9v4M12 17h.01" />
+  </Icon>
+)
+
 export function KeysIcon({ keys }: { keys: string }) {
   return <span className="keys-icon">{keys}</span>
 }

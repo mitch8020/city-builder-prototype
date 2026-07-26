@@ -51,6 +51,11 @@ const INITIAL_STATUS: SceneStatus = {
   onlineTiles: true,
 }
 
+interface ToastState {
+  message: string
+  tone: 'success' | 'error'
+}
+
 function NashvilleApp() {
   const search = Route.useSearch()
   const navigate = useNavigate({ from: '/' })
@@ -65,7 +70,11 @@ function NashvilleApp() {
   const [helpOpen, setHelpOpen] = useState(false)
   const [unsupported, setUnsupported] = useState(false)
   const [anchor, setAnchor] = useState<{ x: number; y: number }>()
-  const [toast, setToast] = useState('')
+  const [toast, setToast] = useState<ToastState>()
+  const showError = useCallback(
+    (message: string) => setToast({ message, tone: 'error' }),
+    [],
+  )
   const selectSearchResult = useCallback((result: SearchResult) => {
     mapRef.current?.selectAt(result.x, result.y, {
       address: result.label,
@@ -75,12 +84,12 @@ function NashvilleApp() {
   }, [])
   const mapSearch = useMapSearch({
     onSelect: selectSearchResult,
-    onError: setToast,
+    onError: showError,
   })
 
   useEffect(() => {
     if (!toast) return
-    const timer = setTimeout(() => setToast(''), 3_600)
+    const timer = setTimeout(() => setToast(undefined), 3_600)
     return () => clearTimeout(timer)
   }, [toast])
 
@@ -177,7 +186,7 @@ function NashvilleApp() {
     )
       .then((matches) => {
         if (matches.length === 0) {
-          setToast('That shared parcel could not be located.')
+          showError('That shared parcel could not be located.')
           return
         }
         const result =
@@ -189,8 +198,8 @@ function NashvilleApp() {
           parId: result.parId,
         })
       })
-      .catch(() => setToast('That shared parcel could not be restored.'))
-  }, [manifest, mapSearch.setQuery, search.parcel, search.parId])
+      .catch(() => showError('That shared parcel could not be restored.'))
+  }, [manifest, mapSearch.setQuery, search.parcel, search.parId, showError])
 
   const cycleUnit = (group: ParcelGroup, rid: number, direction: number) => {
     const current = group.records.findIndex((record) => record.rid === rid)
@@ -212,9 +221,9 @@ function NashvilleApp() {
   const copyLink = async () => {
     try {
       await navigator.clipboard.writeText(window.location.href)
-      setToast('Parcel link copied')
+      setToast({ message: 'Parcel link copied', tone: 'success' })
     } catch {
-      setToast('Could not copy the link. Copy it from the address bar.')
+      showError('Could not copy the link. Copy it from the address bar.')
     }
   }
 
@@ -312,7 +321,7 @@ function NashvilleApp() {
         )}
 
         {helpOpen && <ControlsModal onClose={() => setHelpOpen(false)} />}
-        {toast && <MapToast message={toast} />}
+        {toast && <MapToast message={toast.message} tone={toast.tone} />}
       </div>
     </main>
   )

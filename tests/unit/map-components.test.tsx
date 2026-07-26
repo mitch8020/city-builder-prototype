@@ -111,6 +111,7 @@ describe('map chrome and controls', () => {
         <MapFooter status={onlineStatus} />
         <ZoomInvitation onActivate={zoom} />
         <MapToast message="Copied" />
+        <MapToast message="Offline" tone="error" />
       </>,
     )
     expect(view.container.textContent).toContain('May 12, 2026')
@@ -122,6 +123,8 @@ describe('map chrome and controls', () => {
     expect(view.container.textContent).toContain(
       'Building forms are illustrative, based on parcel land use and available floor data.',
     )
+    expect(view.getByRole('status').textContent).toContain('Copied')
+    expect(view.getByRole('alert').textContent).toContain('Offline')
     fireEvent.click(view.getByText(/Try loading/))
     fireEvent.click(view.getByLabelText('Open map controls'))
     fireEvent.click(view.getByText(/Parcel fabric appears/))
