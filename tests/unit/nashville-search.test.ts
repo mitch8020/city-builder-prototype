@@ -109,6 +109,12 @@ describe('Nashville search', () => {
             attributes: { Addr_type: 'StreetAddress' },
           },
           {
+            address: '100 Broadway, Nashville, Tennessee, 37219-1234',
+            score: 89,
+            location: { x: -102, y: 202 },
+            attributes: { Addr_type: 'StreetAddress' },
+          },
+          {
             address: 'Broadway, Somewhere Else',
             score: 69,
             location: { x: 0, y: 0 },

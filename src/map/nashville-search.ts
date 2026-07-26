@@ -125,9 +125,7 @@ async function searchAddresses(
       } => candidate.score >= MIN_ADDRESS_SCORE && Boolean(candidate.location),
     )
     .flatMap((candidate) => {
-      const addressKey = candidate.address
-        .toLocaleLowerCase('en-US')
-        .replaceAll(/[^a-z0-9]/g, '')
+      const addressKey = addressIdentity(candidate.address)
       if (seenAddresses.has(addressKey)) return []
       seenAddresses.add(addressKey)
 
@@ -142,6 +140,13 @@ async function searchAddresses(
         },
       ]
     })
+}
+
+function addressIdentity(value: string) {
+  return value
+    .replace(/(?:,\s*|\s+)\d{5}(?:-\d{4})?\s*$/u, '')
+    .toLocaleLowerCase('en-US')
+    .replaceAll(/[^a-z0-9]/g, '')
 }
 
 function formatAddressType(value?: string) {

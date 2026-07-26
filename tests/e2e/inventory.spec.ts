@@ -41,6 +41,17 @@ test('exposes every persistent map control under safe URL defaults', async ({
   await expect(page).toHaveTitle('Nashville Parcel Diorama')
   await expect(page.getByText('GIS snapshot May 12, 2026')).toBeVisible()
   await expect(page.getByText('City overview', { exact: true })).toBeVisible()
+  await expect(page.locator('.height-note')).toHaveCSS(
+    'color',
+    'rgb(89, 115, 122)',
+  )
+  await expect(
+    page
+      .getByRole('combobox', {
+        name: 'Search Nashville address or parcel number',
+      })
+      .evaluate((element) => getComputedStyle(element, '::placeholder').color),
+  ).resolves.toBe('rgb(89, 115, 122)')
   await expect(
     page.getByRole('navigation', { name: 'Parcel data maps' }),
   ).toBeVisible()
@@ -139,6 +150,12 @@ test('search removes duplicate destinations and translates Metro service labels'
             address: '600 CHURCH ST 37219',
             location: { x: -9_660_092, y: 4_323_846 },
             score: 99,
+            attributes: { Addr_type: 'StreetAddress' },
+          },
+          {
+            address: '600 CHURCH ST',
+            location: { x: -9_660_093, y: 4_323_847 },
+            score: 98,
             attributes: { Addr_type: 'StreetAddress' },
           },
           {
@@ -312,6 +329,14 @@ test('clipboard denial is recoverable and does not raise a page error', async ({
   const metro = page.getByRole('link', { name: 'Metro details' })
   await expect(metro).toHaveAttribute('target', '_blank')
   await expect(metro).toHaveAttribute('rel', 'noreferrer')
+  await expect(page.locator('.property-grid dt').first()).toHaveCSS(
+    'color',
+    'rgb(89, 115, 122)',
+  )
+  await expect(page.locator('.accuracy-note')).toHaveCSS(
+    'color',
+    'rgb(89, 115, 122)',
+  )
   await page.getByRole('button', { name: 'Copy map link' }).click()
   await expect(
     page.getByRole('alert').filter({

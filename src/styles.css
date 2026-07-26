@@ -234,7 +234,7 @@ svg {
 }
 
 .map-search input::placeholder {
-  color: #74898d;
+  color: var(--slate);
   opacity: 1;
 }
 
@@ -725,7 +725,7 @@ kbd {
 
 .property-grid dt {
   margin-bottom: 3px;
-  color: #71868a;
+  color: var(--slate);
   font-size: 10px;
 }
 
@@ -829,7 +829,7 @@ kbd {
 
 .accuracy-note {
   margin: 12px 0 0;
-  color: #74878a;
+  color: var(--slate);
   font-size: 10px;
   line-height: 1.45;
   text-align: center;
