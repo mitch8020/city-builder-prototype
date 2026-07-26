@@ -60,6 +60,22 @@ test('exposes every persistent map control under safe URL defaults', async ({
     await expect(control).toBeEnabled()
     await control.click()
   }
+  const zoomIn = page.getByRole('button', { name: 'Zoom in' })
+  await zoomIn.hover()
+  await expect
+    .poll(() =>
+      zoomIn.evaluate(
+        (element) => getComputedStyle(element, '::after').opacity,
+      ),
+    )
+    .toBe('1')
+  await expect
+    .poll(() =>
+      zoomIn.evaluate(
+        (element) => getComputedStyle(element, '::after').content,
+      ),
+    )
+    .toBe('"Zoom in"')
 
   await expect(pageErrors).toEqual([])
 })

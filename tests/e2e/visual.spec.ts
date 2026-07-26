@@ -6,7 +6,7 @@ async function waitForCounty(page: Page, googleMap = true) {
   await expect(page.locator('canvas')).toBeVisible()
   await expect(page.getByText('Parcel fabric appears up close')).toBeVisible()
   if (googleMap) {
-    await expect(page.getByText('Google map')).toBeVisible()
+    await expect(page.getByLabel('Google base map available')).toBeVisible()
     await expect(page.getByAltText('Google Maps')).toBeVisible()
   }
   await page.waitForTimeout(350)
@@ -27,6 +27,17 @@ test('county overview visual', async ({ page }) => {
   await page.goto('/')
   await waitForCounty(page)
   await expect(page).toHaveScreenshot('county-overview.png', {
+    animations: 'disabled',
+    maxDiffPixelRatio: 0.015,
+  })
+})
+
+test('compact desktop visual', async ({ page }) => {
+  await page.setViewportSize({ width: 960, height: 621 })
+  await useGoogleBasemap(page)
+  await page.goto('/')
+  await waitForCounty(page)
+  await expect(page).toHaveScreenshot('compact-desktop.png', {
     animations: 'disabled',
     maxDiffPixelRatio: 0.015,
   })

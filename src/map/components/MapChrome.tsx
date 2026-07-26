@@ -111,9 +111,22 @@ export function MapTopbar({
           className={`network-pill ${
             status.onlineTiles ? '' : 'network-pill--offline'
           }`}
+          aria-label={
+            status.onlineTiles
+              ? 'Google base map available'
+              : 'Google base map unavailable; using local map'
+          }
         >
-          <span />
-          {status.onlineTiles ? 'Google map' : 'Local map'}
+          <span className="network-indicator" aria-hidden="true" />
+          <span className="network-label">
+            {status.onlineTiles ? 'Google map' : 'Local map'}
+          </span>
+          <span
+            className="network-label network-label--compact"
+            aria-hidden="true"
+          >
+            Map
+          </span>
         </span>
         <button
           className="round-button"

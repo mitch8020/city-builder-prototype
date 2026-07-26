@@ -25,10 +25,11 @@ or sensitive data was accessed.
 | BUG-013 | P1       | A direct geometry regression measured the first appended massing-roof normal at `-61.952…` after source Y is converted to world `-Z`. The default `FrontSide` top material therefore culled these roofs from above and roof raycasts could miss them.               | The hand-built roof indices copied the parcel-slab reversal without proving the generated rectangle’s world-space winding.             | Roofs now use `0-1-2` and `0-2-3` winding. Every appended roof triangle must have a positive world-Y normal; all six production visual baselines remain clean.                                                                                   |
 | BUG-014 | P2       | For a fitted roof spanning `(20,20)` to `(60,50)` on a parcel whose bounds center was `(5,5)`, the inspector tether used `(5,5)` instead of the roof center `(40,35)`, terminating at roof height in empty air.                                                     | The spatial ownership center was also treated as the visual building anchor even when fitting deliberately moved the massing.          | A shared anchor helper averages the fitted footprint and falls back to the parcel center for slab-only groups. Helper and scene regressions cover both paths.                                                                                    |
 | BUG-015 | P2       | A live Metro query for `600 CHURCH ST` rendered six repetitive destinations and exposed the provider taxonomy `StreetAddress` in each result.                                                                                                                       | Provider candidates were rendered verbatim without a product-level uniqueness or copy boundary.                                        | Address results now collapse punctuation-only duplicates, translate service types into plain language, and announce searching/result counts. Unit and production-browser regressions reproduce the provider response.                            |
+| BUG-016 | P2       | A live 1440×900 type audit found 15 of 26 visible text-bearing elements below 10 px, including legend data, provider attribution, status, parcel disclaimers, and zoom guidance.                                                                                    | The initial density target let persistent civic data and operating guidance use decorative micro-type sizing.                          | Persistent information now has a 10 px floor, compact 960×621 composition has a visual baseline, camera icons expose hover/focus labels, and the compact provider chip retains a complete accessible name.                                       |
 
 ## Shared-cause review
 
-Nine shared causes account for the findings:
+Ten shared causes account for the findings:
 
 1. Configuration values were duplicated across package scripts, documentation,
    and browser configuration.
@@ -48,6 +49,8 @@ Nine shared causes account for the findings:
    even though fitted geometry can intentionally move away from it.
 9. Remote provider candidates and taxonomies crossed into the interface without
    product-level normalization.
+10. Visual density was optimized before a minimum persistent-information type
+    scale was enforced.
 
 The fixes therefore centralize the port in executable scripts, give each overlay
 ownership of its lifecycle, clear or release stale async state before a new
@@ -60,6 +63,8 @@ Massing roof orientation is asserted in final world coordinates, and the
 inspector tether now follows the fitted roof rather than the ownership center.
 Metro results now pass through one uniqueness and human-label boundary before
 they become search options.
+Persistent civic data now uses a legibility floor, while compact layout and
+icon-instrument labels preserve the map-first composition.
 
 ## Verification result
 

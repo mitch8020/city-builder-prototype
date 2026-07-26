@@ -189,7 +189,7 @@ svg {
   border-radius: 7px;
   color: var(--slate);
   font-family: 'IBM Plex Mono', monospace;
-  font-size: 9px;
+  font-size: 10px;
   white-space: nowrap;
 }
 
@@ -250,7 +250,7 @@ kbd {
   color: var(--slate);
   background: #f4f1ea;
   font-family: 'IBM Plex Mono', monospace;
-  font-size: 9px;
+  font-size: 10px;
   line-height: 1;
 }
 
@@ -281,7 +281,7 @@ kbd {
   margin: 4px 8px 7px;
   color: var(--slate);
   font-family: 'IBM Plex Mono', monospace;
-  font-size: 9px;
+  font-size: 10px;
   letter-spacing: 0.12em;
   text-transform: uppercase;
 }
@@ -373,7 +373,7 @@ kbd {
   font-weight: 700;
 }
 
-.network-pill > span,
+.network-indicator,
 .map-status > span {
   width: 7px;
   height: 7px;
@@ -382,9 +382,13 @@ kbd {
   box-shadow: 0 0 0 3px rgb(97 166 113 / 15%);
 }
 
-.network-pill--offline > span {
+.network-pill--offline .network-indicator {
   background: var(--gold);
   box-shadow: 0 0 0 3px rgb(242 193 78 / 18%);
+}
+
+.network-label--compact {
+  display: none;
 }
 
 .round-button,
@@ -397,11 +401,15 @@ kbd {
   border-radius: 11px;
   background: rgb(255 255 255 / 64%);
   cursor: pointer;
+  transition:
+    background 150ms ease,
+    transform 150ms ease;
 }
 
 .round-button:hover,
 .icon-button:hover {
   background: #eef5f3;
+  transform: translateY(-1px);
 }
 
 .legend-panel {
@@ -438,7 +446,7 @@ kbd {
   align-items: center;
   gap: 6px;
   color: #405c62;
-  font-size: 9px;
+  font-size: 10px;
   font-weight: 650;
 }
 
@@ -458,7 +466,7 @@ kbd {
   padding-top: 10px;
   border-top: 1px solid var(--border);
   color: var(--slate);
-  font-size: 8.5px;
+  font-size: 10px;
   line-height: 1.4;
 }
 
@@ -488,6 +496,7 @@ kbd {
 }
 
 .camera-rail button {
+  position: relative;
   display: grid;
   width: 34px;
   height: 34px;
@@ -497,6 +506,38 @@ kbd {
   border-radius: 9px;
   background: transparent;
   cursor: pointer;
+  transition:
+    background 140ms ease,
+    color 140ms ease;
+}
+
+.camera-rail button::after {
+  position: absolute;
+  top: 50%;
+  right: calc(100% + 11px);
+  z-index: 4;
+  padding: 6px 8px;
+  border: 1px solid rgb(255 255 255 / 20%);
+  border-radius: 7px 7px 7px 3px;
+  color: var(--white);
+  background: rgb(23 52 59 / 94%);
+  box-shadow: 0 7px 18px rgb(23 52 59 / 22%);
+  content: attr(aria-label);
+  font-size: 10px;
+  font-weight: 700;
+  opacity: 0;
+  pointer-events: none;
+  transform: translate(4px, -50%);
+  transition:
+    opacity 140ms ease,
+    transform 140ms ease;
+  white-space: nowrap;
+}
+
+.camera-rail button:hover::after,
+.camera-rail button:focus-visible::after {
+  opacity: 1;
+  transform: translate(0, -50%);
 }
 
 .camera-rail button:hover {
@@ -541,7 +582,20 @@ kbd {
   background: var(--panel);
   box-shadow: 0 24px 60px rgb(23 52 59 / 24%);
   backdrop-filter: blur(22px) saturate(1.15);
+  scrollbar-color: rgb(23 52 59 / 26%) transparent;
+  scrollbar-width: thin;
   animation: inspector-in 260ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.parcel-inspector::-webkit-scrollbar {
+  width: 7px;
+}
+
+.parcel-inspector::-webkit-scrollbar-thumb {
+  border: 2px solid transparent;
+  border-radius: 999px;
+  background: rgb(23 52 59 / 26%);
+  background-clip: padding-box;
 }
 
 .inspector-grip {
@@ -587,7 +641,7 @@ kbd {
   margin: 4px 0 0;
   color: var(--slate);
   font-family: 'IBM Plex Mono', monospace;
-  font-size: 9px;
+  font-size: 10px;
 }
 
 .inspector-head .icon-button {
@@ -649,7 +703,7 @@ kbd {
   margin: 0 0 10px;
   color: var(--slate);
   font-family: 'IBM Plex Mono', monospace;
-  font-size: 9px;
+  font-size: 10px;
   letter-spacing: 0.09em;
   text-transform: uppercase;
 }
@@ -672,13 +726,13 @@ kbd {
 .property-grid dt {
   margin-bottom: 3px;
   color: #71868a;
-  font-size: 9px;
+  font-size: 10px;
 }
 
 .property-grid dd {
   overflow: hidden;
   margin: 0;
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 720;
   line-height: 1.35;
   text-overflow: ellipsis;
@@ -712,7 +766,7 @@ kbd {
   border-radius: 9px 9px 9px 3px;
   color: var(--slate);
   background: #f1f3ec;
-  font-size: 8.5px;
+  font-size: 10px;
 }
 
 .appraisal-split b {
@@ -720,7 +774,7 @@ kbd {
   margin-top: 3px;
   color: var(--ink);
   font-family: 'IBM Plex Mono', monospace;
-  font-size: 9px;
+  font-size: 10px;
 }
 
 .inspector-actions {
@@ -741,16 +795,31 @@ kbd {
   border-radius: 10px 10px 10px 3px;
   color: var(--ink);
   background: rgb(255 255 255 / 58%);
-  font-size: 9.5px;
+  font-size: 11px;
   font-weight: 750;
   text-decoration: none;
   cursor: pointer;
+  transition:
+    background 150ms ease,
+    border-color 150ms ease,
+    transform 150ms ease;
 }
 
 .inspector-actions a {
   border-color: var(--ink);
   color: var(--white);
   background: var(--ink);
+}
+
+.inspector-actions button:hover {
+  border-color: rgb(75 159 184 / 35%);
+  background: #eef5f3;
+  transform: translateY(-1px);
+}
+
+.inspector-actions a:hover {
+  background: #24464d;
+  transform: translateY(-1px);
 }
 
 .inspector-actions svg {
@@ -761,7 +830,7 @@ kbd {
 .accuracy-note {
   margin: 12px 0 0;
   color: #74878a;
-  font-size: 8px;
+  font-size: 10px;
   line-height: 1.45;
   text-align: center;
 }
@@ -831,7 +900,7 @@ kbd {
 .hover-card small {
   margin-top: 1px;
   color: var(--slate);
-  font-size: 8.5px;
+  font-size: 10px;
 }
 
 .mode-ribbon {
@@ -936,7 +1005,7 @@ kbd {
   justify-content: space-between;
   gap: 24px;
   color: rgb(23 52 59 / 75%);
-  font-size: 8.5px;
+  font-size: 10px;
   pointer-events: none;
 }
 
@@ -1013,6 +1082,16 @@ kbd {
   text-align: left;
   cursor: pointer;
   backdrop-filter: blur(17px);
+  transition:
+    border-color 160ms ease,
+    box-shadow 160ms ease,
+    transform 160ms ease;
+}
+
+.zoom-invitation:hover {
+  border-color: rgb(75 159 184 / 34%);
+  box-shadow: 0 17px 42px rgb(23 52 59 / 23%);
+  transform: translate(-50%, -2px);
 }
 
 .zoom-invitation > svg {
@@ -1045,7 +1124,7 @@ kbd {
 
 .zoom-invitation span:nth-child(2) {
   color: var(--slate);
-  font-size: 9px;
+  font-size: 10px;
   line-height: 1.45;
 }
 
@@ -1119,7 +1198,7 @@ kbd {
   padding: 4px;
   color: var(--ink);
   font-family: 'IBM Plex Mono', monospace;
-  font-size: 9px;
+  font-size: 10px;
   font-weight: 500;
 }
 
@@ -1132,7 +1211,7 @@ kbd {
 .control-card p {
   margin: 3px 0 0;
   color: var(--slate);
-  font-size: 9.5px;
+  font-size: 11px;
   line-height: 1.45;
 }
 
@@ -1148,6 +1227,14 @@ kbd {
   font-size: 11px;
   font-weight: 750;
   cursor: pointer;
+  transition:
+    background 150ms ease,
+    transform 150ms ease;
+}
+
+.modal-primary:hover {
+  background: #24464d;
+  transform: translateY(-1px);
 }
 
 .toast {
@@ -1164,7 +1251,7 @@ kbd {
   color: var(--white);
   background: var(--ink);
   box-shadow: 0 14px 34px rgb(23 52 59 / 25%);
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 700;
   transform: translateX(-50%);
   animation: toast-in 220ms ease-out;
@@ -1356,12 +1443,16 @@ kbd {
   }
 
   .network-pill {
-    font-size: 0;
+    min-width: 63px;
+    justify-content: center;
   }
 
-  .network-pill::after {
-    content: 'Map';
-    font-size: 9px;
+  .network-label {
+    display: none;
+  }
+
+  .network-label--compact {
+    display: inline;
   }
 }
 

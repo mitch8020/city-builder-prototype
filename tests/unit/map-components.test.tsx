@@ -116,6 +116,7 @@ describe('map chrome and controls', () => {
     )
     expect(view.container.textContent).toContain('May 12, 2026')
     expect(view.container.textContent).toContain('Google map')
+    expect(view.getByLabelText('Google base map available')).not.toBeNull()
     expect(view.getByAltText('Google Maps').getAttribute('src')).toBe(
       '/google-maps-attribution.svg',
     )
@@ -143,6 +144,9 @@ describe('map chrome and controls', () => {
       </>,
     )
     expect(view.container.textContent).toContain('Local map')
+    expect(
+      view.getByLabelText('Google base map unavailable; using local map'),
+    ).not.toBeNull()
   })
 
   it('runs every camera and mode control with and without an inspector', () => {
